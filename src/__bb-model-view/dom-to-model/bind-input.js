@@ -1,6 +1,6 @@
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model-bind-input
  */
 define(function (require, exports, module) {
 	'use strict';

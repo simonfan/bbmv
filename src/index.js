@@ -17,25 +17,27 @@ define(function (require, exports, module) {
 	'use strict';
 
 	var _ = require('lodash'),
+		modelDock = require('model-dock'),
 		backbone = require('lowercase-backbone');
 
 	// initializers
-	var initAttach = require('./__bb-model-view/initialize-attach');
+	var bindModelToDOM = require('./__bb-model-view/model-to-dom/index'),
+		bindDOMToModel = require('./__bb-model-view/dom-to-model/index');
 
 	/**
-	 * The constructor for the dock object.
+	 * The constructor for the bbModelView object.
 	 *
-	 * @method dock
+	 * @method bbModelView
 	 * @constructor
 	 * @param extensions {Object}
 	 *     @param $el {Object}
-	 *         The $el that owns the dock object
+	 *         The $el that owns the bbModelView object
 	 *     @param map {Object}
 	 *         Map that links selectors to attributes
 	 *     @param [model] {Object}
 	 *         Optionally provide a model that will initially fill the $el.
 	 */
-	var dock = module.exports = backbone.view.extend({
+	var bbModelView = module.exports = backbone.view.extend({
 
 		initialize: function initialize() {
 			// initialize basic backbone view
@@ -53,21 +55,36 @@ define(function (require, exports, module) {
 		initializeModelDock: function initializeModelDock(options) {
 
 			this.map = options.map || this.map;
-			this.model = options.model || this.model;
+			this.model = options.model || this.model || backbone.model();
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
-			this.cache$Els = options.cache$Els || this.cache$Els;
 
-			// initialize attach
-			initAttach.apply(this, arguments);
+			// create the dock
+			this.dock = modelDock({
+				model: this.model
+			});
+
+			// initialize model-to-dom attach logic.
+			bindModelToDOM.call(this);
+			bindDOMToModel.call(this);
+
+			// attach the initial model
+			this.attach(this.model);
 		},
 
-		/**
-		 * The model this dock object should listen to.
-		 *
-		 * @property model
-		 */
-		model: void(0),
+
+		attach: function attach(model, options) {
+
+			this.dock.attach(model, options);
+
+			return this;
+		},
+
+		detach: function detach(options) {
+			this.dock.detach(options);
+
+			return this;
+		},
 
 		/**
 		 * Map that identifies selectors for attribvutes.
@@ -75,8 +92,18 @@ define(function (require, exports, module) {
 		 * @property map
 		 */
 		map: {},
-	});
 
-	// methods related to attaching and detaching models from the dock
-	dock.proto(require('./__bb-model-view/methods'));
+
+		stringifiers: {},
+
+		/**
+		 * Hash for the parsers. Every parser function is called
+		 * within the's context and takes the value read
+		 * from the DOM as arugment.
+		 *
+		 * @property parsers
+		 * @type Object
+		 */
+		parsers: {},
+	});
 });

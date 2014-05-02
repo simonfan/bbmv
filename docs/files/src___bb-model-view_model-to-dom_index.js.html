@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/model-to-dom/initialize.js - bb-model-view</title>
+    <title>src/__bb-model-view/model-to-dom/index.js - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -47,19 +47,19 @@
             
                 <li><a href="../modules/$el.dock.html">$el.dock</a></li>
             
-                <li><a href="../modules/$el.dock.attach.html">$el.dock.attach</a></li>
-            
-                <li><a href="../modules/archetypo.html">archetypo</a></li>
-            
-                <li><a href="../modules/backbone.model.html">backbone.model</a></li>
-            
-                <li><a href="../modules/backbone.view.model.html">backbone.view.model</a></li>
-            
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
-                <li><a href="../modules/html-to-model.html">html-to-model</a></li>
+                <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
             
-                <li><a href="../modules/view.dock.attach.html">view.dock.attach</a></li>
+                <li><a href="../modules/dom-to-model-bind-input.html">dom-to-model-bind-input</a></li>
+            
+                <li><a href="../modules/dom-to-model-read.html">dom-to-model-read</a></li>
+            
+                <li><a href="../modules/dom-to-model-update.html">dom-to-model-update</a></li>
+            
+                <li><a href="../modules/model-to-dom.html">model-to-dom</a></li>
+            
+                <li><a href="../modules/model-to-dom-update.html">model-to-dom-update</a></li>
             
             </ul>
         </div>
@@ -96,32 +96,32 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/model-to-dom/initialize.js</h1>
+                        <h1 class="file-heading">File: src/__bb-model-view/model-to-dom/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @module archetypo
- * @submodule $el.dock.attach
+ * @module bb-model-view
+ * @submodule model-to-dom
  */
-
-/* jshint ignore:start */
-if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
 	var filler = require(&#x27;jquery.filler&#x27;);
 
+
+	// update function
+	var _update = require(&#x27;./update&#x27;);
+
+
 	/**
 	 *
 	 *
-	 * @method initialize
+	 * @method bindModelToDOM
 	 * @param $el {backbone.$el Object}
 	 * @param map {Object}
 	 */
-	var initialize = module.exports = function initialize() {
+	module.exports = function bindModelToDOM() {
 		/**
 		 * The function that will fill in html for us.
 		 * Uses jquery.filler to build a cache of the
@@ -131,6 +131,13 @@ define(function (require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.fill = this.$el.filler(this.map);
+
+		// Listen to dock events
+		// Dock proxies all events from the model
+
+		// listenTo always invokes the event handler
+		// in &#x27;this&#x27; context
+		this.listenTo(this.dock, &#x27;change attach&#x27;, _update);
 	};
 });
 

@@ -1,6 +1,6 @@
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model
  */
 define(function (require, exports, module) {
 	'use strict';
@@ -15,9 +15,9 @@ define(function (require, exports, module) {
 	 * Initialization logic for binding html input tags values
 	 * to the models attributes.
 	 *
-	 * @method initialize
+	 * @method bindDOMToModel
 	 */
-	module.exports = function initializeDomToModel() {
+	module.exports = function bindDOMToModel() {
 
 		/**
 		 * Hash where elements are referenced

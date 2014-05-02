@@ -3,13 +3,13 @@ YUI.add("yuidoc-meta", function(Y) {
     "classes": [],
     "modules": [
         "$el.dock",
-        "$el.dock.attach",
-        "archetypo",
-        "backbone.model",
-        "backbone.view.model",
         "bb-model-view",
-        "html-to-model",
-        "view.dock.attach"
+        "dom-to-model",
+        "dom-to-model-bind-input",
+        "dom-to-model-read",
+        "dom-to-model-update",
+        "model-to-dom",
+        "model-to-dom-update"
     ],
     "allModules": [
         {
@@ -18,32 +18,32 @@ YUI.add("yuidoc-meta", function(Y) {
             "description": "The dock is the object that links together $els and models."
         },
         {
-            "displayName": "$el.dock.attach",
-            "name": "$el.dock.attach"
-        },
-        {
-            "displayName": "archetypo",
-            "name": "archetypo"
-        },
-        {
-            "displayName": "backbone.model",
-            "name": "backbone.model"
-        },
-        {
-            "displayName": "backbone.view.model",
-            "name": "backbone.view.model"
-        },
-        {
             "displayName": "bb-model-view",
             "name": "bb-model-view"
         },
         {
-            "displayName": "html-to-model",
-            "name": "html-to-model"
+            "displayName": "dom-to-model",
+            "name": "dom-to-model"
         },
         {
-            "displayName": "view.dock.attach",
-            "name": "view.dock.attach"
+            "displayName": "dom-to-model-bind-input",
+            "name": "dom-to-model-bind-input"
+        },
+        {
+            "displayName": "dom-to-model-read",
+            "name": "dom-to-model-read"
+        },
+        {
+            "displayName": "dom-to-model-update",
+            "name": "dom-to-model-update"
+        },
+        {
+            "displayName": "model-to-dom",
+            "name": "model-to-dom"
+        },
+        {
+            "displayName": "model-to-dom-update",
+            "name": "model-to-dom-update"
         }
     ]
 } };

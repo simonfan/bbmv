@@ -5,7 +5,8 @@
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",
-    "jquery.filler": "~0.2.3"
+    "jquery.filler": "~0.2.3",
+    "model-dock": "0.5.7"
   },
   "devDependencies": {
     "requirejs": "*",
@@ -13,5 +14,9 @@
     "underscore": "*",
     "jquery": "*",
     "qunit": "*"
+  },
+  "resolutions": {
+    "subject": "~0.4.1",
+    "model-dock": "0.5.7"
   }
 }

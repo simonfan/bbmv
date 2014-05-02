@@ -1,25 +1,65 @@
+//     model-dock
+//     (c) simonfan
+//     model-dock is licensed under the MIT terms.
+
+define("model-dock",["require","exports","module","lodash","subject","backbone"],function(t,e,o){var i=t("lodash"),r=t("subject"),a=t("backbone"),s=o.exports=r({initialize:function(t){this.initializeModelDock(t)},initializeModelDock:function(t){t&&t.model&&this.attach(t.model)},invokeModelMethod:function(t){if(this.model){var e=Array.prototype.slice.call(arguments,1);return this.model[t].apply(this.model,e)}throw new Error("No model attached to dock. Unable to invoke "+t)},retrieveModelProperty:function(t){if(this.model)return this.model[t];throw new Error("No model attached to dock. Unable to retrieve "+t)},attach:function(t,e){return this.detach(),this.model=t,this.listenTo(this.model,"all",this.trigger),e&&e.silent||this.trigger("attach",t),this},detach:function(t){if(this.model){var e=this.model;this.stopListening(e),this.model=void 0,t&&t.silent||this.trigger("detach",e)}return this}});s.proto(a.Events);var n=["get","set","escape","has","unset","clear","toJSON","sync","fetch","save","destroy","keys","values","pairs","invert","pick","omit","validate","isValid","url","parse","clone","isNew","hasChanged","changedAttributes","previous","previousAttributes"],l={};i.each(n,function(t){l[t]=i.partial(s.prototype.invokeModelMethod,t)}),s.proto(l);var d=["id","idAttribute","cid","attributes","changed","defaults","validationError","urlRoot"],h={};i.each(d,function(t){h[t]=i.partial(s.prototype.retrieveModelProperty,t)}),s.proto(h)});
 /**
- * @module archetypo
- * @submodule $el.dock.attach
+ * @module bb-model-view
+ * @submodule model-to-dom-update
  */
+define('__bb-model-view/model-to-dom/update',['require','exports','module','lodash'],function (require, exports, module) {
+	
 
-/* jshint ignore:start */
+	var _ = require('lodash');
 
-/* jshint ignore:end */
+	/**
+	 * Method used internally to update the html.
+	 *
+	 * @method update
+	 * @_private_
+	 * @param model
+	 */
+	var update = module.exports = function update(model) {
 
-define('__bb-model-view/model-to-dom/initialize',['require','exports','module','jquery.filler'],function (require, exports, module) {
+		var stringifiers = this.stringifiers,
+			// map out data.
+			data = _.mapValues(model.attributes, function (value, attribute) {
+
+			//	// console.log(value);
+			//	// console.log(attribute);
+
+				var stringify = stringifiers[attribute];
+
+				// if no stringify is defined, return the value
+				return stringify ? stringify.call(this, value) : value;
+			});
+
+		this.fill(data);
+	};
+});
+
+/**
+ * @module bb-model-view
+ * @submodule model-to-dom
+ */
+define('__bb-model-view/model-to-dom/index',['require','exports','module','jquery.filler','./update'],function (require, exports, module) {
 	
 
 	var filler = require('jquery.filler');
 
+
+	// update function
+	var _update = require('./update');
+
+
 	/**
 	 *
 	 *
-	 * @method initialize
+	 * @method bindModelToDOM
 	 * @param $el {backbone.$el Object}
 	 * @param map {Object}
 	 */
-	var initialize = module.exports = function initialize() {
+	module.exports = function bindModelToDOM() {
 		/**
 		 * The function that will fill in html for us.
 		 * Uses jquery.filler to build a cache of the
@@ -29,12 +69,19 @@ define('__bb-model-view/model-to-dom/initialize',['require','exports','module','
 		 * @param data {Object}
 		 */
 		this.fill = this.$el.filler(this.map);
+
+		// Listen to dock events
+		// Dock proxies all events from the model
+
+		// listenTo always invokes the event handler
+		// in 'this' context
+		this.listenTo(this.dock, 'change attach', _update);
 	};
 });
 
 /**
- * @module backbone.view.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model-read
  */
 define('__bb-model-view/dom-to-model/read-dom-value',['require','exports','module','lodash','jquery'],function (require, exports, module) {
 	
@@ -90,8 +137,8 @@ define('__bb-model-view/dom-to-model/read-dom-value',['require','exports','modul
 });
 
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model-update
  */
 define('__bb-model-view/dom-to-model/update',['require','exports','module','jquery','./read-dom-value'],function (require, exports, module) {
 	
@@ -137,14 +184,14 @@ define('__bb-model-view/dom-to-model/update',['require','exports','module','jque
 			value = parse ? parse.call(this, value) : value;
 
 			// [3] set.
-			this.model.set(attribute, value);
+			this.dock.set(attribute, value);
 		}
 	};
 });
 
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model-bind-input
  */
 define('__bb-model-view/dom-to-model/bind-input',['require','exports','module','lodash','jquery','./bind-input'],function (require, exports, module) {
 	
@@ -189,10 +236,10 @@ define('__bb-model-view/dom-to-model/bind-input',['require','exports','module','
 });
 
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model
  */
-define('__bb-model-view/dom-to-model/initialize',['require','exports','module','lodash','./update','./bind-input'],function (require, exports, module) {
+define('__bb-model-view/dom-to-model/index',['require','exports','module','lodash','./update','./bind-input'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
@@ -205,9 +252,9 @@ define('__bb-model-view/dom-to-model/initialize',['require','exports','module','
 	 * Initialization logic for binding html input tags values
 	 * to the models attributes.
 	 *
-	 * @method initialize
+	 * @method bindDOMToModel
 	 */
-	module.exports = function initializeDomToModel() {
+	module.exports = function bindDOMToModel() {
 
 		/**
 		 * Hash where elements are referenced
@@ -243,244 +290,6 @@ define('__bb-model-view/dom-to-model/initialize',['require','exports','module','
 	};
 });
 
-/**
- * @module archetypo
- * @submodule view.dock.attach
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__bb-model-view/initialize-attach',['require','exports','module','lodash','lowercase-backbone','./model-to-dom/initialize','./dom-to-model/initialize'],function (require, exports, module) {
-	
-
-	var _ = require('lodash'),
-		backbone = require('lowercase-backbone');
-
-	var initModelDom = require('./model-to-dom/initialize'),
-		initDomModel = require('./dom-to-model/initialize');
-
-	/**
-	 * Initialization for attachment and detachment logic.
-	 *
-	 * @method initialize
-	 * @param view {backbone.view Object}
-	 * @param map {Object}
-	 */
-	module.exports = function initializeAttach() {
-
-		// initialize model-to-dom attach logic.
-		initModelDom.call(this);
-		initDomModel.call(this);
-
-		// if a model was defined, use it.
-		// otherwise, create a new model
-		var model = this.model || backbone.model();
-
-		this.attach(model);
-	};
-});
-
-/**
- * @module archetypo
- * @submodule $el.dock.attach
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__bb-model-view/model-to-dom/update',['require','exports','module','lodash'],function (require, exports, module) {
-	
-
-	var _ = require('lodash');
-
-	/**
-	 * Method used internally to update the html.
-	 *
-	 * @method update
-	 * @_private_
-	 * @param model
-	 */
-	var update = module.exports = function update(model) {
-
-		var stringifiers = this.stringifiers,
-			// map out data.
-			data = _.mapValues(model.attributes, function (value, attribute) {
-
-			//	// console.log(value);
-			//	// console.log(attribute);
-
-				var stringify = stringifiers[attribute];
-
-				// if no stringify is defined, return the value
-				return stringify ? stringify.call(this, value) : value;
-			});
-
-		this.fill(data);
-	};
-});
-
-/**
- * @module archetypo
- * @submodule $el.dock.attach
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__bb-model-view/model-to-dom/attach',['require','exports','module','lodash','./update'],function (require, exports, module) {
-	
-
-	var _ = require('lodash');
-
-	// update function
-	var _update = require('./update');
-
-	/**
-	 * Defines attachment logic for binding the model's data to the DOM.
-	 *
-	 * @method attach
-	 * @param model {backbone.model Object}
-	 */
-	var attach = module.exports = function attach() {
-
-		// Listen to changes on attributes
-		// defined at the map.
-		// Any changes there should reflect
-		// changes on the $el.
-
-		// listenTo always invokes the event handler
-		// in 'this' context
-		this.listenTo(this.model, 'change', _update);
-
-		// Set initial values
-		_update.call(this, this.model);
-	};
-
-});
-
-/**
- * @module backbone.model
- * @submodule html-to-model
- */
-define('__bb-model-view/dom-to-model/attach',['require','exports','module','lodash','./update'],function (require, exports, module) {
-	
-
-	var _ = require('lodash');
-
-	var update = require('./update');
-
-	module.exports = function attachDomToModel() {
-		// Listen to changes on input elements
-		// within the and call an update
-		// whenever changes occur.
-	//	this.$el.on('change', this.inputSelector, _.bind(update, this));
-	};
-});
-
-define('__bb-model-view/events/proxy',['require','exports','module','lodash'],function (require, exports, module) {
-	
-
-	var _ = require('lodash');
-
-	function proxyEvent() {
-
-		this.trigger.apply(this, arguments);
-
-	}
-
-	/**
-	 * Initialization for attachment and detachment logic.
-	 *
-	 * @method initialize
-	 * @param view {backbone.view Object}
-	 * @param map {Object}
-	 */
-	module.exports = function proxyEvents() {
-		this.listenTo(this.model, 'all', proxyEvent);
-	};
-});
-
-/**
- * @module archetypo
- * @submodule view.dock.attach
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__bb-model-view/methods',['require','exports','module','lodash','./model-to-dom/attach','./dom-to-model/attach','./events/proxy'],function (require, exports, module) {
-
-	var _ = require('lodash'),
-		attachModelDom = require('./model-to-dom/attach'),
-		attachDomModel = require('./dom-to-model/attach'),
-		proxyEvents = require('./events/proxy');
-
-	/**
-	 * Whether to cache or not the selections.
-	 *
-	 * @property cache$Els
-	 * @type boolean
-	 */
-	exports.cache$Els = true;
-
-	exports.stringifiers = {};
-
-	/**
-	 * Hash for the parsers. Every parser function is called
-	 * within the's context and takes the value read
-	 * from the DOM as arugment.
-	 *
-	 * @property parsers
-	 * @type Object
-	 */
-	exports.parsers = {};
-
-	/**
-	 *
-	 *
-	 * @method attach
-	 * @param model {backbone.model Object}
-	 */
-	exports.attach = function attach(model) {
-
-		this.detach();
-
-		// set model
-		this.model = model;
-
-		// attach model to dom
-		attachModelDom.call(this);
-
-		// attach dom to model
-		attachDomModel.call(this);
-
-		// proxy events
-		proxyEvents.call(this);
-	};
-
-
-	/**
-	 *
-	 *
-	 * @method detach
-	 */
-	exports.detach = function detach() {
-
-		if (this.model) {
-			// Stop listening to all events from the model.
-			this.stopListening(this.model);
-
-			// unset this.model
-			this.model = void(0);
-		}
-	};
-});
-
 //     bb-model-view
 //     (c) simonfan
 //     bb-model-view is licensed under the MIT terms.
@@ -496,29 +305,31 @@ define('__bb-model-view/methods',['require','exports','module','lodash','./model
 
 /* jshint ignore:end */
 
-define('bb-model-view',['require','exports','module','lodash','lowercase-backbone','./__bb-model-view/initialize-attach','./__bb-model-view/methods'],function (require, exports, module) {
+define('bb-model-view',['require','exports','module','lodash','model-dock','lowercase-backbone','./__bb-model-view/model-to-dom/index','./__bb-model-view/dom-to-model/index'],function (require, exports, module) {
 	
 
 	var _ = require('lodash'),
+		modelDock = require('model-dock'),
 		backbone = require('lowercase-backbone');
 
 	// initializers
-	var initAttach = require('./__bb-model-view/initialize-attach');
+	var bindModelToDOM = require('./__bb-model-view/model-to-dom/index'),
+		bindDOMToModel = require('./__bb-model-view/dom-to-model/index');
 
 	/**
-	 * The constructor for the dock object.
+	 * The constructor for the bbModelView object.
 	 *
-	 * @method dock
+	 * @method bbModelView
 	 * @constructor
 	 * @param extensions {Object}
 	 *     @param $el {Object}
-	 *         The $el that owns the dock object
+	 *         The $el that owns the bbModelView object
 	 *     @param map {Object}
 	 *         Map that links selectors to attributes
 	 *     @param [model] {Object}
 	 *         Optionally provide a model that will initially fill the $el.
 	 */
-	var dock = module.exports = backbone.view.extend({
+	var bbModelView = module.exports = backbone.view.extend({
 
 		initialize: function initialize() {
 			// initialize basic backbone view
@@ -536,21 +347,36 @@ define('bb-model-view',['require','exports','module','lodash','lowercase-backbon
 		initializeModelDock: function initializeModelDock(options) {
 
 			this.map = options.map || this.map;
-			this.model = options.model || this.model;
+			this.model = options.model || this.model || backbone.model();
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
-			this.cache$Els = options.cache$Els || this.cache$Els;
 
-			// initialize attach
-			initAttach.apply(this, arguments);
+			// create the dock
+			this.dock = modelDock({
+				model: this.model
+			});
+
+			// initialize model-to-dom attach logic.
+			bindModelToDOM.call(this);
+			bindDOMToModel.call(this);
+
+			// attach the initial model
+			this.attach(this.model);
 		},
 
-		/**
-		 * The model this dock object should listen to.
-		 *
-		 * @property model
-		 */
-		model: void(0),
+
+		attach: function attach(model, options) {
+
+			this.dock.attach(model, options);
+
+			return this;
+		},
+
+		detach: function detach(options) {
+			this.dock.detach(options);
+
+			return this;
+		},
 
 		/**
 		 * Map that identifies selectors for attribvutes.
@@ -558,9 +384,19 @@ define('bb-model-view',['require','exports','module','lodash','lowercase-backbon
 		 * @property map
 		 */
 		map: {},
-	});
 
-	// methods related to attaching and detaching models from the dock
-	dock.proto(require('./__bb-model-view/methods'));
+
+		stringifiers: {},
+
+		/**
+		 * Hash for the parsers. Every parser function is called
+		 * within the's context and takes the value read
+		 * from the DOM as arugment.
+		 *
+		 * @property parsers
+		 * @type Object
+		 */
+		parsers: {},
+	});
 });
 

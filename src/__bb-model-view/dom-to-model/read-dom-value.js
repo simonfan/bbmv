@@ -1,6 +1,6 @@
 /**
- * @module backbone.view.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model-read
  */
 define(function (require, exports, module) {
 	'use strict';

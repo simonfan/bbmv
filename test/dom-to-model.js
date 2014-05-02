@@ -3,7 +3,7 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 
 	'use strict';
 
-	describe('modelView html-to-model', function () {
+	describe('modelView dom-to-model', function () {
 
 		beforeEach(function () {
 
@@ -17,7 +17,7 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 			this.$fruit = $fixture.find('#fruit');
 
 			// Backbone cosntructors
-			this.fruitDock = modelView.extend({
+			this.fruitView = modelView.extend({
 				map: {
 					'name': ['input[name="name"]', '.name', '.name -> attr:href'],
 					'colors': 'input[name="colors"]'
@@ -39,10 +39,9 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 			});
 
 			// instantiate the fruit view
-			var fdock = this.fruitDock({ el: this.$fruit });
+			var fview = this.fruitView({ el: this.$fruit });
 
-			fdock.attach(fruitModel);
-
+			fview.attach(fruitModel);
 
 			// emulate input modifications
 			var $fruit = this.$fruit,
@@ -64,7 +63,7 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 				size: 'Big',
 			});
 
-			var fdock = this.fruitDock({ $el: this.$fruit, model: fruitModel });
+			var fview = this.fruitView({ $el: this.$fruit, model: fruitModel });
 		});
 	});
 });

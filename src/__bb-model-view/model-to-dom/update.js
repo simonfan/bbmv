@@ -1,12 +1,7 @@
 /**
- * @module archetypo
- * @submodule $el.dock.attach
+ * @module bb-model-view
+ * @submodule model-to-dom-update
  */
-
-/* jshint ignore:start */
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	'use strict';
 

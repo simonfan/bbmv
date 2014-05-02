@@ -3,7 +3,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 	'use strict';
 
-	describe('modelView model-to-html data binding', function () {
+	describe('modelView model-to-dom data binding', function () {
 
 
 		beforeEach(function () {
@@ -39,14 +39,14 @@ function(modelView, should, Backbone, fruitTemplate) {
 			});
 
 			// instantiate the fruit view
-			var fruitDock = modelView({
+			var fruitView = modelView({
 				el: this.$fruit,
 				map: this.fruitMap
 			});
 
 
 			// attach model
-			fruitDock.attach(fruitModel);
+			fruitView.attach(fruitModel);
 
 			// check that the values are correct
 			this.$fruit.find('input[name="name"]').val().should.eql('Banana');
@@ -72,13 +72,13 @@ function(modelView, should, Backbone, fruitTemplate) {
 			});
 
 			// instantiate the fruit view
-			var fruitDock = modelView({
+			var fruitView = modelView({
 				el: this.$fruit,
 				map: this.fruitMap
 			});
 
 			// attach model
-			fruitDock.attach(fruitModel);
+			fruitView.attach(fruitModel);
 
 			this.$fruit.find('.name').html().should.eql('Apple');
 
@@ -125,7 +125,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 				price: 20
 			});
 
-			var fruitDock = modelView.extend({
+			var fruitView = modelView.extend({
 				stringifiers: {
 					price: function stringifyPrice(price) {
 						return 'R$ ' + price + ',00';
@@ -134,7 +134,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 				map: this.fruitMap
 			});
 
-			var fruitView = fruitDock({
+			var fruitView = fruitView({
 				el: this.$fruit,
 				model: fruitModel
 			});
@@ -153,12 +153,12 @@ function(modelView, should, Backbone, fruitTemplate) {
 					price: 10,
 				});
 
-			var fruitDock = modelView.extend({
+			var fruitView = modelView.extend({
 				map: this.fruitMap
 			});
 
 			// start view with melancia model
-			var fruitView = fruitDock({
+			var fruitView = fruitView({
 				el: this.$fruit,
 				model: melancia
 			});
@@ -184,13 +184,13 @@ function(modelView, should, Backbone, fruitTemplate) {
 					color: 'yellow'
 				});
 
-				var fruitDock = modelView.extend({
+				var fruitView = modelView.extend({
 					map: {
 						color: '->css:background-color'
 					}
 				});
 
-				var fruitView = fruitDock({
+				var fruitView = fruitView({
 					el: this.$fruit,
 				});
 

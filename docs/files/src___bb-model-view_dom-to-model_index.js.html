@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/dom-to-model/initialize.js - bb-model-view</title>
+    <title>src/__bb-model-view/dom-to-model/index.js - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -47,19 +47,19 @@
             
                 <li><a href="../modules/$el.dock.html">$el.dock</a></li>
             
-                <li><a href="../modules/$el.dock.attach.html">$el.dock.attach</a></li>
-            
-                <li><a href="../modules/archetypo.html">archetypo</a></li>
-            
-                <li><a href="../modules/backbone.model.html">backbone.model</a></li>
-            
-                <li><a href="../modules/backbone.view.model.html">backbone.view.model</a></li>
-            
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
-                <li><a href="../modules/html-to-model.html">html-to-model</a></li>
+                <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
             
-                <li><a href="../modules/view.dock.attach.html">view.dock.attach</a></li>
+                <li><a href="../modules/dom-to-model-bind-input.html">dom-to-model-bind-input</a></li>
+            
+                <li><a href="../modules/dom-to-model-read.html">dom-to-model-read</a></li>
+            
+                <li><a href="../modules/dom-to-model-update.html">dom-to-model-update</a></li>
+            
+                <li><a href="../modules/model-to-dom.html">model-to-dom</a></li>
+            
+                <li><a href="../modules/model-to-dom-update.html">model-to-dom-update</a></li>
             
             </ul>
         </div>
@@ -96,13 +96,13 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/dom-to-model/initialize.js</h1>
+                        <h1 class="file-heading">File: src/__bb-model-view/dom-to-model/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model
  */
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
@@ -117,9 +117,9 @@ define(function (require, exports, module) {
 	 * Initialization logic for binding html input tags values
 	 * to the models attributes.
 	 *
-	 * @method initialize
+	 * @method bindDOMToModel
 	 */
-	module.exports = function initializeDomToModel() {
+	module.exports = function bindDOMToModel() {
 
 		/**
 		 * Hash where elements are referenced

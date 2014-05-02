@@ -1,6 +1,6 @@
 /**
- * @module backbone.model
- * @submodule html-to-model
+ * @module bb-model-view
+ * @submodule dom-to-model-update
  */
 define(function (require, exports, module) {
 	'use strict';
@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 			value = parse ? parse.call(this, value) : value;
 
 			// [3] set.
-			this.model.set(attribute, value);
+			this.dock.set(attribute, value);
 		}
 	};
 });

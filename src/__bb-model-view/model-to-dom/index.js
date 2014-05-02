@@ -1,25 +1,25 @@
 /**
- * @module archetypo
- * @submodule $el.dock.attach
+ * @module bb-model-view
+ * @submodule model-to-dom
  */
-
-/* jshint ignore:start */
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	'use strict';
 
 	var filler = require('jquery.filler');
 
+
+	// update function
+	var _update = require('./update');
+
+
 	/**
 	 *
 	 *
-	 * @method initialize
+	 * @method bindModelToDOM
 	 * @param $el {backbone.$el Object}
 	 * @param map {Object}
 	 */
-	var initialize = module.exports = function initialize() {
+	module.exports = function bindModelToDOM() {
 		/**
 		 * The function that will fill in html for us.
 		 * Uses jquery.filler to build a cache of the
@@ -29,5 +29,12 @@ define(function (require, exports, module) {
 		 * @param data {Object}
 		 */
 		this.fill = this.$el.filler(this.map);
+
+		// Listen to dock events
+		// Dock proxies all events from the model
+
+		// listenTo always invokes the event handler
+		// in 'this' context
+		this.listenTo(this.dock, 'change attach', _update);
 	};
 });

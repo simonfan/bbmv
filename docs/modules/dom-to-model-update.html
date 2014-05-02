@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/model-to-dom/attach.js - bb-model-view</title>
+    <title>dom-to-model-update - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -47,19 +47,19 @@
             
                 <li><a href="../modules/$el.dock.html">$el.dock</a></li>
             
-                <li><a href="../modules/$el.dock.attach.html">$el.dock.attach</a></li>
-            
-                <li><a href="../modules/archetypo.html">archetypo</a></li>
-            
-                <li><a href="../modules/backbone.model.html">backbone.model</a></li>
-            
-                <li><a href="../modules/backbone.view.model.html">backbone.view.model</a></li>
-            
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
-                <li><a href="../modules/html-to-model.html">html-to-model</a></li>
+                <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
             
-                <li><a href="../modules/view.dock.attach.html">view.dock.attach</a></li>
+                <li><a href="../modules/dom-to-model-bind-input.html">dom-to-model-bind-input</a></li>
+            
+                <li><a href="../modules/dom-to-model-read.html">dom-to-model-read</a></li>
+            
+                <li><a href="../modules/dom-to-model-update.html">dom-to-model-update</a></li>
+            
+                <li><a href="../modules/model-to-dom.html">model-to-dom</a></li>
+            
+                <li><a href="../modules/model-to-dom-update.html">model-to-dom-update</a></li>
             
             </ul>
         </div>
@@ -96,51 +96,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/model-to-dom/attach.js</h1>
+                        <h1>dom-to-model-update Module</h1>
+<div class="box clearfix meta">
+    
 
-<div class="file">
-    <pre class="code prettyprint linenums">
-/**
- * @module archetypo
- * @submodule $el.dock.attach
- */
+    
 
-/* jshint ignore:start */
-if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
-/* jshint ignore:end */
+    
+        <div class="foundat">
+            Defined in: <a href="../files/src___bb-model-view_dom-to-model_update.js.html#l1"><code>src&#x2F;__bb-model-view&#x2F;dom-to-model&#x2F;update.js:1</code></a>
+        </div>
+    
 
-define(function (require, exports, module) {
-	&#x27;use strict&#x27;;
+    
+</div>
 
-	var _ = require(&#x27;lodash&#x27;);
 
-	// update function
-	var _update = require(&#x27;./update&#x27;);
 
-	/**
-	 * Defines attachment logic for binding the model&#x27;s data to the DOM.
-	 *
-	 * @method attach
-	 * @param model {backbone.model Object}
-	 */
-	var attach = module.exports = function attach() {
+<div class="box intro">
+    
+</div>
 
-		// Listen to changes on attributes
-		// defined at the map.
-		// Any changes there should reflect
-		// changes on the $el.
 
-		// listenTo always invokes the event handler
-		// in &#x27;this&#x27; context
-		this.listenTo(this.model, &#x27;change&#x27;, _update);
 
-		// Set initial values
-		_update.call(this, this.model);
-	};
+<div class="yui3-g">
+    <div class="yui3-u-1-2">
+        
+    </div>
 
-});
-
-    </pre>
+    <div class="yui3-u-1-2">
+        
+    </div>
 </div>
 
                     </div>
