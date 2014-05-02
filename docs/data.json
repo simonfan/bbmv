@@ -371,7 +371,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 89,
+            "line": 88,
             "description": "Map that identifies selectors for attribvutes.",
             "itemtype": "property",
             "name": "map",
@@ -381,7 +381,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 99,
+            "line": 98,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",

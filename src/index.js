@@ -17,7 +17,7 @@ define(function (require, exports, module) {
 	'use strict';
 
 	var _ = require('lodash'),
-		modelDock = require('model-dock'),
+		modelDock = require('bb-dock').model,
 		backbone = require('lowercase-backbone');
 
 	// initializers
@@ -55,21 +55,20 @@ define(function (require, exports, module) {
 		initializeModelDock: function initializeModelDock(options) {
 
 			this.map = options.map || this.map;
-			this.model = options.model || this.model || backbone.model();
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
 
 			// create the dock
-			this.dock = modelDock({
-				model: this.model
-			});
+			this.dock = options.dock || modelDock();
 
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
 			bindDOMToModel.call(this);
 
 			// attach the initial model
-			this.attach(this.model);
+			if (typeof options.model === 'object') {
+				this.dock.attach(options.model);
+			}
 		},
 
 

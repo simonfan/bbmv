@@ -119,7 +119,7 @@ define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
 	var _ = require(&#x27;lodash&#x27;),
-		modelDock = require(&#x27;model-dock&#x27;),
+		modelDock = require(&#x27;bb-dock&#x27;).model,
 		backbone = require(&#x27;lowercase-backbone&#x27;);
 
 	// initializers
@@ -157,21 +157,20 @@ define(function (require, exports, module) {
 		initializeModelDock: function initializeModelDock(options) {
 
 			this.map = options.map || this.map;
-			this.model = options.model || this.model || backbone.model();
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
 
 			// create the dock
-			this.dock = modelDock({
-				model: this.model
-			});
+			this.dock = options.dock || modelDock();
 
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
 			bindDOMToModel.call(this);
 
 			// attach the initial model
-			this.attach(this.model);
+			if (typeof options.model === &#x27;object&#x27;) {
+				this.dock.attach(options.model);
+			}
 		},
 
 

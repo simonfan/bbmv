@@ -1,8 +1,8 @@
-//     model-dock
+//     bb-dock
 //     (c) simonfan
-//     model-dock is licensed under the MIT terms.
+//     bb-dock is licensed under the MIT terms.
 
-define("model-dock",["require","exports","module","lodash","subject","backbone"],function(t,e,o){var i=t("lodash"),r=t("subject"),a=t("backbone"),s=o.exports=r({initialize:function(t){this.initializeModelDock(t)},initializeModelDock:function(t){t&&t.model&&this.attach(t.model)},invokeModelMethod:function(t){if(this.model){var e=Array.prototype.slice.call(arguments,1);return this.model[t].apply(this.model,e)}throw new Error("No model attached to dock. Unable to invoke "+t)},retrieveModelProperty:function(t){if(this.model)return this.model[t];throw new Error("No model attached to dock. Unable to retrieve "+t)},attach:function(t,e){return this.detach(),this.model=t,this.listenTo(this.model,"all",this.trigger),e&&e.silent||this.trigger("attach",t),this},detach:function(t){if(this.model){var e=this.model;this.stopListening(e),this.model=void 0,t&&t.silent||this.trigger("detach",e)}return this}});s.proto(a.Events);var n=["get","set","escape","has","unset","clear","toJSON","sync","fetch","save","destroy","keys","values","pairs","invert","pick","omit","validate","isValid","url","parse","clone","isNew","hasChanged","changedAttributes","previous","previousAttributes"],l={};i.each(n,function(t){l[t]=i.partial(s.prototype.invokeModelMethod,t)}),s.proto(l);var d=["id","idAttribute","cid","attributes","changed","defaults","validationError","urlRoot"],h={};i.each(d,function(t){h[t]=i.partial(s.prototype.retrieveModelProperty,t)}),s.proto(h)});
+define("bb-dock",["require","exports","module","lodash","subject","backbone"],function(t,e,i){var a=t("lodash"),n=t("subject"),r=t("backbone"),s=i.exports=n({initialize:function(t){this.initializeBbDock(t)},initializeBbDock:function(t){t&&t.attach&&this.attach(t.attach)},invoke:function(t){if(this.attachment){var e=Array.prototype.slice.call(arguments,1);return this.attachment[t].apply(this.attachment,e)}throw new Error("No attachment attached to dock. Unable to invoke "+t)},retrieve:function(t){if(this.attachment)return this.attachment[t];throw new Error("No attachment attached to dock. Unable to retrieve "+t)},attach:function(t,e){return this.detach(),this.attachment=t,this.listenTo(t,"all",this.trigger),e&&e.silent||this.trigger("attach",t),this},detach:function(t){if(this.attachment){var e=this.attachment;this.stopListening(e),delete this.attachment,t&&t.silent||this.trigger("detach",e)}return this}});s.extendProxyMethods=function(t){var e={};return a.each(t,function(t){e[t]=a.partial(s.prototype.invoke,t)}),this.extend(e)},s.proto(r.Events);var o=s.extendProxyMethods(["get","set","escape","has","unset","clear","toJSON","sync","fetch","save","destroy","validate","isValid","url","parse","clone","isNew","hasChanged","changedAttributes","previous","previousAttributes","keys","values","pairs","invert","pick","omit"]);s.model=o;var c=s.extendProxyMethods(["toJSON","sync","add","remove","reset","set","get","at","push","pop","unshift","shift","slice","sort","pluck","where","findWhere","parse","clone","fetch","create","forEach","each","map","collect","reduce","foldl","inject","reduceRight","foldr","find","detect","filter","select","reject","every","all","some","any","include","contains","invoke","max","min","toArray","size","first","head","take","initial","rest","tail","drop","last","without","difference","indexOf","shuffle","lastIndexOf","isEmpty","chain","sample","partition"]);s.collection=c});
 /**
  * @module bb-model-view
  * @submodule model-to-dom-update
@@ -305,11 +305,11 @@ define('__bb-model-view/dom-to-model/index',['require','exports','module','lodas
 
 /* jshint ignore:end */
 
-define('bb-model-view',['require','exports','module','lodash','model-dock','lowercase-backbone','./__bb-model-view/model-to-dom/index','./__bb-model-view/dom-to-model/index'],function (require, exports, module) {
+define('bb-model-view',['require','exports','module','lodash','bb-dock','lowercase-backbone','./__bb-model-view/model-to-dom/index','./__bb-model-view/dom-to-model/index'],function (require, exports, module) {
 	
 
 	var _ = require('lodash'),
-		modelDock = require('model-dock'),
+		modelDock = require('bb-dock').model,
 		backbone = require('lowercase-backbone');
 
 	// initializers
@@ -347,21 +347,20 @@ define('bb-model-view',['require','exports','module','lodash','model-dock','lowe
 		initializeModelDock: function initializeModelDock(options) {
 
 			this.map = options.map || this.map;
-			this.model = options.model || this.model || backbone.model();
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
 
 			// create the dock
-			this.dock = modelDock({
-				model: this.model
-			});
+			this.dock = options.dock || modelDock();
 
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
 			bindDOMToModel.call(this);
 
 			// attach the initial model
-			this.attach(this.model);
+			if (typeof options.model === 'object') {
+				this.dock.attach(options.model);
+			}
 		},
 
 
