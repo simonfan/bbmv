@@ -45,8 +45,6 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/$el.dock.html">$el.dock</a></li>
-            
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
                 <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
@@ -126,14 +124,14 @@ define(function (require, exports, module) {
 			// wrap the target into a jquery object
 		var $target = $(e.target),
 			// retrieve the attribute that the target is bound to
-			attribute = $target.data(&#x27;_dock_-bound-attribute&#x27;);
+			attribute = $target.data(&#x27;__bb_model_view__-bound-attribute&#x27;);
 
 		if (attribute) {
 			// only update if the element
 			// has an attribute bound to it.
 
 			// [1] retrieve the $el
-			var selector = $target.data(&#x27;_dock_-selector&#x27;),
+			var selector = $target.data(&#x27;__bb_model_view__-selector&#x27;),
 				$el = this.$els[selector];
 
 			// console.log(this.$els);
@@ -148,7 +146,7 @@ define(function (require, exports, module) {
 			value = parse ? parse.call(this, value) : value;
 
 			// [3] set.
-			this.dock.set(attribute, value);
+			this.modeld.set(attribute, value);
 		}
 	};
 });

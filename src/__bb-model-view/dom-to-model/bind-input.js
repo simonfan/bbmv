@@ -36,8 +36,8 @@ define(function (require, exports, module) {
 			var $el = this.$els[selector] = this.$el.find(selector);
 
 			if ($el.length > 0) {
-				$el.data('_dock_-bound-attribute', attribute)
-					.data('_dock_-selector', selector);
+				$el.data('__bb_model_view__-bound-attribute', attribute)
+					.data('__bb_model_view__-selector', selector);
 			}
 		}
 	};

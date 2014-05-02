@@ -24,14 +24,14 @@ define(function (require, exports, module) {
 			// wrap the target into a jquery object
 		var $target = $(e.target),
 			// retrieve the attribute that the target is bound to
-			attribute = $target.data('_dock_-bound-attribute');
+			attribute = $target.data('__bb_model_view__-bound-attribute');
 
 		if (attribute) {
 			// only update if the element
 			// has an attribute bound to it.
 
 			// [1] retrieve the $el
-			var selector = $target.data('_dock_-selector'),
+			var selector = $target.data('__bb_model_view__-selector'),
 				$el = this.$els[selector];
 
 			// console.log(this.$els);
@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 			value = parse ? parse.call(this, value) : value;
 
 			// [3] set.
-			this.dock.set(attribute, value);
+			this.modeld.set(attribute, value);
 		}
 	};
 });

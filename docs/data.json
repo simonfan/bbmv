@@ -61,7 +61,7 @@
         "src/index.js": {
             "name": "src/index.js",
             "modules": {
-                "$el.dock": 1
+                "bb-model-view": 1
             },
             "classes": {},
             "fors": {},
@@ -77,12 +77,15 @@
                 "dom-to-model-read": 1,
                 "dom-to-model-update": 1,
                 "model-to-dom": 1,
-                "model-to-dom-update": 1,
-                "$el.dock": 1
+                "model-to-dom-update": 1
             },
             "classes": {},
             "fors": {},
-            "namespaces": {}
+            "namespaces": {},
+            "tag": "module",
+            "file": "src/index.js",
+            "line": 5,
+            "description": "The modeld is the object that links together $els and models."
         },
         "dom-to-model-bind-input": {
             "name": "dom-to-model-bind-input",
@@ -155,19 +158,6 @@
             "namespace": "",
             "file": "src/__bb-model-view/model-to-dom/update.js",
             "line": 1
-        },
-        "$el.dock": {
-            "name": "$el.dock",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/index.js",
-            "line": 5,
-            "description": "The dock is the object that links together $els and models."
         }
     },
     "classes": {},
@@ -320,7 +310,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 27,
+            "line": 26,
             "description": "The constructor for the bbModelView object.",
             "itemtype": "method",
             "name": "bbModelView",
@@ -349,15 +339,14 @@
                 }
             ],
             "class": "",
-            "module": "bb-model-view",
-            "submodule": "$el.dock"
+            "module": "bb-model-view"
         },
         {
             "file": "src/index.js",
-            "line": 49,
-            "description": "Holds initialization logic for modeldock.",
+            "line": 48,
+            "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
-            "name": "initializeModelDock",
+            "name": "initializeModelView",
             "params": [
                 {
                     "name": "options",
@@ -366,29 +355,26 @@
                 }
             ],
             "class": "",
-            "module": "bb-model-view",
-            "submodule": "$el.dock"
+            "module": "bb-model-view"
         },
         {
             "file": "src/index.js",
-            "line": 90,
+            "line": 94,
             "description": "Map that identifies selectors for attribvutes.",
             "itemtype": "property",
             "name": "map",
             "class": "",
-            "module": "bb-model-view",
-            "submodule": "$el.dock"
+            "module": "bb-model-view"
         },
         {
             "file": "src/index.js",
-            "line": 100,
+            "line": 104,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",
             "type": "Object",
             "class": "",
-            "module": "bb-model-view",
-            "submodule": "$el.dock"
+            "module": "bb-model-view"
         }
     ],
     "warnings": [

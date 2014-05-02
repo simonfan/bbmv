@@ -1,1 +1,1 @@
-define(["require","exports","module","jquery.filler","./update"],function(e,t,n){var r=e("jquery.filler"),i=e("./update");n.exports=function(){this.fill=this.$el.filler(this.map),this.listenTo(this.dock,"change attach",i)}});
+define(["require","exports","module","jquery.filler","./update"],function(e,t,n){var r=e("jquery.filler"),i=e("./update");n.exports=function(){this.fill=this.$el.filler(this.map),this.listenTo(this.modeld,"change attach",i)}});

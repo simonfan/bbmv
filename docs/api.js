@@ -2,7 +2,6 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [],
     "modules": [
-        "$el.dock",
         "bb-model-view",
         "dom-to-model",
         "dom-to-model-bind-input",
@@ -13,13 +12,9 @@ YUI.add("yuidoc-meta", function(Y) {
     ],
     "allModules": [
         {
-            "displayName": "$el.dock",
-            "name": "$el.dock",
-            "description": "The dock is the object that links together $els and models."
-        },
-        {
             "displayName": "bb-model-view",
-            "name": "bb-model-view"
+            "name": "bb-model-view",
+            "description": "The modeld is the object that links together $els and models."
         },
         {
             "displayName": "dom-to-model",

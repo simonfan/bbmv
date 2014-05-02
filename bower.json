@@ -1,7 +1,7 @@
 {
   "name": "bb-model-view",
   "main": "built/bb-model-view.js",
-  "version": "0.0.1",
+  "version": "0.1.1",
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",

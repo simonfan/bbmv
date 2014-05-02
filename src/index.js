@@ -3,10 +3,9 @@
 //     bb-model-view is licensed under the MIT terms.
 
 /**
- * The dock is the object that links together $els and models.
+ * The modeld is the object that links together $els and models.
  *
  * @module bb-model-view
- * @submodule $el.dock
  */
 
 /* jshint ignore:start */
@@ -43,16 +42,16 @@ define(function (require, exports, module) {
 			// initialize basic backbone view
 			backbone.view.prototype.initialize.apply(this, arguments);
 
-			this.initializeModelDock.apply(this, arguments);
+			this.initializeModelView.apply(this, arguments);
 		},
 
 		/**
-		 * Holds initialization logic for modeldock.
+		 * Holds initialization logic for modelmodeld.
 		 *
-		 * @method initializeModelDock
+		 * @method initializeModelView
 		 * @param options {Object}
 		 */
-		initializeModelDock: function initializeModelDock(options) {
+		initializeModelView: function initializeModelView(options) {
 
 			options = options || {};
 
@@ -60,8 +59,13 @@ define(function (require, exports, module) {
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
 
-			// create the dock
-			this.dock = options.dock || modelDock();
+			// create the modeld
+			this.modeld = options.modeld || modelDock();
+
+			// delete direct reference to the model in order to avoid
+			// typo mistakes.
+			// EXPLICITLY IMPEDE 'this.model' usage, in favor of 'this.modeld'
+			delete this.model;
 
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
@@ -69,20 +73,20 @@ define(function (require, exports, module) {
 
 			// attach the initial model
 			if (typeof options.model === 'object') {
-				this.dock.attach(options.model);
+				this.modeld.attach(options.model);
 			}
 		},
 
 
 		attach: function attach(model, options) {
 
-			this.dock.attach(model, options);
+			this.modeld.attach(model, options);
 
 			return this;
 		},
 
 		detach: function detach(options) {
-			this.dock.detach(options);
+			this.modeld.detach(options);
 
 			return this;
 		},

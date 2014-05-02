@@ -70,12 +70,12 @@ define('__bb-model-view/model-to-dom/index',['require','exports','module','jquer
 		 */
 		this.fill = this.$el.filler(this.map);
 
-		// Listen to dock events
+		// Listen to modeld events
 		// Dock proxies all events from the model
 
 		// listenTo always invokes the event handler
 		// in 'this' context
-		this.listenTo(this.dock, 'change attach', _update);
+		this.listenTo(this.modeld, 'change attach', _update);
 	};
 });
 
@@ -162,14 +162,14 @@ define('__bb-model-view/dom-to-model/update',['require','exports','module','jque
 			// wrap the target into a jquery object
 		var $target = $(e.target),
 			// retrieve the attribute that the target is bound to
-			attribute = $target.data('_dock_-bound-attribute');
+			attribute = $target.data('__bb_model_view__-bound-attribute');
 
 		if (attribute) {
 			// only update if the element
 			// has an attribute bound to it.
 
 			// [1] retrieve the $el
-			var selector = $target.data('_dock_-selector'),
+			var selector = $target.data('__bb_model_view__-selector'),
 				$el = this.$els[selector];
 
 			// console.log(this.$els);
@@ -184,7 +184,7 @@ define('__bb-model-view/dom-to-model/update',['require','exports','module','jque
 			value = parse ? parse.call(this, value) : value;
 
 			// [3] set.
-			this.dock.set(attribute, value);
+			this.modeld.set(attribute, value);
 		}
 	};
 });
@@ -227,8 +227,8 @@ define('__bb-model-view/dom-to-model/bind-input',['require','exports','module','
 			var $el = this.$els[selector] = this.$el.find(selector);
 
 			if ($el.length > 0) {
-				$el.data('_dock_-bound-attribute', attribute)
-					.data('_dock_-selector', selector);
+				$el.data('__bb_model_view__-bound-attribute', attribute)
+					.data('__bb_model_view__-selector', selector);
 			}
 		}
 	};
@@ -295,10 +295,9 @@ define('__bb-model-view/dom-to-model/index',['require','exports','module','lodas
 //     bb-model-view is licensed under the MIT terms.
 
 /**
- * The dock is the object that links together $els and models.
+ * The modeld is the object that links together $els and models.
  *
  * @module bb-model-view
- * @submodule $el.dock
  */
 
 /* jshint ignore:start */
@@ -335,16 +334,16 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 			// initialize basic backbone view
 			backbone.view.prototype.initialize.apply(this, arguments);
 
-			this.initializeModelDock.apply(this, arguments);
+			this.initializeModelView.apply(this, arguments);
 		},
 
 		/**
-		 * Holds initialization logic for modeldock.
+		 * Holds initialization logic for modelmodeld.
 		 *
-		 * @method initializeModelDock
+		 * @method initializeModelView
 		 * @param options {Object}
 		 */
-		initializeModelDock: function initializeModelDock(options) {
+		initializeModelView: function initializeModelView(options) {
 
 			options = options || {};
 
@@ -352,8 +351,13 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
 
-			// create the dock
-			this.dock = options.dock || modelDock();
+			// create the modeld
+			this.modeld = options.modeld || modelDock();
+
+			// delete direct reference to the model in order to avoid
+			// typo mistakes.
+			// EXPLICITLY IMPEDE 'this.model' usage, in favor of 'this.modeld'
+			delete this.model;
 
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
@@ -361,20 +365,20 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 
 			// attach the initial model
 			if (typeof options.model === 'object') {
-				this.dock.attach(options.model);
+				this.modeld.attach(options.model);
 			}
 		},
 
 
 		attach: function attach(model, options) {
 
-			this.dock.attach(model, options);
+			this.modeld.attach(model, options);
 
 			return this;
 		},
 
 		detach: function detach(options) {
-			this.dock.detach(options);
+			this.modeld.detach(options);
 
 			return this;
 		},

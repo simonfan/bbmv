@@ -45,8 +45,6 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/$el.dock.html">$el.dock</a></li>
-            
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
                 <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
@@ -138,8 +136,8 @@ define(function (require, exports, module) {
 			var $el = this.$els[selector] = this.$el.find(selector);
 
 			if ($el.length &gt; 0) {
-				$el.data(&#x27;_dock_-bound-attribute&#x27;, attribute)
-					.data(&#x27;_dock_-selector&#x27;, selector);
+				$el.data(&#x27;__bb_model_view__-bound-attribute&#x27;, attribute)
+					.data(&#x27;__bb_model_view__-selector&#x27;, selector);
 			}
 		}
 	};

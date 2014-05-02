@@ -30,11 +30,11 @@ define(function (require, exports, module) {
 		 */
 		this.fill = this.$el.filler(this.map);
 
-		// Listen to dock events
+		// Listen to modeld events
 		// Dock proxies all events from the model
 
 		// listenTo always invokes the event handler
 		// in 'this' context
-		this.listenTo(this.dock, 'change attach', _update);
+		this.listenTo(this.modeld, 'change attach', _update);
 	};
 });

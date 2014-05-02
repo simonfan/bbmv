@@ -45,8 +45,6 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/$el.dock.html">$el.dock</a></li>
-            
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
                 <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
@@ -132,12 +130,12 @@ define(function (require, exports, module) {
 		 */
 		this.fill = this.$el.filler(this.map);
 
-		// Listen to dock events
+		// Listen to modeld events
 		// Dock proxies all events from the model
 
 		// listenTo always invokes the event handler
 		// in &#x27;this&#x27; context
-		this.listenTo(this.dock, &#x27;change attach&#x27;, _update);
+		this.listenTo(this.modeld, &#x27;change attach&#x27;, _update);
 	};
 });
 
