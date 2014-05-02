@@ -346,6 +346,8 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 		 */
 		initializeModelDock: function initializeModelDock(options) {
 
+			options = options || {};
+
 			this.map = options.map || this.map;
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
