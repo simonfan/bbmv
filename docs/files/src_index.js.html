@@ -172,9 +172,8 @@ define(function (require, exports, module) {
 			bindDOMToModel.call(this);
 
 			// attach the initial model
-			if (typeof options.model === &#x27;object&#x27;) {
-				this.modeld.attach(options.model);
-			}
+			var initialModel = (typeof options.model === &#x27;object&#x27;) ? options.model : backbone.model();
+			this.modeld.attach(initialModel);
 		},
 
 

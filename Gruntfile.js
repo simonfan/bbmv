@@ -100,7 +100,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone", "jquery.filler"],
+					exclude: ["lowercase-backbone", "jquery.filler", "bb-dock"],
 
 					// excludeShallow
 					excludeShallow: [],
@@ -131,7 +131,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone", "jquery.filler"],
+					exclude: ["lowercase-backbone", "jquery.filler", "bb-dock"],
 
 					// excludeShallow
 					excludeShallow: [],
@@ -143,19 +143,6 @@ module.exports = function (grunt) {
 					},
 				}
 			},
-
-			project: {
-				options: {
-					// source files
-					appDir: 'src/',
-					// output here:
-					dir: 'built/project/',
-					mainConfigFile: 'amdconfig.js',
-
-					// do not copy these files
-					fileExclusionRegExp: /^\./,
-				}
-			}
 		}
 	});
 

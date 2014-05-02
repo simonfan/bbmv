@@ -1,8 +1,3 @@
-//     bb-dock
-//     (c) simonfan
-//     bb-dock is licensed under the MIT terms.
-
-define("bb-dock",["require","exports","module","lodash","subject","backbone"],function(t,e,i){var a=t("lodash"),n=t("subject"),r=t("backbone"),s=i.exports=n({initialize:function(t){this.initializeBbDock(t)},initializeBbDock:function(t){t&&t.attach&&this.attach(t.attach)},invoke:function(t){if(this.attachment){var e=Array.prototype.slice.call(arguments,1);return this.attachment[t].apply(this.attachment,e)}throw new Error("No attachment attached to dock. Unable to invoke "+t)},retrieve:function(t){if(this.attachment)return this.attachment[t];throw new Error("No attachment attached to dock. Unable to retrieve "+t)},attach:function(t,e){return this.detach(),this.attachment=t,this.listenTo(t,"all",this.trigger),e&&e.silent||this.trigger("attach",t),this},detach:function(t){if(this.attachment){var e=this.attachment;this.stopListening(e),delete this.attachment,t&&t.silent||this.trigger("detach",e)}return this}});s.extendProxyMethods=function(t){var e={};return a.each(t,function(t){e[t]=a.partial(s.prototype.invoke,t)}),this.extend(e)},s.proto(r.Events);var o=s.extendProxyMethods(["get","set","escape","has","unset","clear","toJSON","sync","fetch","save","destroy","validate","isValid","url","parse","clone","isNew","hasChanged","changedAttributes","previous","previousAttributes","keys","values","pairs","invert","pick","omit"]);s.model=o;var c=s.extendProxyMethods(["toJSON","sync","add","remove","reset","set","get","at","push","pop","unshift","shift","slice","sort","pluck","where","findWhere","parse","clone","fetch","create","forEach","each","map","collect","reduce","foldl","inject","reduceRight","foldr","find","detect","filter","select","reject","every","all","some","any","include","contains","invoke","max","min","toArray","size","first","head","take","initial","rest","tail","drop","last","without","difference","indexOf","shuffle","lastIndexOf","isEmpty","chain","sample","partition"]);s.collection=c});
 /**
  * @module bb-model-view
  * @submodule model-to-dom-update
@@ -364,9 +359,8 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 			bindDOMToModel.call(this);
 
 			// attach the initial model
-			if (typeof options.model === 'object') {
-				this.modeld.attach(options.model);
-			}
+			var initialModel = (typeof options.model === 'object') ? options.model : backbone.model();
+			this.modeld.attach(initialModel);
 		},
 
 
