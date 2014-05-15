@@ -59,35 +59,9 @@ define(function (require, exports, module) {
 			this.parsers = options.parsers || this.parsers;
 			this.sringifiers = options.stringifiers || this.stringifiers;
 
-			// create the modeld
-			this.modeld = options.modeld || modelDock();
-
-			// delete direct reference to the model in order to avoid
-			// typo mistakes.
-			// EXPLICITLY IMPEDE 'this.model' usage, in favor of 'this.modeld'
-			delete this.model;
-
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
 			bindDOMToModel.call(this);
-
-			// attach the initial model
-			var initialModel = (typeof options.model === 'object') ? options.model : backbone.model();
-			this.modeld.attach(initialModel);
-		},
-
-
-		attach: function attach(model, options) {
-
-			this.modeld.attach(model, options);
-
-			return this;
-		},
-
-		detach: function detach(options) {
-			this.modeld.detach(options);
-
-			return this;
 		},
 
 		/**

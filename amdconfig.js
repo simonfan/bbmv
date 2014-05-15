@@ -17,7 +17,8 @@ require.config({
 		underscore: '../bower_components/underscore/underscore',
 		'jquery.filler': '../bower_components/jquery.filler/built/jquery.filler',
 		'model-dock': '../bower_components/model-dock/built/model-dock',
-		'bb-dock': '../bower_components/bb-dock/built/bb-dock'
+		'bb-dock': '../bower_components/bb-dock/built/bb-dock',
+		dock: '../bower_components/dock/built/dock'
 	},
 	shim: {
 		backbone: {

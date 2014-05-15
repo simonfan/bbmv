@@ -39,9 +39,10 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 			});
 
 			// instantiate the fruit view
-			var fview = this.fruitView({ el: this.$fruit });
-
-			fview.attach(fruitModel);
+			var fview = this.fruitView({
+				el: this.$fruit,
+				model: fruitModel,
+			});
 
 			// emulate input modifications
 			var $fruit = this.$fruit,
@@ -63,7 +64,10 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 				size: 'Big',
 			});
 
-			var fview = this.fruitView({ $el: this.$fruit, model: fruitModel });
+			var fview = this.fruitView({
+				$el: this.$fruit,
+				model: fruitModel
+			});
 		});
 	});
 });

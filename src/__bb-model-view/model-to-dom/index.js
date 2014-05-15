@@ -9,7 +9,7 @@ define(function (require, exports, module) {
 
 
 	// update function
-	var _update = require('./update');
+	var update = require('./update');
 
 
 	/**
@@ -30,11 +30,14 @@ define(function (require, exports, module) {
 		 */
 		this.fill = this.$el.filler(this.map);
 
-		// Listen to modeld events
+		// Listen to model events
 		// Dock proxies all events from the model
 
 		// listenTo always invokes the event handler
 		// in 'this' context
-		this.listenTo(this.modeld, 'change attach', _update);
+		this.listenTo(this.model, 'change', update);
+
+		// initialize by calling update
+		update.call(this, this.model);
 	};
 });

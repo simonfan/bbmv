@@ -1,12 +1,13 @@
 {
   "name": "bb-model-view",
   "main": "built/bb-model-view.js",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",
     "jquery.filler": "~0.2.3",
-    "bb-dock": "~0.0.0"
+    "bb-dock": "0.7.7",
+    "model-dock": "0.5.7"
   },
   "devDependencies": {
     "requirejs": "*",
@@ -16,6 +17,7 @@
     "qunit": "*"
   },
   "resolutions": {
-    "subject": "~0.4.1"
+    "subject": "0.5.6",
+    "bb-dock": "0.7.7"
   }
 }

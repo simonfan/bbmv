@@ -41,12 +41,9 @@ function(modelView, should, Backbone, fruitTemplate) {
 			// instantiate the fruit view
 			var fruitView = modelView({
 				el: this.$fruit,
-				map: this.fruitMap
+				map: this.fruitMap,
+				model: fruitModel
 			});
-
-
-			// attach model
-			fruitView.attach(fruitModel);
 
 			// check that the values are correct
 			this.$fruit.find('input[name="name"]').val().should.eql('Banana');
@@ -74,11 +71,9 @@ function(modelView, should, Backbone, fruitTemplate) {
 			// instantiate the fruit view
 			var fruitView = modelView({
 				el: this.$fruit,
-				map: this.fruitMap
+				map: this.fruitMap,
+				model: fruitModel
 			});
-
-			// attach model
-			fruitView.attach(fruitModel);
 
 			this.$fruit.find('.name').html().should.eql('Apple');
 
@@ -109,10 +104,9 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 			var fruitView = saleFruitDock({
 				el: this.$fruit,
-				map: this.fruitMap
+				map: this.fruitMap,
+				model: fruitModel
 			});
-
-			fruitView.attach(fruitModel)
 
 			var $price = this.$fruit.find('div[bound-attribute="price"]');
 			$price.html().should.eql('R$ 40,00')
@@ -143,39 +137,6 @@ function(modelView, should, Backbone, fruitTemplate) {
 			$price.html().should.eql('R$ 20,00')
 		});
 
-		it('supports detaching models', function () {
-			var melancia = new Backbone.Model({
-					name: 'Melancia',
-					price: 20,
-				}),
-				papaya = new Backbone.Model({
-					name: 'Mamao',
-					price: 10,
-				});
-
-			var fruitView = modelView.extend({
-				map: this.fruitMap
-			});
-
-			// start view with melancia model
-			var fruitView = fruitView({
-				el: this.$fruit,
-				model: melancia
-			});
-
-			// detach melancia model
-			fruitView.detach();
-
-			// set value on melancia
-			melancia.set('price', 40);
-
-			// expect the fruitview not to be modified
-			var $price = this.$fruit.find('div[bound-attribute="price"]');
-			$price.html().should.eql('20');
-
-
-		})
-
 
 		describe('css properties', function () {
 			it('css properties', function (done) {
@@ -192,9 +153,8 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 				var fruitView = fruitView({
 					el: this.$fruit,
+					model: fruitModel,
 				});
-
-				fruitView.attach(fruitModel);
 
 
 				fruitModel.set({ 'color': 'rgb(0, 20, 100)' });

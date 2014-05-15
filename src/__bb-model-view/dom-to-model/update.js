@@ -46,7 +46,7 @@ define(function (require, exports, module) {
 			value = parse ? parse.call(this, value) : value;
 
 			// [3] set.
-			this.modeld.set(attribute, value);
+			this.model.set(attribute, value);
 		}
 	};
 });
