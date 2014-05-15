@@ -53,6 +53,10 @@ define(function (require, exports, module) {
 		 */
 		initializeModelView: function initializeModelView(options) {
 
+			if (!this.model) {
+				throw new Error('No model set for model view.');
+			}
+
 			options = options || {};
 
 			this.map = options.map || this.map;

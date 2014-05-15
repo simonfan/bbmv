@@ -343,6 +343,10 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 		 */
 		initializeModelView: function initializeModelView(options) {
 
+			if (!this.model) {
+				throw new Error('No model set for model view.');
+			}
+
 			options = options || {};
 
 			this.map = options.map || this.map;
