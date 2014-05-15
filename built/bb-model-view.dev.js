@@ -147,41 +147,37 @@ define('__bb-model-view/dom-to-model/update',['require','exports','module','jque
 	var readDomValue = require('./read-dom-value');
 
 	/**
-	 * Method used to hanlde changes on input elements within
-	 * the.
+	 * 'change' event handler for all elements selected by selectors
+	 * defined on map that select at least one input element.
 	 *
-	 * Very close-bound to the way bindInput works.
+	 * Only propagates modifications from REGISTERED elements.
 	 *
 	 * @method updateModel
-	 * @_private_
+	 * @private
 	 * @param e {Event}
 	 */
 	module.exports = function updateModel(e) {
-			// wrap the target into a jquery object
+			// [0] wrap the target into a jquery object
 		var $target = $(e.target),
-			// retrieve the attribute that the target is bound to
-			attribute = $target.data('__bb_model_view__-bound-attribute');
+			// [1] retrieve the BBMVUID set on the $target.
+			BBMVUID = $target.data(this.bbmvUIDAttribute);
 
-		if (attribute) {
-			// only update if the element
-			// has an attribute bound to it.
+		// [2] verify that the BBMVUID effectively exists
+		//     and refers to a binding of THIS view (not from another bb-model-view)
+		if (!_.isUndefined(BBMVUID) && this.bindings[BBMVUID]) {
 
-			// [1] retrieve the $el
-			var selector = $target.data('__bb_model_view__-selector'),
-				$el = this.$els[selector];
+			// [2.1] get the binding data description
+			var bindingData = this.bindings[BBMVUID];
 
-			// console.log(this.$els);
+			// [2.2] read the value and parse it
+			var attribute = bindingData.attribute,
+				value     = readDomValue($target),
+				parse     = this.parsers[attribute];
 
-			// console.log('read ' + selector);
-			// console.log($el);
-
-			// [2] read the value and parse it
-			var value = readDomValue($el),
-				parse = this.parsers[attribute];
-
+			// [2.3] do parsing.
 			value = parse ? parse.call(this, value) : value;
 
-			// [3] set.
+			// [2.4] set.
 			this.model.set(attribute, value);
 		}
 	};
@@ -189,62 +185,88 @@ define('__bb-model-view/dom-to-model/update',['require','exports','module','jque
 
 /**
  * @module bb-model-view
- * @submodule dom-to-model-bind-input
- */
-define('__bb-model-view/dom-to-model/bind-input',['require','exports','module','lodash','jquery','./bind-input'],function (require, exports, module) {
-	
-
-	var _ = require('lodash'),
-		$ = require('jquery');
-
-	var bindInput = require('./bind-input');
-
-	/**
-	 * Binds the value of the element selected to the attribute.
-	 *
-	 * @method bindInput
-	 * @param selector {String|Array}
-	 * @param attribute {String}
-	 */
-	module.exports = function bindInput(selector, attribute) {
-
-		if (_.isArray(selector)) {
-
-			_.each(selector, _.bind(function (sel) {
-
-				bindInput.call(this, sel, attribute);
-
-			}, this));
-
-		} else {
-
-			// console.log(typeof selector);
-			// console.log('store ' + selector);
-
-			// retrieve $el and store it.
-			var $el = this.$els[selector] = this.$el.find(selector);
-
-			if ($el.length > 0) {
-				$el.data('__bb_model_view__-bound-attribute', attribute)
-					.data('__bb_model_view__-selector', selector);
-			}
-		}
-	};
-
-});
-
-/**
- * @module bb-model-view
  * @submodule dom-to-model
  */
-define('__bb-model-view/dom-to-model/index',['require','exports','module','lodash','./update','./bind-input'],function (require, exports, module) {
+define('__bb-model-view/dom-to-model/index',['require','exports','module','lodash','./update'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
 
 	// internal
-	var update = require('./update'),
-		bindInput = require('./bind-input');
+	var update = require('./update');
+
+
+	/**
+	 * Removes the method part from the bbmvSelector.
+	 *
+	 * @method parseJqSelector
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	function parseJqSelector(str) {
+		// it refers to an input
+		return str.replace(/\s*->.*$/, '');
+	}
+
+	/**
+	 * This method tries to find and bind an element
+	 * to the view.
+	 *
+	 * @method bindElement
+	 * @param  {[type]} view         [description]
+	 * @param  {[type]} bbmvSelector [description]
+	 * @param  {[type]} attribute    [description]
+	 * @return {[type]}              [description]
+	 */
+	function bindElement(view, bbmvSelector, attribute) {
+		// bbmvSelector samples:
+		// array          : ['.class->css:cssprop', '.class']
+		// pure jquery    : '[data-attribute="url"]'
+		// jquery + method: '[data-attribute="url"] -> css:color'
+
+		if (_.isArray(bbmvSelector)) {
+			// array          : ['.class->css:cssprop', '.class']
+			// [1] if it is an array, just go recursive.
+			_.each(bbmvSelector, function (bbmvSel) {
+				bindElement(view, bbmvSel, attribute);
+			});
+
+		} else {
+			// pure jquery    : '[data-attribute="url"]'
+			// jquery + method: '[data-attribute="url"] -> css:color'
+
+			// [1] generate BBMVUID
+			var BBMVUID = _.uniqueId('bbmvEl_');
+
+			// retrieve $el and check if it
+			// is an input
+			// [2] select the element.
+				// [2.1] parse out the jquery element selector
+			var selector = parseJqSelector(bbmvSelector),
+				// [2.2] effectively select AND filter for the inputs.
+				el = view.$el.find(selector).filter(':input');
+
+			if (el.length > 0) {
+				// [3] the el has an input, thus create the binding
+				// using the BBMVUID
+				view.bindings[BBMVUID] = {
+					// the input element found
+					el       : el,
+					// pure jquery selector
+					selector : selector,
+					// attribute to which the element is bound to
+					attribute: attribute,
+				};
+
+				// [3.1] store the BBMVUID onto the element using jquery.data method
+				//       keyed by the bbmvUIDAttribute property of the view.
+				el.data(view.bbmvUIDAttribute, BBMVUID);
+			}
+		}
+
+	};
+
+
 
 	/**
 	 * Initialization logic for binding html input tags values
@@ -256,35 +278,29 @@ define('__bb-model-view/dom-to-model/index',['require','exports','module','lodas
 
 		/**
 		 * Hash where elements are referenced
-		 * by their selector strings.
+		 * by their uuids (created by us)
 		 *
-		 * @property $els
+		 * @property bindings
 		 * @type Object
 		 */
-		this.$els = {};
+		this.bindings = {};
 
 		// bind inputs.
-		_.each(this.map, _.bind(function (selector, attribute) {
+		_.each(this.map, _.partial(bindElement, this));
 
-			bindInput.call(this, selector, attribute);
-		}, this));
-
-		// build a selector string that selects the
-		// elements that are input
-		var selectors = _(this.$els).mapValues(function ($el, selector) {
-
-			if ($el.is(':input')) {
-				// it refers to an input
-				return selector.replace(/\s*->.*$/, '');
-			} else {
-				return false;
-			}
+		// build a jquery selector from the selectors
+		// saved on bindings object.
+		// The selector does not necessarily select
+		// input elements EXCLUSIVELY.
+		// The individual resulting selection from each
+		// selector has at least one input element.
+		// That is the closest we can get.
+		var mightBeInputSelector = _.map(this.bindings, function (data, BBMVUID) {
+			return data.selector;
 		})
-		.values()
-		.compact()
 		.join(', ');
 
-		this.$el.on('change', selectors, _.bind(update, this));
+		this.$el.on('change', mightBeInputSelector, _.bind(update, this));
 	};
 });
 
@@ -327,6 +343,15 @@ define('bb-model-view',['require','exports','module','lodash','bb-dock','lowerca
 	 *         Optionally provide a model that will initially fill the $el.
 	 */
 	var bbModelView = module.exports = backbone.view.extend({
+
+		/**
+		 * The name of the data attribute that should store the uuid for element.
+		 * Used to listen to changes.
+		 *
+		 * @property bbmvUIDAttribute description]
+		 * @type {String}
+		 */
+		bbmvUIDAttribute: 'bbmvUID',
 
 		initialize: function initialize() {
 			// initialize basic backbone view

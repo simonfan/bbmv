@@ -4,15 +4,6 @@
         "version": "0.0.0"
     },
     "files": {
-        "src/__bb-model-view/dom-to-model/bind-input.js": {
-            "name": "src/__bb-model-view/dom-to-model/bind-input.js",
-            "modules": {
-                "dom-to-model-bind-input": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/__bb-model-view/dom-to-model/index.js": {
             "name": "src/__bb-model-view/dom-to-model/index.js",
             "modules": {
@@ -72,7 +63,6 @@
         "bb-model-view": {
             "name": "bb-model-view",
             "submodules": {
-                "dom-to-model-bind-input": 1,
                 "dom-to-model": 1,
                 "dom-to-model-read": 1,
                 "dom-to-model-update": 1,
@@ -86,18 +76,6 @@
             "file": "src/index.js",
             "line": 5,
             "description": "The modeld is the object that links together $els and models."
-        },
-        "dom-to-model-bind-input": {
-            "name": "dom-to-model-bind-input",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/__bb-model-view/dom-to-model/bind-input.js",
-            "line": 1
         },
         "dom-to-model": {
             "name": "dom-to-model",
@@ -163,30 +141,60 @@
     "classes": {},
     "classitems": [
         {
-            "file": "src/__bb-model-view/dom-to-model/bind-input.js",
-            "line": 13,
-            "description": "Binds the value of the element selected to the attribute.",
+            "file": "src/__bb-model-view/dom-to-model/index.js",
+            "line": 14,
+            "description": "Removes the method part from the bbmvSelector.",
             "itemtype": "method",
-            "name": "bindInput",
+            "name": "parseJqSelector",
             "params": [
                 {
-                    "name": "selector",
-                    "description": "",
-                    "type": "String|Array"
-                },
-                {
-                    "name": "attribute",
-                    "description": "",
-                    "type": "String"
+                    "name": "str",
+                    "description": "[description]",
+                    "type": "[type]"
                 }
             ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
             "class": "",
             "module": "bb-model-view",
-            "submodule": "dom-to-model-bind-input"
+            "submodule": "dom-to-model"
         },
         {
             "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 14,
+            "line": 26,
+            "description": "This method tries to find and bind an element\nto the view.",
+            "itemtype": "method",
+            "name": "bindElement",
+            "params": [
+                {
+                    "name": "view",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "bbmvSelector",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "attribute",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bb-model-view",
+            "submodule": "dom-to-model"
+        },
+        {
+            "file": "src/__bb-model-view/dom-to-model/index.js",
+            "line": 86,
             "description": "Initialization logic for binding html input tags values\nto the models attributes.",
             "itemtype": "method",
             "name": "bindDOMToModel",
@@ -196,10 +204,10 @@
         },
         {
             "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 22,
-            "description": "Hash where elements are referenced\nby their selector strings.",
+            "line": 94,
+            "description": "Hash where elements are referenced\nby their uuids (created by us)",
             "itemtype": "property",
-            "name": "$els",
+            "name": "bindings",
             "type": "Object",
             "class": "",
             "module": "bb-model-view",
@@ -238,10 +246,11 @@
         {
             "file": "src/__bb-model-view/dom-to-model/update.js",
             "line": 13,
-            "description": "Method used to hanlde changes on input elements within\nthe.\n\nVery close-bound to the way bindInput works.",
+            "description": "'change' event handler for all elements selected by selectors\ndefined on map that select at least one input element.\n\nOnly propagates modifications from REGISTERED elements.",
             "itemtype": "method",
             "name": "updateModel",
-            "_private_": "",
+            "access": "private",
+            "tagname": "",
             "params": [
                 {
                     "name": "e",
@@ -343,7 +352,17 @@
         },
         {
             "file": "src/index.js",
-            "line": 48,
+            "line": 41,
+            "description": "The name of the data attribute that should store the uuid for element.\nUsed to listen to changes.",
+            "itemtype": "property",
+            "name": "bbmvUIDAttribute description]",
+            "type": "{String}",
+            "class": "",
+            "module": "bb-model-view"
+        },
+        {
+            "file": "src/index.js",
+            "line": 57,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -359,7 +378,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 71,
+            "line": 80,
             "description": "Map that identifies selectors for attribvutes.",
             "itemtype": "property",
             "name": "map",
@@ -368,7 +387,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 81,
+            "line": 90,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",
@@ -378,10 +397,6 @@
         }
     ],
     "warnings": [
-        {
-            "message": "unknown tag: _private_",
-            "line": " src/__bb-model-view/dom-to-model/update.js:13"
-        },
         {
             "message": "unknown tag: _private_",
             "line": " src/__bb-model-view/model-to-dom/update.js:10"

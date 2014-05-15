@@ -38,6 +38,15 @@ define(function (require, exports, module) {
 	 */
 	var bbModelView = module.exports = backbone.view.extend({
 
+		/**
+		 * The name of the data attribute that should store the uuid for element.
+		 * Used to listen to changes.
+		 *
+		 * @property bbmvUIDAttribute description]
+		 * @type {String}
+		 */
+		bbmvUIDAttribute: 'bbmvUID',
+
 		initialize: function initialize() {
 			// initialize basic backbone view
 			backbone.view.prototype.initialize.apply(this, arguments);

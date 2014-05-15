@@ -4,7 +4,6 @@ YUI.add("yuidoc-meta", function(Y) {
     "modules": [
         "bb-model-view",
         "dom-to-model",
-        "dom-to-model-bind-input",
         "dom-to-model-read",
         "dom-to-model-update",
         "model-to-dom",
@@ -19,10 +18,6 @@ YUI.add("yuidoc-meta", function(Y) {
         {
             "displayName": "dom-to-model",
             "name": "dom-to-model"
-        },
-        {
-            "displayName": "dom-to-model-bind-input",
-            "name": "dom-to-model-bind-input"
         },
         {
             "displayName": "dom-to-model-read",

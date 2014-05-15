@@ -11,41 +11,37 @@ define(function (require, exports, module) {
 	var readDomValue = require('./read-dom-value');
 
 	/**
-	 * Method used to hanlde changes on input elements within
-	 * the.
+	 * 'change' event handler for all elements selected by selectors
+	 * defined on map that select at least one input element.
 	 *
-	 * Very close-bound to the way bindInput works.
+	 * Only propagates modifications from REGISTERED elements.
 	 *
 	 * @method updateModel
-	 * @_private_
+	 * @private
 	 * @param e {Event}
 	 */
 	module.exports = function updateModel(e) {
-			// wrap the target into a jquery object
+			// [0] wrap the target into a jquery object
 		var $target = $(e.target),
-			// retrieve the attribute that the target is bound to
-			attribute = $target.data('__bb_model_view__-bound-attribute');
+			// [1] retrieve the BBMVUID set on the $target.
+			BBMVUID = $target.data(this.bbmvUIDAttribute);
 
-		if (attribute) {
-			// only update if the element
-			// has an attribute bound to it.
+		// [2] verify that the BBMVUID effectively exists
+		//     and refers to a binding of THIS view (not from another bb-model-view)
+		if (!_.isUndefined(BBMVUID) && this.bindings[BBMVUID]) {
 
-			// [1] retrieve the $el
-			var selector = $target.data('__bb_model_view__-selector'),
-				$el = this.$els[selector];
+			// [2.1] get the binding data description
+			var bindingData = this.bindings[BBMVUID];
 
-			// console.log(this.$els);
+			// [2.2] read the value and parse it
+			var attribute = bindingData.attribute,
+				value     = readDomValue($target),
+				parse     = this.parsers[attribute];
 
-			// console.log('read ' + selector);
-			// console.log($el);
-
-			// [2] read the value and parse it
-			var value = readDomValue($el),
-				parse = this.parsers[attribute];
-
+			// [2.3] do parsing.
 			value = parse ? parse.call(this, value) : value;
 
-			// [3] set.
+			// [2.4] set.
 			this.model.set(attribute, value);
 		}
 	};
