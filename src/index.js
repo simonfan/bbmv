@@ -19,9 +19,14 @@ define(function (require, exports, module) {
 		modelDock = require('bb-dock').model,
 		backbone = require('lowercase-backbone');
 
-	// initializers
-	var bindModelToDOM = require('./__bb-model-view/model-to-dom/index'),
+		// builds the map from a string.
+	var buildMap       = require('./__bb-model-view/build-map'),
+		// initializers
+		bindModelToDOM = require('./__bb-model-view/model-to-dom/index'),
 		bindDOMToModel = require('./__bb-model-view/dom-to-model/index');
+
+
+	var initializeOptionNames = ['map', 'parsers', 'stringifiers'];
 
 	/**
 	 * The constructor for the bbModelView object.
@@ -61,16 +66,19 @@ define(function (require, exports, module) {
 		 * @param options {Object}
 		 */
 		initializeModelView: function initializeModelView(options) {
-
 			if (!this.model) {
 				throw new Error('No model set for model view.');
 			}
 
 			options = options || {};
 
-			this.map = options.map || this.map;
-			this.parsers = options.parsers || this.parsers;
-			this.sringifiers = options.stringifiers || this.stringifiers;
+			_.defaults(options, _.pick(this, initializeOptionNames));
+			_.assign(this, options);
+
+			// build up the map in case it is needed.
+			if (_.isString(this.map)) {
+				this.map = buildMap(this.$el, this.map);
+			}
 
 			// initialize model-to-dom attach logic.
 			bindModelToDOM.call(this);
@@ -82,7 +90,7 @@ define(function (require, exports, module) {
 		 *
 		 * @property map
 		 */
-		map: {},
+		map: 'attribute',
 
 
 		stringifiers: {},

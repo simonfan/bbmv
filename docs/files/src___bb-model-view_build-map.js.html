@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/index.js - bb-model-view</title>
+    <title>src/__bb-model-view/build-map.js - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -92,117 +92,63 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/index.js</h1>
+                        <h1 class="file-heading">File: src/__bb-model-view/build-map.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     bb-model-view
-//     (c) simonfan
-//     bb-model-view is licensed under the MIT terms.
-
 /**
- * The modeld is the object that links together $els and models.
- *
  * @module bb-model-view
+ * @submodule dom-to-model
  */
-
-/* jshint ignore:start */
-if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var _ = require(&#x27;lodash&#x27;),
-		modelDock = require(&#x27;bb-dock&#x27;).model,
-		backbone = require(&#x27;lowercase-backbone&#x27;);
+	var _ = require(&#x27;lodash&#x27;);
 
-		// builds the map from a string.
-	var buildMap       = require(&#x27;./__bb-model-view/build-map&#x27;),
-		// initializers
-		bindModelToDOM = require(&#x27;./__bb-model-view/model-to-dom/index&#x27;),
-		bindDOMToModel = require(&#x27;./__bb-model-view/dom-to-model/index&#x27;);
+	var hasDataPrefix = /^data-.*$/;
 
 
-	var initializeOptionNames = [&#x27;map&#x27;, &#x27;parsers&#x27;, &#x27;stringifiers&#x27;];
+	module.exports = function buildMap(parent, dname_or_dattribute) {
 
-	/**
-	 * The constructor for the bbModelView object.
-	 *
-	 * @method bbModelView
-	 * @constructor
-	 * @param extensions {Object}
-	 *     @param $el {Object}
-	 *         The $el that owns the bbModelView object
-	 *     @param map {Object}
-	 *         Map that links selectors to attributes
-	 *     @param [model] {Object}
-	 *         Optionally provide a model that will initially fill the $el.
-	 */
-	var bbModelView = module.exports = backbone.view.extend({
+		// [0] parse out the data name and the data attribute strings.
+		var dname, dattribute;
+		if (hasDataPrefix.test(dname)) {
+			// has data prefix data-whatever
 
-		/**
-		 * The name of the data attribute that should store the uuid for element.
-		 * Used to listen to changes.
-		 *
-		 * @property bbmvUIDAttribute description]
-		 * @type {String}
-		 */
-		bbmvUIDAttribute: &#x27;bbmvUID&#x27;,
+			dname      = dname_or_dattribute.replace(hasDataPrefix, &#x27;&#x27;);
+			dattribute = dname_or_dattribute;
 
-		initialize: function initialize() {
-			// initialize basic backbone view
-			backbone.view.prototype.initialize.apply(this, arguments);
+		} else if (!hasDataPrefix.test(dattribute)) {
+			// does not have data attribute whatever
 
-			this.initializeModelView.apply(this, arguments);
-		},
+			dname      = dname_or_dattribute;
+			dattribute = &#x27;data-&#x27; + dname_or_dattribute;
+		}
 
-		/**
-		 * Holds initialization logic for modelmodeld.
-		 *
-		 * @method initializeModelView
-		 * @param options {Object}
-		 */
-		initializeModelView: function initializeModelView(options) {
-			if (!this.model) {
-				throw new Error(&#x27;No model set for model view.&#x27;);
-			}
+		// [1] build the selector to get ALL ELs that have
+		//     the data attribute
+		var selector = &#x27;[&#x27; + dattribute + &#x27;]&#x27;;
 
-			options = options || {};
+		// [2] select elements
+		var elements = parent.find(selector);
 
-			_.defaults(options, _.pick(this, initializeOptionNames));
-			_.assign(this, options);
+		// [3] build up the map formatted as:
+		//     { modelAttribute: &#x27;[data-attribute=&quot;modelAttribute&quot;]&#x27;}
+		var map = _.reduce(elements, function (res, el, index) {
 
-			// build up the map in case it is needed.
-			if (_.isString(this.map)) {
-				this.map = buildMap(this.$el, this.map);
-			}
+			// [3.1] the modelAttribute to which bind the element.
+			var modelAttribute = $(el).data(dname);
 
-			// initialize model-to-dom attach logic.
-			bindModelToDOM.call(this);
-			bindDOMToModel.call(this);
-		},
+			// [3.2] set the modelAttribute to the selector.
+			res[modelAttribute] = &#x27;[&#x27; + dattribute + &#x27;=&quot;&#x27; + modelAttribute + &#x27;&quot;]&#x27;;
 
-		/**
-		 * Map that identifies selectors for attribvutes.
-		 *
-		 * @property map
-		 */
-		map: &#x27;attribute&#x27;,
+			return res;
+
+		}, {});
 
 
-		stringifiers: {},
-
-		/**
-		 * Hash for the parsers. Every parser function is called
-		 * within the&#x27;s context and takes the value read
-		 * from the DOM as arugment.
-		 *
-		 * @property parsers
-		 * @type Object
-		 */
-		parsers: {},
-	});
+		return map;
+	};
 });
 
     </pre>

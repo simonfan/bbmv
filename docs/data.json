@@ -49,6 +49,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/__bb-model-view/build-map.js": {
+            "name": "src/__bb-model-view/build-map.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/index.js": {
             "name": "src/index.js",
             "modules": {
@@ -319,7 +326,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 26,
+            "line": 31,
             "description": "The constructor for the bbModelView object.",
             "itemtype": "method",
             "name": "bbModelView",
@@ -352,7 +359,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 41,
+            "line": 46,
             "description": "The name of the data attribute that should store the uuid for element.\nUsed to listen to changes.",
             "itemtype": "property",
             "name": "bbmvUIDAttribute description]",
@@ -362,7 +369,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 57,
+            "line": 62,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -378,7 +385,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 80,
+            "line": 88,
             "description": "Map that identifies selectors for attribvutes.",
             "itemtype": "property",
             "name": "map",
@@ -387,7 +394,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 90,
+            "line": 98,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",
