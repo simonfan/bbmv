@@ -252,7 +252,7 @@
         },
         {
             "file": "src/__bb-model-view/dom-to-model/update.js",
-            "line": 13,
+            "line": 14,
             "description": "'change' event handler for all elements selected by selectors\ndefined on map that select at least one input element.\n\nOnly propagates modifications from REGISTERED elements.",
             "itemtype": "method",
             "name": "updateModel",
@@ -326,7 +326,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 31,
+            "line": 30,
             "description": "The constructor for the bbModelView object.",
             "itemtype": "method",
             "name": "bbModelView",
@@ -359,7 +359,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 46,
+            "line": 45,
             "description": "The name of the data attribute that should store the uuid for element.\nUsed to listen to changes.",
             "itemtype": "property",
             "name": "bbmvUIDAttribute description]",
@@ -369,7 +369,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 62,
+            "line": 61,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -385,7 +385,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 88,
+            "line": 87,
             "description": "Map that identifies selectors for attribvutes.",
             "itemtype": "property",
             "name": "map",
@@ -394,7 +394,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 98,
+            "line": 97,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",

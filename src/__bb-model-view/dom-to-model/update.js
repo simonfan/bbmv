@@ -5,7 +5,8 @@
 define(function (require, exports, module) {
 	'use strict';
 
-	var $ = require('jquery');
+	var $ = require('jquery'),
+		_ = require('lodash');
 
 	// reads the value from DOM elements.
 	var readDomValue = require('./read-dom-value');

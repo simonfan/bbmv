@@ -2,10 +2,11 @@
  * @module bb-model-view
  * @submodule dom-to-model
  */
-define('__bb-model-view/build-map',['require','exports','module','lodash'],function (require, exports, module) {
+define('__bb-model-view/build-map',['require','exports','module','lodash','jquery'],function (require, exports, module) {
 	
 
-	var _ = require('lodash');
+	var _ = require('lodash'),
+		$ = require('jquery');
 
 	var hasDataPrefix = /^data-.*$/;
 
@@ -193,10 +194,11 @@ define('__bb-model-view/dom-to-model/read-dom-value',['require','exports','modul
  * @module bb-model-view
  * @submodule dom-to-model-update
  */
-define('__bb-model-view/dom-to-model/update',['require','exports','module','jquery','./read-dom-value'],function (require, exports, module) {
+define('__bb-model-view/dom-to-model/update',['require','exports','module','jquery','lodash','./read-dom-value'],function (require, exports, module) {
 	
 
-	var $ = require('jquery');
+	var $ = require('jquery'),
+		_ = require('lodash');
 
 	// reads the value from DOM elements.
 	var readDomValue = require('./read-dom-value');
@@ -319,7 +321,7 @@ define('__bb-model-view/dom-to-model/index',['require','exports','module','lodas
 			}
 		}
 
-	};
+	}
 
 
 
@@ -373,11 +375,10 @@ define('__bb-model-view/dom-to-model/index',['require','exports','module','lodas
 
 /* jshint ignore:end */
 
-define('bb-model-view',['require','exports','module','lodash','bb-dock','lowercase-backbone','./__bb-model-view/build-map','./__bb-model-view/model-to-dom/index','./__bb-model-view/dom-to-model/index'],function (require, exports, module) {
+define('bb-model-view',['require','exports','module','lodash','lowercase-backbone','./__bb-model-view/build-map','./__bb-model-view/model-to-dom/index','./__bb-model-view/dom-to-model/index'],function (require, exports, module) {
 	
 
 	var _ = require('lodash'),
-		modelDock = require('bb-dock').model,
 		backbone = require('lowercase-backbone');
 
 		// builds the map from a string.

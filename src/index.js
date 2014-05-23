@@ -16,7 +16,6 @@ define(function (require, exports, module) {
 	'use strict';
 
 	var _ = require('lodash'),
-		modelDock = require('bb-dock').model,
 		backbone = require('lowercase-backbone');
 
 		// builds the map from a string.

@@ -5,7 +5,8 @@
 define(function (require, exports, module) {
 	'use strict';
 
-	var _ = require('lodash');
+	var _ = require('lodash'),
+		$ = require('jquery');
 
 	var hasDataPrefix = /^data-.*$/;
 
