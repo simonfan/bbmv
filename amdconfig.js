@@ -9,7 +9,7 @@ require.config({
 		'bb-model-view': 'index',
 		lodash: '../bower_components/lodash/dist/lodash.compat',
 		'lowercase-backbone': '../bower_components/lowercase-backbone/built/lowercase-backbone',
-		jquery: '../bower_components/jquery/jquery',
+		jquery: '../bower_components/jquery/dist/jquery',
 		backbone: '../bower_components/backbone/backbone',
 		qunit: '../bower_components/qunit/qunit/qunit',
 		subject: '../bower_components/subject/built/subject',
@@ -18,7 +18,8 @@ require.config({
 		'jquery.filler': '../bower_components/jquery.filler/built/jquery.filler',
 		'model-dock': '../bower_components/model-dock/built/model-dock',
 		'bb-dock': '../bower_components/bb-dock/built/bb-dock',
-		dock: '../bower_components/dock/built/dock'
+		dock: '../bower_components/dock/built/dock',
+		'jquery-meta-data': '../bower_components/jquery-meta-data/built/jquery-meta-data'
 	},
 	shim: {
 		backbone: {
