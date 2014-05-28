@@ -8,8 +8,8 @@
     "jquery.filler": "0.3.4",
     "jquery-meta-data": "*",
     "jquery-selector-data-prefix": "~0.1.0",
-    "jquery-pipe": "0.1.1",
-    "jquery-pump": "0.1.1"
+    "jquery-pump": "0.1.1",
+    "jquery-value": "~0.1.1"
   },
   "devDependencies": {
     "requirejs": "*",

@@ -1,19 +1,24 @@
 <div id="fruit">
-	<a class="name" data-bind-name="attr:href"></a>
-	<p class="description" data-bind-description="html"></p>
+	<a data-bind-name="attr:href"></a>
+	<p data-bind-description="html"></p>
 
-	<div identifier="colors" data-bind-colors="html"></div>
+	<div data-bind-name="html"></div>
 
 
-	<div bound-attribute="price" data-bind-price="html"></div>
-	<div class="price" data-bind-price="html"></div>
+	<div data-bind-price="html"></div>
+	<div data-bind-price="html"></div>
 
 	<hr>
 
-	<input type="text" name="name">
-	<input type="checkbox" name="colors" value="red">red
-	<input type="checkbox" name="colors" value="green">green
-	<input type="checkbox" name="colors" value="blue">blue
-	<input type="checkbox" name="colors" value="yellow">yellow
-	<input type="checkbox" name="colors" value="orange">orange
+	<input type="text" data-bind-name="value">
+
+	<div data-bind-colors='input[name="colors"]|value'>
+
+		<input type="checkbox" name="colors" value="red">red
+		<input type="checkbox" name="colors" value="green">green
+		<input type="checkbox" name="colors" value="blue">blue
+		<input type="checkbox" name="colors" value="yellow">yellow
+		<input type="checkbox" name="colors" value="orange">orange
+
+	</div>
 </div>

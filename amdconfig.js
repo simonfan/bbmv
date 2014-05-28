@@ -25,7 +25,8 @@ require.config({
 		pipe: '../bower_components/pipe/built/pipe',
 		q: '../bower_components/q/q',
 		'jquery-pump': '../bower_components/jquery-pump/built/jquery-pump',
-		pump: '../bower_components/pump/built/pump'
+		pump: '../bower_components/pump/built/pump',
+		'jquery-value': '../bower_components/jquery-value/built/jquery-value'
 	},
 	shim: {
 		backbone: {

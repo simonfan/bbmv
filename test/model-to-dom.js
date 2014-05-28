@@ -17,20 +17,14 @@ function(modelView, should, Backbone, fruitTemplate) {
 			this.$fixture = $fixture;
 			this.$fruit = $fixture.find('#fruit');
 
-			this.fruitMap = {
-				'name': ['input[name="name"]', '.name', '.name -> attr:href'],
-				'colors': 'input[name="colors"]',
-				'price': 'div[bound-attribute="price"]',
-			};
-
 		});
 
 		afterEach(function () {
-			this.$fixture.remove();
+		//	this.$fixture.remove();
 		});
 
 
-		it('values on the html should be initialized to the ones on the model', function () {
+		it('values on the html should be initialized to the ones on the model', function (testdone) {
 
 			// instantiate the model for the fruit.
 			var fruitModel = new Backbone.Model({
@@ -41,54 +35,49 @@ function(modelView, should, Backbone, fruitTemplate) {
 			// instantiate the fruit view
 			var fruitView = modelView({
 				el: this.$fruit,
-				map: this.fruitMap,
 				model: fruitModel
 			});
 
-			fruitView.ready(function () {
+			fruitView.ready(_.bind(function () {
 
 				// check that the values are correct
-				this.$fruit.find('input[name="name"]').val().should.eql('Banana');
+				this.$fruit.find('input[data-bind-name]').value().should.eql('Banana');
 
 				_.map(this.$fruit.find('input[name="colors"]:checked'), function (box) {
 					return $(box).val();
 				}).should.eql(['green', 'yellow']);
 
-				// set some values..
-				fruitModel.set({
-					name: 'lalalalalalalala',
-					colors: ['red', 'orange']
-				});
 
-			})
+				testdone();
 
-
-			// verify that values have changed with
-
+			}, this))
 		});
 
 		it('whenever values on the model change, html should follow', function () {
-			var fruitModel = new Backbone.Model({
+			var fruitModel = new Backbone.Model(),
+				$fruit     = this.$fruit;
+
+
+			// instantiate the fruit view
+			var fruitView = modelView({
+				el: $fruit,
+				model: fruitModel
+			});
+
+
+			fruitModel.set({
 				name: 'Apple',
 				colors: ['red', 'yellow', 'green']
 			});
 
-			// instantiate the fruit view
-			var fruitView = modelView({
-				el: this.$fruit,
-				map: this.fruitMap,
-				model: fruitModel
-			});
 
-			this.$fruit.find('.name').html().should.eql('Apple');
+			fruitView.ready(function () {
 
-			// set some changes
-			fruitModel.set({
-				name: 'Melon',
-				colors: ['yellow', 'green']
-			});
+				$fruit.find('input[data-bind-name]').val().should.eql('Apple');
 
-			this.$fruit.find('.name').html().should.eql('Melon');
+				$fruit.find('input[data-bind-colors]').value().should.eql(['red', 'yellow', 'green']);
+
+			})
 		});
 
 

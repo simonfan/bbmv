@@ -333,7 +333,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 26,
+            "line": 30,
             "description": "The constructor for the bbModelView object.",
             "itemtype": "method",
             "name": "bbModelView",
@@ -366,7 +366,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 41,
+            "line": 45,
             "description": "The name of the data attribute that should store the uuid for element.\nUsed to listen to changes.",
             "itemtype": "property",
             "name": "bbmvUIDAttribute description]",
@@ -376,7 +376,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 57,
+            "line": 61,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -392,7 +392,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 92,
+            "line": 117,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",

@@ -113,9 +113,13 @@ if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefin
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
+
+	// :data-prefix(prefix) selector
+	require(&#x27;jquery-selector-data-prefix&#x27;);
+
 	var _        = require(&#x27;lodash&#x27;),
 		backbone = require(&#x27;lowercase-backbone&#x27;),
-		jqPipe   = require(&#x27;jquery-pipe&#x27;);
+		jqValue  = require(&#x27;jquery-value&#x27;);
 
 	var modelPump = require(&#x27;./__bb-model-view/model-pump&#x27;);
 
@@ -173,12 +177,33 @@ define(function (require, exports, module) {
 			_.assign(this, options);
 
 
-			//
+			// find the elements that have bindings
 			//
 			var $modelEls = this.$el.add(this.$el.find(this.bindingSelector));
 
+			// create a jquery pump with those elements.
+			this.modelPump = $modelEls.pump(this.model);
 
-			var mpump = modelPump($modelEls);
+			// initialize pump
+			var promise = this.pump.pump();
+
+			this.ready = _.bind(promise.done, promise);
+		},
+
+		updateView: function pumpModelDataToView() {
+			var promise = this.modelPump.pump();
+
+			this.ready = _.bind(promise.done, promise);
+
+			return promise;
+		},
+
+		updateModel: function drainViewDataToModel() {
+			var promise = this.pump.drain();
+
+			this.ready = _.bind(promise.done, promise);
+
+			return promise;
 		},
 
 		prefix: &#x27;bind&#x27;,
