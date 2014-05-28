@@ -15,14 +15,18 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 define(function (require, exports, module) {
 	'use strict';
 
-	var _ = require('lodash'),
-		backbone = require('lowercase-backbone');
+	var _        = require('lodash'),
+		backbone = require('lowercase-backbone'),
+		jqPipe   = require('jquery-pipe');
 
 		// builds the map from a string.
 	var buildMap       = require('./__bb-model-view/build-map'),
 		// initializers
 		bindModelToDOM = require('./__bb-model-view/model-to-dom/index'),
 		bindDOMToModel = require('./__bb-model-view/dom-to-model/index');
+
+
+	var parseBindings = require('./__bb-model-view/parse-bindings');
 
 
 	var initializeOptionNames = ['map', 'parsers', 'stringifiers'];
@@ -74,22 +78,19 @@ define(function (require, exports, module) {
 			_.defaults(options, _.pick(this, initializeOptionNames));
 			_.assign(this, options);
 
-			// build up the map in case it is needed.
-			if (_.isString(this.map)) {
-				this.map = buildMap(this.$el, this.map);
-			}
 
-			// initialize model-to-dom attach logic.
-			bindModelToDOM.call(this);
-			bindDOMToModel.call(this);
+			this.pipes = [];
+
+			var pipe = this.el.pipe()
+
+			// build onw pipe
+			this.pipe = this.el.pipe()
+
 		},
 
-		/**
-		 * Map that identifies selectors for attribvutes.
-		 *
-		 * @property map
-		 */
-		map: 'attribute',
+		prefix: 'bind',
+
+		bindingSelector: ':data-prefix(bind)',
 
 
 		stringifiers: {},

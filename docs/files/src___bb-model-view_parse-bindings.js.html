@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/build-map.js - bb-model-view</title>
+    <title>src/__bb-model-view/parse-bindings.js - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -92,7 +92,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/build-map.js</h1>
+                        <h1 class="file-heading">File: src/__bb-model-view/parse-bindings.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -103,52 +103,16 @@
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
+	require(&#x27;jquery-selector-data-prefix&#x27;);
+
 	var _ = require(&#x27;lodash&#x27;),
 		$ = require(&#x27;jquery&#x27;);
 
-	var hasDataPrefix = /^data-.*$/;
+	module.exports = function parseBindings(el) {
 
+		// find elements to be bound to an attribute of the model.
+		var boundEls = el.find(this.bindingSelector);
 
-	module.exports = function buildMap(parent, dname_or_dattribute) {
-
-		// [0] parse out the data name and the data attribute strings.
-		var dname, dattribute;
-		if (hasDataPrefix.test(dname)) {
-			// has data prefix data-whatever
-
-			dname      = dname_or_dattribute.replace(hasDataPrefix, &#x27;&#x27;);
-			dattribute = dname_or_dattribute;
-
-		} else if (!hasDataPrefix.test(dattribute)) {
-			// does not have data attribute whatever
-
-			dname      = dname_or_dattribute;
-			dattribute = &#x27;data-&#x27; + dname_or_dattribute;
-		}
-
-		// [1] build the selector to get ALL ELs that have
-		//     the data attribute
-		var selector = &#x27;[&#x27; + dattribute + &#x27;]&#x27;;
-
-		// [2] select elements
-		var elements = parent.find(selector);
-
-		// [3] build up the map formatted as:
-		//     { modelAttribute: &#x27;[data-attribute=&quot;modelAttribute&quot;]&#x27;}
-		var map = _.reduce(elements, function (res, el, index) {
-
-			// [3.1] the modelAttribute to which bind the element.
-			var modelAttribute = $(el).data(dname);
-
-			// [3.2] set the modelAttribute to the selector.
-			res[modelAttribute] = &#x27;[&#x27; + dattribute + &#x27;=&quot;&#x27; + modelAttribute + &#x27;&quot;]&#x27;;
-
-			return res;
-
-		}, {});
-
-
-		return map;
 	};
 });
 

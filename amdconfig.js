@@ -19,7 +19,11 @@ require.config({
 		'model-dock': '../bower_components/model-dock/built/model-dock',
 		'bb-dock': '../bower_components/bb-dock/built/bb-dock',
 		dock: '../bower_components/dock/built/dock',
-		'jquery-meta-data': '../bower_components/jquery-meta-data/built/jquery-meta-data'
+		'jquery-meta-data': '../bower_components/jquery-meta-data/built/jquery-meta-data',
+		'jquery-pipe': '../bower_components/jquery-pipe/built/jquery-pipe',
+		'jquery-selector-data-prefix': '../bower_components/jquery-selector-data-prefix/built/jquery-selector-data-prefix',
+		pipe: '../bower_components/pipe/built/pipe',
+		q: '../bower_components/q/q'
 	},
 	shim: {
 		backbone: {

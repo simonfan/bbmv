@@ -113,14 +113,18 @@ if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefin
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var _ = require(&#x27;lodash&#x27;),
-		backbone = require(&#x27;lowercase-backbone&#x27;);
+	var _        = require(&#x27;lodash&#x27;),
+		backbone = require(&#x27;lowercase-backbone&#x27;),
+		jqPipe   = require(&#x27;jquery-pipe&#x27;);
 
 		// builds the map from a string.
 	var buildMap       = require(&#x27;./__bb-model-view/build-map&#x27;),
 		// initializers
 		bindModelToDOM = require(&#x27;./__bb-model-view/model-to-dom/index&#x27;),
 		bindDOMToModel = require(&#x27;./__bb-model-view/dom-to-model/index&#x27;);
+
+
+	var parseBindings = require(&#x27;./__bb-model-view/parse-bindings&#x27;);
 
 
 	var initializeOptionNames = [&#x27;map&#x27;, &#x27;parsers&#x27;, &#x27;stringifiers&#x27;];
@@ -172,22 +176,19 @@ define(function (require, exports, module) {
 			_.defaults(options, _.pick(this, initializeOptionNames));
 			_.assign(this, options);
 
-			// build up the map in case it is needed.
-			if (_.isString(this.map)) {
-				this.map = buildMap(this.$el, this.map);
-			}
 
-			// initialize model-to-dom attach logic.
-			bindModelToDOM.call(this);
-			bindDOMToModel.call(this);
+			this.pipes = [];
+
+			var pipe = this.el.pipe()
+
+			// build onw pipe
+			this.pipe = this.el.pipe()
+
 		},
 
-		/**
-		 * Map that identifies selectors for attribvutes.
-		 *
-		 * @property map
-		 */
-		map: &#x27;attribute&#x27;,
+		prefix: &#x27;bind&#x27;,
+
+		bindingSelector: &#x27;:data-prefix(bind)&#x27;,
 
 
 		stringifiers: {},
