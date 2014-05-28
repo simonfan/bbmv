@@ -15,19 +15,15 @@ if (typeof define !== 'function') { var define = require('amdefine')(module) }
 define(function (require, exports, module) {
 	'use strict';
 
+
+	// :data-prefix(prefix) selector
+	require('jquery-selector-data-prefix');
+
 	var _        = require('lodash'),
 		backbone = require('lowercase-backbone'),
 		jqPipe   = require('jquery-pipe');
 
-		// builds the map from a string.
-	var buildMap       = require('./__bb-model-view/build-map'),
-		// initializers
-		bindModelToDOM = require('./__bb-model-view/model-to-dom/index'),
-		bindDOMToModel = require('./__bb-model-view/dom-to-model/index');
-
-
-	var parseBindings = require('./__bb-model-view/parse-bindings');
-
+	var modelPump = require('./__bb-model-view/model-pump');
 
 	var initializeOptionNames = ['map', 'parsers', 'stringifiers'];
 
@@ -73,25 +69,34 @@ define(function (require, exports, module) {
 				throw new Error('No model set for model view.');
 			}
 
+			if (!this.$el) {
+				throw new Error('No el set on model view.');
+			}
+
 			options = options || {};
 
 			_.defaults(options, _.pick(this, initializeOptionNames));
 			_.assign(this, options);
 
 
-			this.pipes = [];
+			//
+			//
+			var $modelEls = this.$el.add(this.$el.find(this.bindingSelector));
 
-			var pipe = this.el.pipe()
 
-			// build onw pipe
-			this.pipe = this.el.pipe()
+			this.pump = modelPump(this.model, { destination: $modelEls });
 
+
+
+			// initialize pump
+			var promise = this.pump.pump();
+
+			this.ready = _.bind(promise.done, promise);
 		},
 
 		prefix: 'bind',
 
 		bindingSelector: ':data-prefix(bind)',
-
 
 		stringifiers: {},
 

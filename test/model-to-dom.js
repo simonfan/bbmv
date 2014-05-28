@@ -45,18 +45,23 @@ function(modelView, should, Backbone, fruitTemplate) {
 				model: fruitModel
 			});
 
-			// check that the values are correct
-			this.$fruit.find('input[name="name"]').val().should.eql('Banana');
+			fruitView.ready(function () {
 
-			_.map(this.$fruit.find('input[name="colors"]:checked'), function (box) {
-				return $(box).val();
-			}).should.eql(['green', 'yellow']);
+				// check that the values are correct
+				this.$fruit.find('input[name="name"]').val().should.eql('Banana');
 
-			// set some values..
-			fruitModel.set({
-				name: 'lalalalalalalala',
-				colors: ['red', 'orange']
-			});
+				_.map(this.$fruit.find('input[name="colors"]:checked'), function (box) {
+					return $(box).val();
+				}).should.eql(['green', 'yellow']);
+
+				// set some values..
+				fruitModel.set({
+					name: 'lalalalalalalala',
+					colors: ['red', 'orange']
+				});
+
+			})
+
 
 			// verify that values have changed with
 

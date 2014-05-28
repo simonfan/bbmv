@@ -49,6 +49,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/__bb-model-view/model-pump.js": {
+            "name": "src/__bb-model-view/model-pump.js",
+            "modules": {
+                "bb-model-view": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/__bb-model-view/parse-bindings.js": {
             "name": "src/__bb-model-view/parse-bindings.js",
             "modules": {},
@@ -58,9 +67,7 @@
         },
         "src/index.js": {
             "name": "src/index.js",
-            "modules": {
-                "bb-model-view": 1
-            },
+            "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -80,7 +87,7 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/index.js",
+            "file": "src/__bb-model-view/model-pump.js",
             "line": 5,
             "description": "The modeld is the object that links together $els and models."
         },
@@ -326,7 +333,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 34,
+            "line": 26,
             "description": "The constructor for the bbModelView object.",
             "itemtype": "method",
             "name": "bbModelView",
@@ -359,7 +366,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 49,
+            "line": 41,
             "description": "The name of the data attribute that should store the uuid for element.\nUsed to listen to changes.",
             "itemtype": "property",
             "name": "bbmvUIDAttribute description]",
@@ -369,7 +376,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 65,
+            "line": 57,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -385,7 +392,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 98,
+            "line": 92,
             "description": "Hash for the parsers. Every parser function is called\nwithin the's context and takes the value read\nfrom the DOM as arugment.",
             "itemtype": "property",
             "name": "parsers",

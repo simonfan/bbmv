@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>bb-model-view - bb-model-view</title>
+    <title>src/__bb-model-view/model-pump.js - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -92,94 +92,46 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>bb-model-view Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src/__bb-model-view/model-pump.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+//     bb-model-view
+//     (c) simonfan
+//     bb-model-view is licensed under the MIT terms.
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src___bb-model-view_model-pump.js.html#l5"><code>src&#x2F;__bb-model-view&#x2F;model-pump.js:5</code></a>
-        </div>
-    
+/**
+ * The modeld is the object that links together $els and models.
+ *
+ * @module bb-model-view
+ */
 
-    
-</div>
+/* jshint ignore:start */
+if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
+/* jshint ignore:end */
 
+define(function (require, exports, module) {
+	&#x27;use strict&#x27;;
 
-
-<div class="box intro">
-    <p>The modeld is the object that links together $els and models.</p>
-
-</div>
-
+	var jqPump = require(&#x27;jquery-pump&#x27;);
 
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-    </div>
 
-    <div class="yui3-u-1-2">
-        
-            <p>This module is a rollup of the following modules:</p>
+	var modelPump = module.exports = jqPump.extend({
 
-            <ul class="module-submodules">
-            
-                <li class="module-submodule">
-                    <a href="../modules/dom-to-model.html">
-                        dom-to-model
-                    </a>
+		srcGet: function getFromModel(model, property) {
+			return model.get(property);
+		},
 
-                    <div class="module-submodule-description">
-                        
-                    </div>
-                </li>
-            
-                <li class="module-submodule">
-                    <a href="../modules/dom-to-model-read.html">
-                        dom-to-model-read
-                    </a>
+		srcSet: function setToModel(model, property, value) {
+			return model.set(property, value);
+		}
 
-                    <div class="module-submodule-description">
-                        
-                    </div>
-                </li>
-            
-                <li class="module-submodule">
-                    <a href="../modules/dom-to-model-update.html">
-                        dom-to-model-update
-                    </a>
+	});
 
-                    <div class="module-submodule-description">
-                        
-                    </div>
-                </li>
-            
-                <li class="module-submodule">
-                    <a href="../modules/model-to-dom.html">
-                        model-to-dom
-                    </a>
+});
 
-                    <div class="module-submodule-description">
-                        
-                    </div>
-                </li>
-            
-                <li class="module-submodule">
-                    <a href="../modules/model-to-dom-update.html">
-                        model-to-dom-update
-                    </a>
-
-                    <div class="module-submodule-description">
-                        
-                    </div>
-                </li>
-            
-            </ul>
-        
-    </div>
+    </pre>
 </div>
 
                     </div>
