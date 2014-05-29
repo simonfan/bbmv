@@ -1,6 +1,11 @@
 define(function (require, exports, module) {
 	'use strict';
 
+
+
+	// :data-prefix(prefix) selector
+	require('jquery-selector-data-prefix');
+
 	/**
 	 * The string by which binding ddata attributes are prefixed.
 	 * data-bind-somekey="method"

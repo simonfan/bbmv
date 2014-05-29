@@ -42,7 +42,6 @@ define(function (require, exports, module) {
 		 */
 		initialize: function initializeModelPump(source, options) {
 
-
 			// bind methods
 			_.bindAll(this, ['srcGet', 'srcSet']);
 
@@ -51,34 +50,12 @@ define(function (require, exports, module) {
 			// set the bbmvID as data attribute to the destination els.
 			// that is for the html->model binding
 
-
-
 			// pick strngifier and parser methods
 			options = options || {};
 			_.each(['stringify', 'stringifiers', 'parsers', 'parse'], function (prop) {
 				this[prop] = options[prop] || this[prop];
 			}, this);
-
-
-
-			var pump = this;
-
-			_.each(this.pipes, function (pipe, pipeId) {
-				var $el = pipe.destination;
-
-				// set bbmvID
-				$el.data(this.bbmvIDAttribute, pipeId);
-			}, this);
 		},
-
-		/**
-		 * The name of the data attribute that should store the uuid for element.
-		 * Used to listen to changes.
-		 *
-		 * @property bbmvID description]
-		 * @type {String}
-		 */
-		bbmvIDAttribute: 'bbmvID',
 
 		/**
 		 * Method specified by pump API
@@ -110,7 +87,7 @@ define(function (require, exports, module) {
 		 * Hash to hold stringifiers.
 		 * @type {Object}
 		 */
-		stringifiers: {},
+		stringifiers: void(0),
 		stringify: function stringify(property, value) {
 
 
@@ -119,16 +96,13 @@ define(function (require, exports, module) {
 			return stringifier(value);
 		},
 
-		parsers: {},
+		parsers: void(0),
 		parse: function parse(property, value) {
 
 			var parser = _retrieveFunction(this.parsers, property);
 
 			return parser(value);
 		},
-
-
-
 	});
 
 });

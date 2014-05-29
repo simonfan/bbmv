@@ -16,12 +16,12 @@ define(function (require, exports, module) {
 	'use strict';
 
 
-	// :data-prefix(prefix) selector
-	require('jquery-selector-data-prefix');
-
 	var _        = require('lodash'),
 		backbone = require('lowercase-backbone'),
 		jqValue  = require('jquery-value');
+
+
+	var bind = require('./__bb-model-view/bind');
 
 	/**
 	 * Name of parser and stringifier option names.
@@ -29,19 +29,7 @@ define(function (require, exports, module) {
 	 */
 	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix'];
 
-	/**
-	 * The constructor for the bbModelView object.
-	 *
-	 * @method bbModelView
-	 * @constructor
-	 * @param extensions {Object}
-	 *     @param $el {Object}
-	 *         The $el that owns the bbModelView object
-	 *     @param map {Object}
-	 *         Map that links selectors to attributes
-	 *     @param [model] {Object}
-	 *         Optionally provide a model that will initially fill the $el.
-	 */
+
 	var bbModelView = module.exports = backbone.view.extend({
 
 		initialize: function initialize() {
@@ -64,6 +52,8 @@ define(function (require, exports, module) {
 			// [1] find all elements that have bindings defined.
 			var $boundElements = this.boundElements();
 
+			console.log(options)
+
 			// [2] create a jquery pump with those elements.
 			// [2.1] get stringifiers and parsers
 			var pumpOptions = _.pick(options, pumpOptionNames);
@@ -76,21 +66,12 @@ define(function (require, exports, module) {
 			this.pump = this.modelPump(this.model, pumpOptions);
 
 			// [3] listen to change events on $boundElements
-			$boundElements.filter(':input').on('change', _.bind(function (e) {
-
-				var pipeId = $(e.target).data(this.pump.bbmvIDAttribute);
-
-				this.pump.drain(pipeId);
-			}, this));
-
+			bind.DOMToModel.call(this, $boundElements);
 
 			// [4] listen to change events on the model
-			this.model.on('change', _.bind(function (model) {
+			bind.modelToDOM.call(this, this.model);
 
-				this.pump.pump();
-			}, this));
-
-			// [3] initialize view by pumping the model data.
+			// [5] initialize view by pumping the model data.
 			this.updateView();
 		},
 	});

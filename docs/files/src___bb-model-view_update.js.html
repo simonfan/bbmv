@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/parse-bindings.js - bb-model-view</title>
+    <title>src/__bb-model-view/update.js - bb-model-view</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -92,28 +92,43 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/parse-bindings.js</h1>
+                        <h1 class="file-heading">File: src/__bb-model-view/update.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-/**
- * @module bb-model-view
- * @submodule dom-to-model
- */
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	require(&#x27;jquery-selector-data-prefix&#x27;);
+	var _ = require(&#x27;lodash&#x27;);
 
-	var _ = require(&#x27;lodash&#x27;),
-		$ = require(&#x27;jquery&#x27;);
+	/**
+	 * Updates the view by pumping data from the source model.
+	 *
+	 * @return {[type]} [description]
+	 */
+	exports.updateView = function pumpModelDataToView() {
+		var promise = this.pump.pump();
 
-	module.exports = function parseBindings(el) {
+		this.ready = _.bind(promise.done, promise);
 
-		// find elements to be bound to an attribute of the model.
-		var boundEls = el.find(this.bindingSelector);
-
+		return promise;
 	};
+
+	/**
+	 * Updates the model draining data from the view.
+	 *
+	 * @param  {[type]} pipe [description]
+	 * @return {[type]}      [description]
+	 */
+	exports.updateModel = function drainViewDataToModel(pipe) {
+		var promise = this.pump.drain(pipe);
+
+		this.ready = _.bind(promise.done, promise);
+
+		return promise;
+	};
+
+
 });
 
     </pre>

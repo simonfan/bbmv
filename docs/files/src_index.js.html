@@ -121,9 +121,11 @@ define(function (require, exports, module) {
 		backbone = require(&#x27;lowercase-backbone&#x27;),
 		jqValue  = require(&#x27;jquery-value&#x27;);
 
-	var modelPump = require(&#x27;./__bb-model-view/model-pump&#x27;);
-
-	var initializeOptionNames = [&#x27;map&#x27;, &#x27;parsers&#x27;, &#x27;stringifiers&#x27;];
+	/**
+	 * Name of parser and stringifier option names.
+	 * @type {Array}
+	 */
+	var pumpOptionNames = [&#x27;parse&#x27;, &#x27;parsers&#x27;, &#x27;stringify&#x27;, &#x27;stringifiers&#x27;, &#x27;prefix&#x27;];
 
 	/**
 	 * The constructor for the bbModelView object.
@@ -140,15 +142,6 @@ define(function (require, exports, module) {
 	 */
 	var bbModelView = module.exports = backbone.view.extend({
 
-		/**
-		 * The name of the data attribute that should store the uuid for element.
-		 * Used to listen to changes.
-		 *
-		 * @property bbmvUIDAttribute description]
-		 * @type {String}
-		 */
-		bbmvUIDAttribute: &#x27;bbmvUID&#x27;,
-
 		initialize: function initialize() {
 			// initialize basic backbone view
 			backbone.view.prototype.initialize.apply(this, arguments);
@@ -163,65 +156,47 @@ define(function (require, exports, module) {
 		 * @param options {Object}
 		 */
 		initializeModelView: function initializeModelView(options) {
-			if (!this.model) {
-				throw new Error(&#x27;No model set for model view.&#x27;);
-			}
+			if (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }
+			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }
 
-			if (!this.$el) {
-				throw new Error(&#x27;No el set on model view.&#x27;);
-			}
+			// [1] find all elements that have bindings defined.
+			var $boundElements = this.boundElements();
 
-			options = options || {};
+			// [2] create a jquery pump with those elements.
+			// [2.1] get stringifiers and parsers
+			var pumpOptions = _.pick(options, pumpOptionNames);
+			_.defaults(pumpOptions, _.pick(this, pumpOptionNames));
 
-			_.defaults(options, _.pick(this, initializeOptionNames));
-			_.assign(this, options);
+			// [2.2] set destination
+			pumpOptions.destination = $boundElements;
+
+			// [2.2] effectively create the pump
+			this.pump = this.modelPump(this.model, pumpOptions);
+
+			// [3] listen to change events on $boundElements
+			$boundElements.filter(&#x27;:input&#x27;).on(&#x27;change&#x27;, _.bind(function (e) {
+
+				var pipeId = $(e.target).data(this.pump.bbmvIDAttribute);
+
+				this.pump.drain(pipeId);
+			}, this));
 
 
-			// find the elements that have bindings
-			//
-			var $modelEls = this.$el.add(this.$el.find(this.bindingSelector));
+			// [4] listen to change events on the model
+			this.model.on(&#x27;change&#x27;, _.bind(function (model) {
 
-			// create a jquery pump with those elements.
-			this.modelPump = $modelEls.pump(this.model);
+				this.pump.pump();
+			}, this));
 
-			// initialize pump
-			var promise = this.pump.pump();
-
-			this.ready = _.bind(promise.done, promise);
+			// [3] initialize view by pumping the model data.
+			this.updateView();
 		},
-
-		updateView: function pumpModelDataToView() {
-			var promise = this.modelPump.pump();
-
-			this.ready = _.bind(promise.done, promise);
-
-			return promise;
-		},
-
-		updateModel: function drainViewDataToModel() {
-			var promise = this.pump.drain();
-
-			this.ready = _.bind(promise.done, promise);
-
-			return promise;
-		},
-
-		prefix: &#x27;bind&#x27;,
-
-		bindingSelector: &#x27;:data-prefix(bind)&#x27;,
-
-		stringifiers: {},
-
-		/**
-		 * Hash for the parsers. Every parser function is called
-		 * within the&#x27;s context and takes the value read
-		 * from the DOM as arugment.
-		 *
-		 * @property parsers
-		 * @type Object
-		 */
-		parsers: {},
 	});
+
+	bbModelView
+		.assignProto(require(&#x27;./__bb-model-view/update&#x27;))
+		.assignProto(require(&#x27;./__bb-model-view/model-pump&#x27;))
+		.assignProto(require(&#x27;./__bb-model-view/elements&#x27;));
 });
 
     </pre>

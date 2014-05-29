@@ -35,7 +35,13 @@ function(modelView, should, Backbone, fruitTemplate) {
 			// instantiate the fruit view
 			var fruitView = modelView({
 				el: this.$fruit,
-				model: fruitModel
+				model: fruitModel,
+
+				stringifiers: {
+					colors: function (c) {
+						return c.join(', ');
+					},
+				}
 			});
 
 			fruitView.ready(_.bind(function () {
@@ -61,7 +67,17 @@ function(modelView, should, Backbone, fruitTemplate) {
 			// instantiate the fruit view
 			var fruitView = modelView({
 				el: $fruit,
-				model: fruitModel
+				model: fruitModel,
+
+
+
+				stringifiers: {
+					////////////////////////////
+					///////////// HUUUGE // problem					////////////////////////////
+					colors: function (c) {
+						return c ? c.join(', ') : '';
+					},
+				},
 			});
 
 

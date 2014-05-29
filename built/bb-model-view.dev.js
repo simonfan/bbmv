@@ -19,6 +19,41 @@ Z[z]=!1,Z[q]=Z[F]=Z[B]=Z[H]=Z[K]=Z[U]=Z[M]=Z[V]=!0;var G={leading:!1,maxWait:0,t
 //     jquery-value is licensed under the MIT terms.
 
 define("__jquery-value/get",["require","exports","module","jquery"],function(e,r,t){var u=e("jquery"),n={"default":function(e){return e.val()},DIV:function(e){return e.html()},INPUT:function(e){var r=e.prop("type");return"checkbox"===r?e.filter(":checked").map(function(){return u(this).val()}).get():"radio"===r?e.filter(":checked").val():e.val()}};t.exports=function(e){var r=e.prop("tagName"),t=n[r]||n["default"];return t(e)}}),define("__jquery-value/set",["require","exports","module","jquery"],function(e,r,t){var u=e("jquery"),n={"default":function(e,r){return e.html(r)},INPUT:function(e,r){var t=e.prop("type");return("checkbox"===t||"radio"===t)&&(r=u.isArray(r)?r:[r]),e.val(r)},SELECT:function(e,r){return e.val(r)},IMG:function(e,r){return e.prop("src",r).trigger("change",r)},TEXTAREA:function(e,r){return e.val(r)}};t.exports=function(e,r){return e.each(function(e,t){var a=u(t),o=a.prop("tagName"),i=n[o]||n["default"];i(a,r)}),e}}),define("jquery-value",["require","exports","module","jquery","./__jquery-value/get","./__jquery-value/set"],function(e,r,t){var u=e("jquery"),n=e("./__jquery-value/get"),a=e("./__jquery-value/set"),o=t.exports=function(e,r){return 1===arguments.length?n(e):2===arguments.length?a(e,r):void 0};u.prototype.value=function(e){return 0===arguments.length?o(this):o(this,e)}});
+define('__bb-model-view/update',['require','exports','module','lodash'],function (require, exports, module) {
+	
+
+	var _ = require('lodash');
+
+	/**
+	 * Updates the view by pumping data from the source model.
+	 *
+	 * @return {[type]} [description]
+	 */
+	exports.updateView = function pumpModelDataToView() {
+		var promise = this.pump.pump();
+
+		this.ready = _.bind(promise.done, promise);
+
+		return promise;
+	};
+
+	/**
+	 * Updates the model draining data from the view.
+	 *
+	 * @param  {[type]} pipe [description]
+	 * @return {[type]}      [description]
+	 */
+	exports.updateModel = function drainViewDataToModel(pipe) {
+		var promise = this.pump.drain(pipe);
+
+		this.ready = _.bind(promise.done, promise);
+
+		return promise;
+	};
+
+
+});
+
 // vim:ts=4:sts=4:sw=4:
 /*!
  *
@@ -1943,38 +1978,166 @@ define("__pump/pipe",["require","exports","module","lodash"],function(i,e){var t
 //     jquery-pump is licensed under the MIT terms.
 
 define("__jquery-meta-data/helpers",["require","exports","module","jquery","lodash"],function(e,t){e("jquery"),e("lodash"),t.buildPrefixRegExp=function(e){return new RegExp("^"+e+"([A-Z$_].*$)")},t.lowercaseFirst=function(e){return e.charAt(0).toLowerCase()+e.slice(1)},t.uppercaseFirst=function(e){return e.charAt(0).toUpperCase()+e.slice(1)},t.fullKey=function(e,r){return e?e+t.uppercaseFirst(r):r}}),define("__jquery-meta-data/read",["require","exports","module","lodash","./helpers"],function(e,t){function r(e){return e}var a=e("lodash"),n=e("./helpers");t.all=function(e,t){var i=e.data(),u=t.parse||r;if(t.prefix){var s=n.buildPrefixRegExp(t.prefix);return a.transform(i,function(r,a,i){var o=i.match(s);if(o){var p=n.lowercaseFirst(o[1]);a=u(a,p,i),t.replace&&e.data(i,a),r[p]=a}})}return a.mapValues(i,function(e,t){return u(e,t,t)})},t.single=function(e,t,r){var a=n.fullKey(t.prefix,r),i=e.data(a);return t.parse&&(i=t.parse(i,r,a),t.replace&&e.data(a,i)),i}}),define("__jquery-meta-data/set",["require","exports","module","lodash","./helpers"],function(e,t){var r=e("lodash"),a=e("./helpers");t.single=function(e,t,r,n){var i=a.fullKey(t.prefix,r);n=t.stringify?t.stringify(n,r,i):n,e.data(i,n)},t.multiple=function(e,a,n){r.each(n,function(r,n){t.single(e,a,n,r)})}}),define("jquery-meta-data",["require","exports","module","jquery","lodash","./__jquery-meta-data/read","./__jquery-meta-data/set"],function(e){var t=e("jquery"),r=e("lodash"),a=e("./__jquery-meta-data/read"),n=e("./__jquery-meta-data/set"),i={};t.metaData=function(){r.isObject(arguments[0])?r.assign(i,arguments[0]):i[arguments[0]]=arguments[1]},t.prototype.metaData=function(e){return e=r.isString(e)?i[e]:e,1===arguments.length?a.all(this,e):2!==arguments.length?(n.single(this,e,arguments[1],arguments[2]),this):r.isString(arguments[1])?a.single(this,e,arguments[1]):r.isObject(arguments[1])?(n.multiple(this,e,arguments[1]),this):void 0}}),define("__jquery-pump/parse-method-string",["require","exports","module"],function(e,t,r){var a=/\s*:\s*/g,n=/(?:(.+?)\|)?(.+?)$/;r.exports=function(e){var t=e.match(n),r=t[2].split(a),i=r.shift();return{selector:t[1],method:i,args:r}}}),define("__jquery-pump/getter-setter",["require","exports","module","jquery","./parse-method-string"],function(e,t){var r=(e("jquery"),e("./parse-method-string"));t.destGet=function(e,t){var a=r(t);return e[a.method].apply(e,a.args)},t.destSet=function(e,t,a){var n=r(t),i=n.selector,u=n.args;return u.push(a),e=i?e.find(i):e,e[n.method].apply(e,u)}}),define("jquery-pump",["require","exports","module","pump","jquery","jquery-meta-data","./__jquery-pump/getter-setter"],function(e,t,r){var a=e("pump"),n=e("jquery"),i=(e("jquery-meta-data"),r.exports=a.extend({initialize:function(e,t){t=t||{};var r=t.destination;_.defaults(t,this.metaDataOptions),_.defaults(t,{prefix:this.prefix}),a.prototype.initialize.call(this,e),_.each(r,function(e){var r=n(e),a=r.metaData(t),i=this.pipe(a);i.to(r)},this)},prefix:"pipe",metaDataOptions:{parse:function(e){return e.split(/\s*,\s*/g)}}}));i.assignProto(e("./__jquery-pump/getter-setter")),n.prototype.pump=function(e,t){return t=t||{},t.destination=this,i(e,t)}});
-//     bb-model-view
-//     (c) simonfan
-//     bb-model-view is licensed under the MIT terms.
 
-/**
- * The modeld is the object that links together $els and models.
- *
- * @module bb-model-view
- */
-
-/* jshint ignore:start */
-
-/* jshint ignore:end */
-
-define('__bb-model-view/model-pump',['require','exports','module','jquery-pump'],function (require, exports, module) {
+define('__bb-model-view/model-pump',['require','exports','module','jquery-pump','lodash'],function (require, exports, module) {
 	
 
-	var jqPump = require('jquery-pump');
+	var jqPump = require('jquery-pump'),
+		_      = require('lodash');
 
+	function _echo(v) {
+		return v;
+	}
 
+	/**
+	 * get parser or stringifier
+	 * @private
+	 * @return {[type]} [description]
+	 */
+	function _retrieveFunction(hash, property) {
 
-	var modelPump = module.exports = jqPump.extend({
-
-		srcGet: function getFromModel(model, property) {
-			return model.get(property);
-		},
-
-		srcSet: function setToModel(model, property, value) {
-			return model.set(property, value);
+		if (!hash) {
+			return _echo;
 		}
 
+		// get the func for the property
+		var func = hash[property];
+
+		if (!func) {
+			return _echo;
+		}
+
+		// if func happens to be a string, get the referred func.
+		return _.isFunction(func) ? func : hash[func];
+	}
+
+	exports.modelPump = jqPump.extend({
+
+
+		/**
+		 * Initializes pump and picks strngifiers and parser options.
+		 *
+		 * @param  {[type]} source  [description]
+		 * @param  {[type]} options [description]
+		 * @return {[type]}         [description]
+		 */
+		initialize: function initializeModelPump(source, options) {
+
+
+			// bind methods
+			_.bindAll(this, ['srcGet', 'srcSet']);
+
+			// initialize pump
+			jqPump.prototype.initialize.call(this, source, options);
+			// set the bbmvID as data attribute to the destination els.
+			// that is for the html->model binding
+
+
+
+			// pick strngifier and parser methods
+			options = options || {};
+			_.each(['stringify', 'stringifiers', 'parsers', 'parse'], function (prop) {
+				this[prop] = options[prop] || this[prop];
+			}, this);
+
+
+
+			var pump = this;
+
+			_.each(this.pipes, function (pipe, pipeId) {
+				var $el = pipe.destination;
+
+				// set bbmvID
+				$el.data(this.bbmvIDAttribute, pipeId);
+			}, this);
+		},
+
+		/**
+		 * The name of the data attribute that should store the uuid for element.
+		 * Used to listen to changes.
+		 *
+		 * @property bbmvID description]
+		 * @type {String}
+		 */
+		bbmvIDAttribute: 'bbmvID',
+
+		/**
+		 * Method specified by pump API
+		 * @param  {[type]} model    [description]
+		 * @param  {[type]} property [description]
+		 * @return {[type]}          [description]
+		 */
+		srcGet: function getFromModel(model, property) {
+			var value = model.get(property);
+
+			return this.stringify(property, value);
+		},
+
+		/**
+		 * Method specified by pump API
+		 * @param  {[type]} model    [description]
+		 * @param  {[type]} property [description]
+		 * @param  {[type]} value    [description]
+		 * @return {[type]}          [description]
+		 */
+		srcSet: function setToModel(model, property, value) {
+
+			var value = model.set(property, value);
+
+			return this.parse(property, value);
+		},
+
+		/**
+		 * Hash to hold stringifiers.
+		 * @type {Object}
+		 */
+		stringifiers: {},
+		stringify: function stringify(property, value) {
+
+
+			var stringifier = _retrieveFunction(this.stringifiers, property);
+
+			return stringifier(value);
+		},
+
+		parsers: {},
+		parse: function parse(property, value) {
+
+			var parser = _retrieveFunction(this.parsers, property);
+
+			return parser(value);
+		},
+
+
+
 	});
+
+});
+
+define('__bb-model-view/elements',['require','exports','module'],function (require, exports, module) {
+	
+
+	/**
+	 * The string by which binding ddata attributes are prefixed.
+	 * data-bind-somekey="method"
+	 *
+	 * @type {String}
+	 */
+	exports.prefix = 'bind';
+
+	/**
+	 * Method that returns ALL jquery elements that should
+	 * have any data-binding.
+	 *
+	 * @return {[type]} [description]
+	 */
+	exports.boundElements = function boundElements() {
+		// $el.add() creates a NEW SELECTION :)
+		// it does not add to the existing jq object.
+		var $boundChildElements = this.$el.find(':data-prefix(' + this.prefix + ')');
+		return this.$el.add($boundChildElements);
+	};
+
 
 });
 
@@ -1992,7 +2155,7 @@ define('__bb-model-view/model-pump',['require','exports','module','jquery-pump']
 
 /* jshint ignore:end */
 
-define('bb-model-view',['require','exports','module','jquery-selector-data-prefix','lodash','lowercase-backbone','jquery-value','./__bb-model-view/model-pump'],function (require, exports, module) {
+define('bb-model-view',['require','exports','module','jquery-selector-data-prefix','lodash','lowercase-backbone','jquery-value','./__bb-model-view/update','./__bb-model-view/model-pump','./__bb-model-view/elements'],function (require, exports, module) {
 	
 
 
@@ -2003,9 +2166,11 @@ define('bb-model-view',['require','exports','module','jquery-selector-data-prefi
 		backbone = require('lowercase-backbone'),
 		jqValue  = require('jquery-value');
 
-	var modelPump = require('./__bb-model-view/model-pump');
-
-	var initializeOptionNames = ['map', 'parsers', 'stringifiers'];
+	/**
+	 * Name of parser and stringifier option names.
+	 * @type {Array}
+	 */
+	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix'];
 
 	/**
 	 * The constructor for the bbModelView object.
@@ -2022,15 +2187,6 @@ define('bb-model-view',['require','exports','module','jquery-selector-data-prefi
 	 */
 	var bbModelView = module.exports = backbone.view.extend({
 
-		/**
-		 * The name of the data attribute that should store the uuid for element.
-		 * Used to listen to changes.
-		 *
-		 * @property bbmvUIDAttribute description]
-		 * @type {String}
-		 */
-		bbmvUIDAttribute: 'bbmvUID',
-
 		initialize: function initialize() {
 			// initialize basic backbone view
 			backbone.view.prototype.initialize.apply(this, arguments);
@@ -2045,64 +2201,46 @@ define('bb-model-view',['require','exports','module','jquery-selector-data-prefi
 		 * @param options {Object}
 		 */
 		initializeModelView: function initializeModelView(options) {
-			if (!this.model) {
-				throw new Error('No model set for model view.');
-			}
+			if (!this.model) { throw new Error('No model set for model view.'); }
+			if (!this.$el) { throw new Error('No el set on model view.'); }
 
-			if (!this.$el) {
-				throw new Error('No el set on model view.');
-			}
+			// [1] find all elements that have bindings defined.
+			var $boundElements = this.boundElements();
 
-			options = options || {};
+			// [2] create a jquery pump with those elements.
+			// [2.1] get stringifiers and parsers
+			var pumpOptions = _.pick(options, pumpOptionNames);
+			_.defaults(pumpOptions, _.pick(this, pumpOptionNames));
 
-			_.defaults(options, _.pick(this, initializeOptionNames));
-			_.assign(this, options);
+			// [2.2] set destination
+			pumpOptions.destination = $boundElements;
+
+			// [2.2] effectively create the pump
+			this.pump = this.modelPump(this.model, pumpOptions);
+
+			// [3] listen to change events on $boundElements
+			$boundElements.filter(':input').on('change', _.bind(function (e) {
+
+				var pipeId = $(e.target).data(this.pump.bbmvIDAttribute);
+
+				this.pump.drain(pipeId);
+			}, this));
 
 
-			// find the elements that have bindings
-			//
-			var $modelEls = this.$el.add(this.$el.find(this.bindingSelector));
+			// [4] listen to change events on the model
+			this.model.on('change', _.bind(function (model) {
 
-			// create a jquery pump with those elements.
-			this.modelPump = $modelEls.pump(this.model);
+				this.pump.pump();
+			}, this));
 
-			// initialize pump
-			var promise = this.pump.pump();
-
-			this.ready = _.bind(promise.done, promise);
+			// [3] initialize view by pumping the model data.
+			this.updateView();
 		},
-
-		updateView: function pumpModelDataToView() {
-			var promise = this.modelPump.pump();
-
-			this.ready = _.bind(promise.done, promise);
-
-			return promise;
-		},
-
-		updateModel: function drainViewDataToModel() {
-			var promise = this.pump.drain();
-
-			this.ready = _.bind(promise.done, promise);
-
-			return promise;
-		},
-
-		prefix: 'bind',
-
-		bindingSelector: ':data-prefix(bind)',
-
-		stringifiers: {},
-
-		/**
-		 * Hash for the parsers. Every parser function is called
-		 * within the's context and takes the value read
-		 * from the DOM as arugment.
-		 *
-		 * @property parsers
-		 * @type Object
-		 */
-		parsers: {},
 	});
+
+	bbModelView
+		.assignProto(require('./__bb-model-view/update'))
+		.assignProto(require('./__bb-model-view/model-pump'))
+		.assignProto(require('./__bb-model-view/elements'));
 });
 
