@@ -37,11 +37,6 @@ function(modelView, should, Backbone, fruitTemplate) {
 				el: this.$fruit,
 				model: fruitModel,
 
-				stringifiers: {
-					colors: function (c) {
-						return c.join(', ');
-					},
-				}
 			});
 
 			fruitView.ready(_.bind(function () {
@@ -68,16 +63,6 @@ function(modelView, should, Backbone, fruitTemplate) {
 			var fruitView = modelView({
 				el: $fruit,
 				model: fruitModel,
-
-
-
-				stringifiers: {
-					////////////////////////////
-					///////////// HUUUGE // problem					////////////////////////////
-					colors: function (c) {
-						return c ? c.join(', ') : '';
-					},
-				},
 			});
 
 

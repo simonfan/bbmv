@@ -4,51 +4,6 @@
         "version": "0.0.0"
     },
     "files": {
-        "src/__bb-model-view/dom-to-model/index.js": {
-            "name": "src/__bb-model-view/dom-to-model/index.js",
-            "modules": {
-                "dom-to-model": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/__bb-model-view/dom-to-model/read-dom-value.js": {
-            "name": "src/__bb-model-view/dom-to-model/read-dom-value.js",
-            "modules": {
-                "dom-to-model-read": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/__bb-model-view/dom-to-model/update.js": {
-            "name": "src/__bb-model-view/dom-to-model/update.js",
-            "modules": {
-                "dom-to-model-update": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/__bb-model-view/model-to-dom/index.js": {
-            "name": "src/__bb-model-view/model-to-dom/index.js",
-            "modules": {
-                "model-to-dom": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/__bb-model-view/model-to-dom/update.js": {
-            "name": "src/__bb-model-view/model-to-dom/update.js",
-            "modules": {
-                "model-to-dom-update": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/__bb-model-view/elements.js": {
             "name": "src/__bb-model-view/elements.js",
             "modules": {},
@@ -83,13 +38,7 @@
     "modules": {
         "bb-model-view": {
             "name": "bb-model-view",
-            "submodules": {
-                "dom-to-model": 1,
-                "dom-to-model-read": 1,
-                "dom-to-model-update": 1,
-                "model-to-dom": 1,
-                "model-to-dom-update": 1
-            },
+            "submodules": {},
             "classes": {},
             "fors": {},
             "namespaces": {},
@@ -97,265 +46,26 @@
             "file": "src/index.js",
             "line": 5,
             "description": "The modeld is the object that links together $els and models."
-        },
-        "dom-to-model": {
-            "name": "dom-to-model",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 1
-        },
-        "dom-to-model-read": {
-            "name": "dom-to-model-read",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/__bb-model-view/dom-to-model/read-dom-value.js",
-            "line": 1
-        },
-        "dom-to-model-update": {
-            "name": "dom-to-model-update",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/__bb-model-view/dom-to-model/update.js",
-            "line": 1
-        },
-        "model-to-dom": {
-            "name": "model-to-dom",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/__bb-model-view/model-to-dom/index.js",
-            "line": 1
-        },
-        "model-to-dom-update": {
-            "name": "model-to-dom-update",
-            "submodules": {},
-            "classes": {},
-            "fors": {},
-            "is_submodule": 1,
-            "namespaces": {},
-            "module": "bb-model-view",
-            "namespace": "",
-            "file": "src/__bb-model-view/model-to-dom/update.js",
-            "line": 1
         }
     },
     "classes": {},
     "classitems": [
         {
-            "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 14,
-            "description": "Removes the method part from the bbmvSelector.",
-            "itemtype": "method",
-            "name": "parseJqSelector",
-            "params": [
-                {
-                    "name": "str",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model"
-        },
-        {
-            "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 26,
-            "description": "This method tries to find and bind an element\nto the view.",
-            "itemtype": "method",
-            "name": "bindElement",
-            "params": [
-                {
-                    "name": "view",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "bbmvSelector",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "attribute",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model"
-        },
-        {
-            "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 86,
-            "description": "Initialization logic for binding html input tags values\nto the models attributes.",
-            "itemtype": "method",
-            "name": "bindDOMToModel",
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model"
-        },
-        {
-            "file": "src/__bb-model-view/dom-to-model/index.js",
-            "line": 94,
-            "description": "Hash where elements are referenced\nby their uuids (created by us)",
-            "itemtype": "property",
-            "name": "bindings",
-            "type": "Object",
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model"
-        },
-        {
-            "file": "src/__bb-model-view/dom-to-model/read-dom-value.js",
-            "line": 11,
-            "description": "Hash of functions that will return a value\ngiven an jquery $el.\nKeyed by tagName",
-            "itemtype": "property",
-            "name": "$readers",
-            "access": "private",
-            "tagname": "",
-            "type": "Object",
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model-read"
-        },
-        {
-            "file": "src/__bb-model-view/dom-to-model/read-dom-value.js",
-            "line": 41,
-            "description": "Takes a selector string and returns the value of it.",
-            "itemtype": "method",
-            "name": "readDomValue",
-            "params": [
-                {
-                    "name": "selector",
-                    "description": "",
-                    "type": "String"
-                }
-            ],
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model-read"
-        },
-        {
-            "file": "src/__bb-model-view/dom-to-model/update.js",
-            "line": 14,
-            "description": "'change' event handler for all elements selected by selectors\ndefined on map that select at least one input element.\n\nOnly propagates modifications from REGISTERED elements.",
-            "itemtype": "method",
-            "name": "updateModel",
-            "access": "private",
-            "tagname": "",
-            "params": [
-                {
-                    "name": "e",
-                    "description": "",
-                    "type": "Event"
-                }
-            ],
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "dom-to-model-update"
-        },
-        {
-            "file": "src/__bb-model-view/model-to-dom/index.js",
-            "line": 15,
-            "itemtype": "method",
-            "name": "bindModelToDOM",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "",
-                    "type": "backbone.$el Object"
-                },
-                {
-                    "name": "map",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "model-to-dom"
-        },
-        {
-            "file": "src/__bb-model-view/model-to-dom/index.js",
-            "line": 23,
-            "description": "The function that will fill in html for us.\nUses jquery.filler to build a cache of the\njquery DOM selections.",
-            "itemtype": "method",
-            "name": "fill",
-            "params": [
-                {
-                    "name": "data",
-                    "description": "",
-                    "type": "Object"
-                }
-            ],
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "model-to-dom"
-        },
-        {
-            "file": "src/__bb-model-view/model-to-dom/update.js",
-            "line": 10,
-            "description": "Method used internally to update the html.",
-            "itemtype": "method",
-            "name": "update",
-            "_private_": "",
-            "params": [
-                {
-                    "name": "model",
-                    "description": ""
-                }
-            ],
-            "class": "",
-            "module": "bb-model-view",
-            "submodule": "model-to-dom-update"
-        },
-        {
             "file": "src/__bb-model-view/elements.js",
-            "line": 4,
+            "line": 9,
             "description": "The string by which binding ddata attributes are prefixed.\ndata-bind-somekey=\"method\"",
             "type": "{String}",
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/elements.js",
-            "line": 12,
+            "line": 17,
             "description": "Method that returns ALL jquery elements that should\nhave any data-binding.",
             "return": {
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
@@ -367,8 +77,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
@@ -390,22 +99,11 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
-            "line": 74,
-            "description": "The name of the data attribute that should store the uuid for element.\nUsed to listen to changes.",
-            "itemtype": "property",
-            "name": "bbmvID description]",
-            "type": "{String}",
-            "class": "",
-            "module": "bb-model-view"
-        },
-        {
-            "file": "src/__bb-model-view/model-pump.js",
-            "line": 83,
+            "line": 60,
             "description": "Method specified by pump API",
             "params": [
                 {
@@ -423,12 +121,11 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
-            "line": 95,
+            "line": 72,
             "description": "Method specified by pump API",
             "params": [
                 {
@@ -451,16 +148,14 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
-            "line": 109,
+            "line": 86,
             "description": "Hash to hold stringifiers.",
             "type": "{Object}",
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/update.js",
@@ -470,8 +165,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/__bb-model-view/update.js",
@@ -488,8 +182,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bb-model-view"
+            "class": ""
         },
         {
             "file": "src/index.js",
@@ -501,40 +194,7 @@
         },
         {
             "file": "src/index.js",
-            "line": 32,
-            "description": "The constructor for the bbModelView object.",
-            "itemtype": "method",
-            "name": "bbModelView",
-            "is_constructor": 1,
-            "params": [
-                {
-                    "name": "extensions",
-                    "description": "",
-                    "type": "Object"
-                },
-                {
-                    "name": "$el",
-                    "description": "\n        The $el that owns the bbModelView object",
-                    "type": "Object"
-                },
-                {
-                    "name": "map",
-                    "description": "\n        Map that links selectors to attributes",
-                    "type": "Object"
-                },
-                {
-                    "name": "model",
-                    "description": "\n        Optionally provide a model that will initially fill the $el.",
-                    "type": "Object",
-                    "optional": true
-                }
-            ],
-            "class": "",
-            "module": "bb-model-view"
-        },
-        {
-            "file": "src/index.js",
-            "line": 54,
+            "line": 42,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -551,16 +211,12 @@
     ],
     "warnings": [
         {
-            "message": "unknown tag: _private_",
-            "line": " src/__bb-model-view/model-to-dom/update.js:10"
-        },
-        {
             "message": "Missing item type\nThe string by which binding ddata attributes are prefixed.\ndata-bind-somekey=\"method\"",
-            "line": " src/__bb-model-view/elements.js:4"
+            "line": " src/__bb-model-view/elements.js:9"
         },
         {
             "message": "Missing item type\nMethod that returns ALL jquery elements that should\nhave any data-binding.",
-            "line": " src/__bb-model-view/elements.js:12"
+            "line": " src/__bb-model-view/elements.js:17"
         },
         {
             "message": "Missing item type\nget parser or stringifier",
@@ -572,15 +228,15 @@
         },
         {
             "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bb-model-view/model-pump.js:83"
+            "line": " src/__bb-model-view/model-pump.js:60"
         },
         {
             "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bb-model-view/model-pump.js:95"
+            "line": " src/__bb-model-view/model-pump.js:72"
         },
         {
             "message": "Missing item type\nHash to hold stringifiers.",
-            "line": " src/__bb-model-view/model-pump.js:109"
+            "line": " src/__bb-model-view/model-pump.js:86"
         },
         {
             "message": "Missing item type\nUpdates the view by pumping data from the source model.",

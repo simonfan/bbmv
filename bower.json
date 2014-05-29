@@ -1,11 +1,10 @@
 {
   "name": "bb-model-view",
   "main": "built/bb-model-view.js",
-  "version": "0.3.5",
+  "version": "0.4.5",
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",
-    "jquery.filler": "0.3.4",
     "jquery-meta-data": "*",
     "jquery-selector-data-prefix": "~0.1.0",
     "jquery-pump": "0.2.2",

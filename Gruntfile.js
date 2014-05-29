@@ -100,10 +100,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone", "jquery.filler"],
-
-					// excludeShallow
-					excludeShallow: [],
+					exclude: ["jquery-meta-data", "jquery-selector-data-prefix", "jquery-pump", "jquery-value", "lowercase-backbone"],
 
 					optimize: 'uglify2',
 
@@ -131,7 +128,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["lowercase-backbone", "jquery.filler"],
+					exclude: ["backbone", "q", "lodash"],
 
 					// excludeShallow
 					excludeShallow: [],

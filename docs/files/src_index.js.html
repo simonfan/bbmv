@@ -47,16 +47,6 @@
             
                 <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
             
-                <li><a href="../modules/dom-to-model.html">dom-to-model</a></li>
-            
-                <li><a href="../modules/dom-to-model-read.html">dom-to-model-read</a></li>
-            
-                <li><a href="../modules/dom-to-model-update.html">dom-to-model-update</a></li>
-            
-                <li><a href="../modules/model-to-dom.html">model-to-dom</a></li>
-            
-                <li><a href="../modules/model-to-dom-update.html">model-to-dom-update</a></li>
-            
             </ul>
         </div>
     </div>
@@ -114,12 +104,12 @@ define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
 
-	// :data-prefix(prefix) selector
-	require(&#x27;jquery-selector-data-prefix&#x27;);
-
 	var _        = require(&#x27;lodash&#x27;),
 		backbone = require(&#x27;lowercase-backbone&#x27;),
 		jqValue  = require(&#x27;jquery-value&#x27;);
+
+
+	var bind = require(&#x27;./__bb-model-view/bind&#x27;);
 
 	/**
 	 * Name of parser and stringifier option names.
@@ -127,19 +117,7 @@ define(function (require, exports, module) {
 	 */
 	var pumpOptionNames = [&#x27;parse&#x27;, &#x27;parsers&#x27;, &#x27;stringify&#x27;, &#x27;stringifiers&#x27;, &#x27;prefix&#x27;];
 
-	/**
-	 * The constructor for the bbModelView object.
-	 *
-	 * @method bbModelView
-	 * @constructor
-	 * @param extensions {Object}
-	 *     @param $el {Object}
-	 *         The $el that owns the bbModelView object
-	 *     @param map {Object}
-	 *         Map that links selectors to attributes
-	 *     @param [model] {Object}
-	 *         Optionally provide a model that will initially fill the $el.
-	 */
+
 	var bbModelView = module.exports = backbone.view.extend({
 
 		initialize: function initialize() {
@@ -162,6 +140,8 @@ define(function (require, exports, module) {
 			// [1] find all elements that have bindings defined.
 			var $boundElements = this.boundElements();
 
+			console.log(options)
+
 			// [2] create a jquery pump with those elements.
 			// [2.1] get stringifiers and parsers
 			var pumpOptions = _.pick(options, pumpOptionNames);
@@ -174,21 +154,12 @@ define(function (require, exports, module) {
 			this.pump = this.modelPump(this.model, pumpOptions);
 
 			// [3] listen to change events on $boundElements
-			$boundElements.filter(&#x27;:input&#x27;).on(&#x27;change&#x27;, _.bind(function (e) {
-
-				var pipeId = $(e.target).data(this.pump.bbmvIDAttribute);
-
-				this.pump.drain(pipeId);
-			}, this));
-
+			bind.DOMToModel.call(this, $boundElements);
 
 			// [4] listen to change events on the model
-			this.model.on(&#x27;change&#x27;, _.bind(function (model) {
+			bind.modelToDOM.call(this, this.model);
 
-				this.pump.pump();
-			}, this));
-
-			// [3] initialize view by pumping the model data.
+			// [5] initialize view by pumping the model data.
 			this.updateView();
 		},
 	});
