@@ -1,13 +1,13 @@
 {
   "name": "bb-model-view",
   "main": "built/bb-model-view.js",
-  "version": "0.4.5",
+  "version": "0.4.6",
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",
     "jquery-meta-data": "*",
     "jquery-selector-data-prefix": "~0.1.0",
-    "jquery-pump": "0.2.2",
+    "jquery-pump": "0.2.3",
     "jquery-value": "~0.1.1"
   },
   "devDependencies": {
@@ -21,7 +21,6 @@
   "resolutions": {
     "subject": "~0.5.8",
     "jquery": "~2.1.1",
-    "jquery-pump": "0.2.2",
-    "pump": "0.3.4"
+    "jquery-pump": "0.2.3"
   }
 }

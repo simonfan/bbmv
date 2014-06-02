@@ -52,8 +52,6 @@ define(function (require, exports, module) {
 			// [1] find all elements that have bindings defined.
 			var $boundElements = this.boundElements();
 
-			console.log(options)
-
 			// [2] create a jquery pump with those elements.
 			// [2.1] get stringifiers and parsers
 			var pumpOptions = _.pick(options, pumpOptionNames);

@@ -128,7 +128,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["backbone", "q", "lodash"],
+					exclude: ["jquery-meta-data", "jquery-selector-data-prefix", "jquery-pump", "jquery-value", "lowercase-backbone"],
 
 					// excludeShallow
 					excludeShallow: [],
