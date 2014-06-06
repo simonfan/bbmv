@@ -7,7 +7,7 @@
     "lowercase-backbone": "~0.2.5",
     "jquery-meta-data": "*",
     "jquery-selector-data-prefix": "~0.1.0",
-    "jquery-pump": "0.3.3",
+    "jquery-pump": "0.3.4",
     "jquery-value": "~0.1.1"
   },
   "devDependencies": {
@@ -21,6 +21,6 @@
   "resolutions": {
     "subject": "~0.5.8",
     "jquery": "~2.1.1",
-    "jquery-pump": "0.3.3"
+    "jquery-pump": "0.3.4"
   }
 }
