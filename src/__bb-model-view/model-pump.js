@@ -4,32 +4,6 @@ define(function (require, exports, module) {
 	var jqPump = require('jquery-pump'),
 		_      = require('lodash');
 
-	function _echo(v) {
-		return v;
-	}
-
-	/**
-	 * get parser or stringifier
-	 * @private
-	 * @return {[type]} [description]
-	 */
-	function _retrieveFunction(hash, property) {
-
-		if (!hash) {
-			return _echo;
-		}
-
-		// get the func for the property
-		var func = hash[property];
-
-		if (!func) {
-			return _echo;
-		}
-
-		// if func happens to be a string, get the referred func.
-		return _.isFunction(func) ? func : hash[func];
-	}
-
 	exports.modelPump = jqPump.extend({
 
 
@@ -64,9 +38,8 @@ define(function (require, exports, module) {
 		 * @return {[type]}          [description]
 		 */
 		srcGet: function getFromModel(model, property) {
-			var value = model.get(property);
 
-			return this.stringify(property, value);
+			return model.get(property);
 		},
 
 		/**
@@ -78,30 +51,7 @@ define(function (require, exports, module) {
 		 */
 		srcSet: function setToModel(model, property, value) {
 
-			var value = model.set(property, value);
-
-			return this.parse(property, value);
-		},
-
-		/**
-		 * Hash to hold stringifiers.
-		 * @type {Object}
-		 */
-		stringifiers: void(0),
-		stringify: function stringify(property, value) {
-
-
-			var stringifier = _retrieveFunction(this.stringifiers, property);
-
-			return stringifier(value);
-		},
-
-		parsers: void(0),
-		parse: function parse(property, value) {
-
-			var parser = _retrieveFunction(this.parsers, property);
-
-			return parser(value);
+			return model.set(property, value);
 		},
 	});
 

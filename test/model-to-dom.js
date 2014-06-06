@@ -20,7 +20,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 		});
 
 		afterEach(function () {
-		//	this.$fixture.remove();
+			this.$fixture.remove();
 		});
 
 
@@ -82,7 +82,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 		});
 
 
-		it('supports stringify modifications', function () {
+		it('supports stringify modifications', function (testdone) {
 			var fruitModel = new Backbone.Model({
 				name: 'Pineapple',
 				price: 40
@@ -90,25 +90,101 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 
 			var saleFruitDock = modelView.extend({
-				stringifiers: {
-					price: function stringifyPrice(price) {
-						return 'R$ ' + price + ',00';
+				formats: {
+					brl: {
+						stringify: function stringifyBRL(price) {
+							return 'R$ ' + price + ',00';
+						},
+						parse: function parseBRL(price) {
+							return parseInt(price);
+						},
+					},
+
+					usd: {
+						stringify: function stringifyUSD(price) {
+							return 'US$ ' + price * 2 + ',00';
+						},
+
+						parse: function parseUSD(price) {
+							return parseInt(price) / 2;
+						}
 					}
 				}
 			});
 
+			// the element that hodls the price
+			var $price = this.$fruit.find('[data-bind-price]');
+
 			var fruitView = saleFruitDock({
 				el: this.$fruit,
-				map: this.fruitMap,
+				model: fruitModel
+			})
+			.ready(function () {
+				$price.html().should.eql('R$ 40,00');
+
+				$price.data('usd').should.eql('US$ 80,00');
+
+				testdone();
+			});
+		});
+
+		it('supports parsing data from html', function (testdone) {
+			var fruitModel = new Backbone.Model({
+				name: 'Pineapple'
+			});
+
+
+			var saleFruitDock = modelView.extend({
+				formats: {
+					brl: {
+						stringify: function stringifyBRL(price) {
+							return 'R$ ' + price + ',00';
+						},
+						parse: function parseBRL(price) {
+							console.log('parse')
+							console.log(price)
+
+							price = price.replace('R$', '');
+
+							return parseInt(price);
+						},
+					},
+
+					usd: {
+						stringify: function stringifyUSD(price) {
+							return 'US$ ' + price * 2 + ',00';
+						},
+
+						parse: function parseUSD(price) {
+							return parseInt(price) / 2;
+						}
+					}
+				}
+			});
+
+			// the element that hodls the price
+			var $price = this.$fruit.find('[data-bind-price]');
+
+			var fruitView = saleFruitDock({
+				el: this.$fruit,
 				model: fruitModel
 			});
 
-			var $price = this.$fruit.find('div[bound-attribute="price"]');
-			$price.html().should.eql('R$ 40,00')
+			// set values on $price
+			$price.html('R$ 50,00');
+
+			$price.trigger('change');
+
+			setTimeout(function () {
+
+				fruitModel.get('price').should.eql(50);
+
+				testdone();
+			}, 500);
 		});
 
 
-		it('supports model attachment on instantiation', function () {
+		it.skip('supports model attachment on instantiation', function () {
 			var fruitModel = new Backbone.Model({
 				name: 'Melancia',
 				price: 20
@@ -133,7 +209,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 		});
 
 
-		describe('css properties', function () {
+		describe.skip('css properties', function () {
 			it('css properties', function (done) {
 				var fruitModel = new Backbone.Model({
 					name: 'Pineapple',

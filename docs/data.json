@@ -69,19 +69,7 @@
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
-            "line": 11,
-            "description": "get parser or stringifier",
-            "access": "private",
-            "tagname": "",
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "src/__bb-model-view/model-pump.js",
-            "line": 36,
+            "line": 10,
             "description": "Initializes pump and picks strngifiers and parser options.",
             "params": [
                 {
@@ -103,7 +91,7 @@
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
-            "line": 60,
+            "line": 34,
             "description": "Method specified by pump API",
             "params": [
                 {
@@ -125,7 +113,7 @@
         },
         {
             "file": "src/__bb-model-view/model-pump.js",
-            "line": 72,
+            "line": 45,
             "description": "Method specified by pump API",
             "params": [
                 {
@@ -148,13 +136,6 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
-        },
-        {
-            "file": "src/__bb-model-view/model-pump.js",
-            "line": 86,
-            "description": "Hash to hold stringifiers.",
-            "type": "{Object}",
             "class": ""
         },
         {
@@ -219,24 +200,16 @@
             "line": " src/__bb-model-view/elements.js:17"
         },
         {
-            "message": "Missing item type\nget parser or stringifier",
-            "line": " src/__bb-model-view/model-pump.js:11"
-        },
-        {
             "message": "Missing item type\nInitializes pump and picks strngifiers and parser options.",
-            "line": " src/__bb-model-view/model-pump.js:36"
+            "line": " src/__bb-model-view/model-pump.js:10"
         },
         {
             "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bb-model-view/model-pump.js:60"
+            "line": " src/__bb-model-view/model-pump.js:34"
         },
         {
             "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bb-model-view/model-pump.js:72"
-        },
-        {
-            "message": "Missing item type\nHash to hold stringifiers.",
-            "line": " src/__bb-model-view/model-pump.js:86"
+            "line": " src/__bb-model-view/model-pump.js:45"
         },
         {
             "message": "Missing item type\nUpdates the view by pumping data from the source model.",
