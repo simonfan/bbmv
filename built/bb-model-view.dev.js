@@ -41,11 +41,10 @@ define('__bb-model-view/update',['require','exports','module','lodash'],function
 	 * @return {[type]} [description]
 	 */
 	exports.updateView = function pumpModelDataToView() {
-		var promise = this.pump.pump();
 
-		this.ready = _.bind(promise.done, promise);
+		this.pump.pump();
 
-		return promise;
+		return this;
 	};
 
 	/**
@@ -55,11 +54,9 @@ define('__bb-model-view/update',['require','exports','module','lodash'],function
 	 * @return {[type]}      [description]
 	 */
 	exports.updateModel = function drainViewDataToModel(pipe) {
-		var promise = this.pump.drain(pipe);
+		this.pump.drain(pipe);
 
-		this.ready = _.bind(promise.done, promise);
-
-		return promise;
+		return this;
 	};
 
 
@@ -93,7 +90,7 @@ define('__bb-model-view/model-pump',['require','exports','module','jquery-pump',
 
 			// pick strngifier and parser methods
 			options = options || {};
-			_.each(['stringify', 'stringifiers', 'parsers', 'parse'], function (prop) {
+			_.each(['stringify', 'stringifiers', 'parse', 'parsers'], function (prop) {
 				this[prop] = options[prop] || this[prop];
 			}, this);
 		},

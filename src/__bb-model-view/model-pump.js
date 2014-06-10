@@ -26,7 +26,7 @@ define(function (require, exports, module) {
 
 			// pick strngifier and parser methods
 			options = options || {};
-			_.each(['stringify', 'stringifiers', 'parsers', 'parse'], function (prop) {
+			_.each(['stringify', 'stringifiers', 'parse', 'parsers'], function (prop) {
 				this[prop] = options[prop] || this[prop];
 			}, this);
 		},

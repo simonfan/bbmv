@@ -150,7 +150,7 @@
         },
         {
             "file": "src/__bb-model-view/update.js",
-            "line": 19,
+            "line": 18,
             "description": "Updates the model draining data from the view.",
             "params": [
                 {
@@ -217,7 +217,7 @@
         },
         {
             "message": "Missing item type\nUpdates the model draining data from the view.",
-            "line": " src/__bb-model-view/update.js:19"
+            "line": " src/__bb-model-view/update.js:18"
         },
         {
             "message": "Missing item type\nName of parser and stringifier option names.",

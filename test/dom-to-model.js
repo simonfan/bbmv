@@ -46,7 +46,7 @@ function(modelView  ,  should , Backbone, fruitTemplate) {
 
 			// emulate input modifications
 			var $fruit = this.$fruit,
-				$fname = $fruit.find('input[name="name"]');
+				$fname = $fruit.find('input[data-bind-name]');
 
 			$fname
 				.val('Not Banana Anymore!')

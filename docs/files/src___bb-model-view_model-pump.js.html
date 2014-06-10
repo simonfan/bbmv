@@ -114,7 +114,7 @@ define(function (require, exports, module) {
 
 			// pick strngifier and parser methods
 			options = options || {};
-			_.each([&#x27;stringify&#x27;, &#x27;stringifiers&#x27;, &#x27;parsers&#x27;, &#x27;parse&#x27;], function (prop) {
+			_.each([&#x27;stringify&#x27;, &#x27;stringifiers&#x27;, &#x27;parse&#x27;, &#x27;parsers&#x27;], function (prop) {
 				this[prop] = options[prop] || this[prop];
 			}, this);
 		},

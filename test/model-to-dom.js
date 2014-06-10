@@ -24,7 +24,7 @@ function(modelView, should, Backbone, fruitTemplate) {
 		});
 
 
-		it('values on the html should be initialized to the ones on the model', function (testdone) {
+		it('values on the html should be initialized to the ones on the model', function () {
 
 			// instantiate the model for the fruit.
 			var fruitModel = new Backbone.Model({
@@ -39,19 +39,13 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 			});
 
-			fruitView.ready(_.bind(function () {
 
-				// check that the values are correct
-				this.$fruit.find('input[data-bind-name]').value().should.eql('Banana');
+			// check that the values are correct
+			this.$fruit.find('input[data-bind-name]').value().should.eql('Banana');
 
-				_.map(this.$fruit.find('input[name="colors"]:checked'), function (box) {
-					return $(box).val();
-				}).should.eql(['green', 'yellow']);
-
-
-				testdone();
-
-			}, this))
+			_.map(this.$fruit.find('input[name="colors"]:checked'), function (box) {
+				return $(box).val();
+			}).should.eql(['green', 'yellow']);
 		});
 
 		it('whenever values on the model change, html should follow', function () {
@@ -71,18 +65,13 @@ function(modelView, should, Backbone, fruitTemplate) {
 				colors: ['red', 'yellow', 'green']
 			});
 
+			$fruit.find('input[data-bind-name]').val().should.eql('Apple');
 
-			fruitView.ready(function () {
-
-				$fruit.find('input[data-bind-name]').val().should.eql('Apple');
-
-				$fruit.find('input[data-bind-colors]').value().should.eql(['red', 'yellow', 'green']);
-
-			})
+			$fruit.find('input[name="colors"]').value().should.eql(['red', 'green', 'yellow']);
 		});
 
 
-		it('supports stringify modifications', function (testdone) {
+		it('supports stringify modifications', function () {
 			var fruitModel = new Backbone.Model({
 				name: 'Pineapple',
 				price: 40
@@ -119,16 +108,14 @@ function(modelView, should, Backbone, fruitTemplate) {
 				el: this.$fruit,
 				model: fruitModel
 			})
-			.ready(function () {
-				$price.html().should.eql('R$ 40,00');
 
-				$price.data('usd').should.eql('US$ 80,00');
 
-				testdone();
-			});
+			$price.html().should.eql('R$ 40,00');
+
+			$price.data('usd').should.eql('US$ 80,00');
 		});
 
-		it('supports parsing data from html', function (testdone) {
+		it('supports parsing data from html', function () {
 			var fruitModel = new Backbone.Model({
 				name: 'Pineapple'
 			});
@@ -175,16 +162,13 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 			$price.trigger('change');
 
-			setTimeout(function () {
 
-				fruitModel.get('price').should.eql(50);
 
-				testdone();
-			}, 500);
+			fruitModel.get('price').should.eql(50);
 		});
 
 
-		it.skip('supports model attachment on instantiation', function () {
+		it('supports model attachment on instantiation', function () {
 			var fruitModel = new Backbone.Model({
 				name: 'Melancia',
 				price: 20
@@ -196,7 +180,33 @@ function(modelView, should, Backbone, fruitTemplate) {
 						return 'R$ ' + price + ',00';
 					}
 				},
-				map: this.fruitMap
+				map: this.fruitMap,
+
+				formats: {
+					brl: {
+						stringify: function stringifyBRL(price) {
+							return 'R$ ' + price + ',00';
+						},
+						parse: function parseBRL(price) {
+							console.log('parse')
+							console.log(price)
+
+							price = price.replace('R$', '');
+
+							return parseInt(price);
+						},
+					},
+
+					usd: {
+						stringify: function stringifyUSD(price) {
+							return 'US$ ' + price * 2 + ',00';
+						},
+
+						parse: function parseUSD(price) {
+							return parseInt(price) / 2;
+						}
+					}
+				}
 			});
 
 			var fruitView = fruitView({
@@ -204,22 +214,20 @@ function(modelView, should, Backbone, fruitTemplate) {
 				model: fruitModel
 			});
 
-			var $price = this.$fruit.find('div[bound-attribute="price"]');
+			var $price = this.$fruit.find('div[data-bind-price]');
 			$price.html().should.eql('R$ 20,00')
 		});
 
 
-		describe.skip('css properties', function () {
-			it('css properties', function (done) {
+		describe('css properties', function () {
+			it('css properties', function () {
 				var fruitModel = new Backbone.Model({
 					name: 'Pineapple',
 					color: 'yellow'
 				});
 
 				var fruitView = modelView.extend({
-					map: {
-						color: '->css:background-color'
-					}
+					prefix: 'bindStyle',
 				});
 
 				var fruitView = fruitView({
@@ -230,11 +238,8 @@ function(modelView, should, Backbone, fruitTemplate) {
 
 				fruitModel.set({ 'color': 'rgb(0, 20, 100)' });
 
-				setTimeout(function () {
-					fruitView.$el.css('background-color').should.eql('rgb(0, 20, 100)');
 
-					done()
-				}, 0)
+				fruitView.$el.css('background-color').should.eql('rgb(0, 20, 100)');
 			})
 		})
 
