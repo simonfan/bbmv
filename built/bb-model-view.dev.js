@@ -185,6 +185,21 @@ define('bb-model-view',['require','exports','module','lodash','lowercase-backbon
 	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix', 'formats'];
 
 
+	/**
+	 * Options that will be picked and set onto the object
+	 * on initialization.
+	 * @type {Array}
+	 */
+	var initializationOptions = ['prefix'];
+
+
+
+	/**
+	 * Exports.
+	 * @param  {[type]} )                    {						backbone.view.prototype.initialize.apply(this, arguments);			this.initializeModelView.apply(this, arguments);		} [description]
+	 * @param  {[type]} initializeModelView: function                                               initializeModelView(options)                       {			if         (!this.model) { throw new Error('No model set for model view.'); }			if (!this.$el) { throw new Error('No el set on model view.'); }						var $boundElements = this.boundElements();									var pumpOptions = _.pick(options, pumpOptionNames [description]
+	 * @return {[type]}                      [description]
+	 */
 	var bbModelView = module.exports = backbone.view.extend({
 
 		initialize: function initialize() {
@@ -203,6 +218,11 @@ define('bb-model-view',['require','exports','module','lodash','lowercase-backbon
 		initializeModelView: function initializeModelView(options) {
 			if (!this.model) { throw new Error('No model set for model view.'); }
 			if (!this.$el) { throw new Error('No el set on model view.'); }
+
+			// [0] pick initialization options
+			_.each(initializationOptions, function (opt) {
+				this[opt] = options[opt] || this[opt];
+			}, this);
 
 			// [1] find all elements that have bindings defined.
 			var $boundElements = this.boundElements();

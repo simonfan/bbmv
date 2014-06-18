@@ -175,7 +175,38 @@
         },
         {
             "file": "src/index.js",
+            "line": 33,
+            "description": "Options that will be picked and set onto the object\non initialization.",
+            "type": "{Array}",
+            "class": "",
+            "module": "bb-model-view"
+        },
+        {
+            "file": "src/index.js",
             "line": 42,
+            "description": "Exports.",
+            "params": [
+                {
+                    "name": ")",
+                    "description": "{\t\t\t\t\t\tbackbone.view.prototype.initialize.apply(this, arguments);\t\t\tthis.initializeModelView.apply(this, arguments);\t\t} [description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "initializeModelView:",
+                    "description": "function                                               initializeModelView(options)                       {\t\t\tif         (!this.model) { throw new Error('No model set for model view.'); }\t\t\tif (!this.$el) { throw new Error('No el set on model view.'); }\t\t\t\t\t\tvar $boundElements = this.boundElements();\t\t\t\t\t\t\t\t\tvar pumpOptions = _.pick(options, pumpOptionNames [description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bb-model-view"
+        },
+        {
+            "file": "src/index.js",
+            "line": 57,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -222,6 +253,14 @@
         {
             "message": "Missing item type\nName of parser and stringifier option names.",
             "line": " src/index.js:26"
+        },
+        {
+            "message": "Missing item type\nOptions that will be picked and set onto the object\non initialization.",
+            "line": " src/index.js:33"
+        },
+        {
+            "message": "Missing item type\nExports.",
+            "line": " src/index.js:42"
         }
     ]
 }
