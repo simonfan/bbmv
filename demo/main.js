@@ -1,8 +1,22 @@
-define(['bb-model-view'], function (BbModelView) {
+define(['bb-model-view', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 
-    var msg = 'Main demo of the bb-model-view module running!';
 
-	console.log(msg);
+	var model = window.model = new Backbone.Model();
 
-	alert(msg);
+	var view  = bbmv({
+		el: $('#view'),
+		model: model,
+
+		methods: {
+			animateMarginLeft: function (value) {
+
+				console.log(this);
+				console.log(value);
+				this.stop().animate({ marginLeft: value }, 10000);
+			}
+		}
+	});
+
+	model.set('marginLeft', 1000);
+
 });

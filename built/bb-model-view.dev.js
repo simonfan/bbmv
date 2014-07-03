@@ -182,7 +182,7 @@ define('bb-model-view',['require','exports','module','lodash','lowercase-backbon
 	 * Name of parser and stringifier option names.
 	 * @type {Array}
 	 */
-	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix', 'formats'];
+	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix', 'formats', 'methods'];
 
 
 	/**

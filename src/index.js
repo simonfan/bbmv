@@ -27,7 +27,7 @@ define(function (require, exports, module) {
 	 * Name of parser and stringifier option names.
 	 * @type {Array}
 	 */
-	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix', 'formats'];
+	var pumpOptionNames = ['parse', 'parsers', 'stringify', 'stringifiers', 'prefix', 'formats', 'methods'];
 
 
 	/**
