@@ -2,12 +2,12 @@ YUI.add("yuidoc-meta", function(Y) {
    Y.YUIDoc = { meta: {
     "classes": [],
     "modules": [
-        "bb-model-view"
+        "bbmv"
     ],
     "allModules": [
         {
-            "displayName": "bb-model-view",
-            "name": "bb-model-view",
+            "displayName": "bbmv",
+            "name": "bbmv",
             "description": "The modeld is the object that links together $els and models."
         }
     ]

@@ -6,7 +6,7 @@ require.config({
 		text: '../bower_components/requirejs-text/text',
 		mocha: '../node_modules/mocha/mocha',
 		should: '../node_modules/should/should',
-		'bb-model-view': 'index',
+		bbmv: 'index',
 		lodash: '../bower_components/lodash/dist/lodash.compat',
 		'lowercase-backbone': '../bower_components/lowercase-backbone/built/lowercase-backbone',
 		jquery: '../bower_components/jquery/dist/jquery',

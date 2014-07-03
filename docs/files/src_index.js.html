@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/index.js - bb-model-view</title>
+    <title>src/index.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title="bb-model-view"></h1>
+                <h1><img src="../assets/css/logo.png" title="bbmv"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -45,7 +45,7 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
+                <li><a href="../modules/bbmv.html">bbmv</a></li>
             
             </ul>
         </div>
@@ -86,14 +86,14 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     bb-model-view
+//     bbmv
 //     (c) simonfan
-//     bb-model-view is licensed under the MIT terms.
+//     bbmv is licensed under the MIT terms.
 
 /**
  * The modeld is the object that links together $els and models.
  *
- * @module bb-model-view
+ * @module bbmv
  */
 
 /* jshint ignore:start */
@@ -109,7 +109,7 @@ define(function (require, exports, module) {
 		jqValue  = require(&#x27;jquery-value&#x27;);
 
 
-	var bind = require(&#x27;./__bb-model-view/bind&#x27;);
+	var bind = require(&#x27;./__bbmv/bind&#x27;);
 
 	/**
 	 * Name of parser and stringifier option names.
@@ -183,9 +183,9 @@ define(function (require, exports, module) {
 	});
 
 	bbModelView
-		.assignProto(require(&#x27;./__bb-model-view/update&#x27;))
-		.assignProto(require(&#x27;./__bb-model-view/model-pump&#x27;))
-		.assignProto(require(&#x27;./__bb-model-view/elements&#x27;));
+		.assignProto(require(&#x27;./__bbmv/update&#x27;))
+		.assignProto(require(&#x27;./__bbmv/model-pump&#x27;))
+		.assignProto(require(&#x27;./__bbmv/elements&#x27;));
 });
 
     </pre>

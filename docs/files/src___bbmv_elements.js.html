@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/update.js - bb-model-view</title>
+    <title>src/__bbmv/elements.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title="bb-model-view"></h1>
+                <h1><img src="../assets/css/logo.png" title="bbmv"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -45,7 +45,7 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
+                <li><a href="../modules/bbmv.html">bbmv</a></li>
             
             </ul>
         </div>
@@ -82,37 +82,37 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/update.js</h1>
+                        <h1 class="file-heading">File: src/__bbmv/elements.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var _ = require(&#x27;lodash&#x27;);
+
+
+	// :data-prefix(prefix) selector
+	require(&#x27;jquery-selector-data-prefix&#x27;);
 
 	/**
-	 * Updates the view by pumping data from the source model.
+	 * The string by which binding ddata attributes are prefixed.
+	 * data-bind-somekey=&quot;method&quot;
+	 *
+	 * @type {String}
+	 */
+	exports.prefix = &#x27;bind&#x27;;
+
+	/**
+	 * Method that returns ALL jquery elements that should
+	 * have any data-binding.
 	 *
 	 * @return {[type]} [description]
 	 */
-	exports.updateView = function pumpModelDataToView() {
-
-		this.pump.pump();
-
-		return this;
-	};
-
-	/**
-	 * Updates the model draining data from the view.
-	 *
-	 * @param  {[type]} pipe [description]
-	 * @return {[type]}      [description]
-	 */
-	exports.updateModel = function drainViewDataToModel(pipe) {
-		this.pump.drain(pipe);
-
-		return this;
+	exports.boundElements = function boundElements() {
+		// $el.add() creates a NEW SELECTION :)
+		// it does not add to the existing jq object.
+		var $boundChildElements = this.$el.find(&#x27;:data-prefix(&#x27; + this.prefix + &#x27;)&#x27;);
+		return this.$el.add($boundChildElements);
 	};
 
 

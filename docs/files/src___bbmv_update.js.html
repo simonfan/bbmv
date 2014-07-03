@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bb-model-view/model-pump.js - bb-model-view</title>
+    <title>src/__bbmv/update.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -15,7 +15,7 @@
     <div id="hd" class="yui3-g header">
         <div class="yui3-u-3-4">
             
-                <h1><img src="../assets/css/logo.png" title="bb-model-view"></h1>
+                <h1><img src="../assets/css/logo.png" title="bbmv"></h1>
             
         </div>
         <div class="yui3-u-1-4 version">
@@ -45,7 +45,7 @@
 
             <ul id="api-modules" class="apis modules">
             
-                <li><a href="../modules/bb-model-view.html">bb-model-view</a></li>
+                <li><a href="../modules/bbmv.html">bbmv</a></li>
             
             </ul>
         </div>
@@ -82,66 +82,39 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bb-model-view/model-pump.js</h1>
+                        <h1 class="file-heading">File: src/__bbmv/update.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var jqPump = require(&#x27;jquery-pump&#x27;),
-		_      = require(&#x27;lodash&#x27;);
+	var _ = require(&#x27;lodash&#x27;);
 
-	exports.modelPump = jqPump.extend({
+	/**
+	 * Updates the view by pumping data from the source model.
+	 *
+	 * @return {[type]} [description]
+	 */
+	exports.updateView = function pumpModelDataToView() {
 
+		this.pump.pump();
 
-		/**
-		 * Initializes pump and picks strngifiers and parser options.
-		 *
-		 * @param  {[type]} source  [description]
-		 * @param  {[type]} options [description]
-		 * @return {[type]}         [description]
-		 */
-		initialize: function initializeModelPump(source, options) {
+		return this;
+	};
 
-			// bind methods
-			_.bindAll(this, [&#x27;srcGet&#x27;, &#x27;srcSet&#x27;]);
+	/**
+	 * Updates the model draining data from the view.
+	 *
+	 * @param  {[type]} pipe [description]
+	 * @return {[type]}      [description]
+	 */
+	exports.updateModel = function drainViewDataToModel(pipe) {
+		this.pump.drain(pipe);
 
-			// initialize pump
-			jqPump.prototype.initialize.call(this, source, options);
-			// set the bbmvID as data attribute to the destination els.
-			// that is for the html-&gt;model binding
+		return this;
+	};
 
-			// pick strngifier and parser methods
-			options = options || {};
-			_.each([&#x27;stringify&#x27;, &#x27;stringifiers&#x27;, &#x27;parse&#x27;, &#x27;parsers&#x27;], function (prop) {
-				this[prop] = options[prop] || this[prop];
-			}, this);
-		},
-
-		/**
-		 * Method specified by pump API
-		 * @param  {[type]} model    [description]
-		 * @param  {[type]} property [description]
-		 * @return {[type]}          [description]
-		 */
-		srcGet: function getFromModel(model, property) {
-
-			return model.get(property);
-		},
-
-		/**
-		 * Method specified by pump API
-		 * @param  {[type]} model    [description]
-		 * @param  {[type]} property [description]
-		 * @param  {[type]} value    [description]
-		 * @return {[type]}          [description]
-		 */
-		srcSet: function setToModel(model, property, value) {
-
-			return model.set(property, value);
-		},
-	});
 
 });
 

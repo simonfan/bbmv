@@ -1,11 +1,11 @@
-//     bb-model-view
+//     bbmv
 //     (c) simonfan
-//     bb-model-view is licensed under the MIT terms.
+//     bbmv is licensed under the MIT terms.
 
 /**
  * The modeld is the object that links together $els and models.
  *
- * @module bb-model-view
+ * @module bbmv
  */
 
 /* jshint ignore:start */
@@ -21,7 +21,7 @@ define(function (require, exports, module) {
 		jqValue  = require('jquery-value');
 
 
-	var bind = require('./__bb-model-view/bind');
+	var bind = require('./__bbmv/bind');
 
 	/**
 	 * Name of parser and stringifier option names.
@@ -95,7 +95,7 @@ define(function (require, exports, module) {
 	});
 
 	bbModelView
-		.assignProto(require('./__bb-model-view/update'))
-		.assignProto(require('./__bb-model-view/model-pump'))
-		.assignProto(require('./__bb-model-view/elements'));
+		.assignProto(require('./__bbmv/update'))
+		.assignProto(require('./__bbmv/model-pump'))
+		.assignProto(require('./__bbmv/elements'));
 });

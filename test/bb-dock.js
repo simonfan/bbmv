@@ -4,7 +4,7 @@
 		// node
 		'.././src' :
 		// browser
-		'bb-model-view',
+		'bbmv',
 		// dependencies for the test
 		deps = [mod, 'should', 'bb-dock', 'text!/test/templates/fruit.html'];
 

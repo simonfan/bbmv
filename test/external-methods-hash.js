@@ -4,7 +4,7 @@
 		// node
 		'.././src' :
 		// browser
-		'bb-model-view',
+		'bbmv',
 		// dependencies for the test
 		deps = [mod, 'should', 'backbone', 'jquery'];
 

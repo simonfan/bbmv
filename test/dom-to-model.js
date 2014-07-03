@@ -1,4 +1,4 @@
-define(['bb-model-view', 'should', 'backbone', 'text!/test/templates/fruit.html'],
+define(['bbmv', 'should', 'backbone', 'text!/test/templates/fruit.html'],
 function(modelView  ,  should , Backbone, fruitTemplate) {
 
 	'use strict';

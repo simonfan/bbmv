@@ -1,4 +1,4 @@
-define(['bb-model-view', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
+define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 
 
 	var model = window.model = new Backbone.Model();

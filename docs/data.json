@@ -1,25 +1,25 @@
 {
     "project": {
-        "name": "bb-model-view",
+        "name": "bbmv",
         "version": "0.0.0"
     },
     "files": {
-        "src/__bb-model-view/elements.js": {
-            "name": "src/__bb-model-view/elements.js",
+        "src/__bbmv/elements.js": {
+            "name": "src/__bbmv/elements.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/__bb-model-view/model-pump.js": {
-            "name": "src/__bb-model-view/model-pump.js",
+        "src/__bbmv/model-pump.js": {
+            "name": "src/__bbmv/model-pump.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/__bb-model-view/update.js": {
-            "name": "src/__bb-model-view/update.js",
+        "src/__bbmv/update.js": {
+            "name": "src/__bbmv/update.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -28,7 +28,7 @@
         "src/index.js": {
             "name": "src/index.js",
             "modules": {
-                "bb-model-view": 1
+                "bbmv": 1
             },
             "classes": {},
             "fors": {},
@@ -36,8 +36,8 @@
         }
     },
     "modules": {
-        "bb-model-view": {
-            "name": "bb-model-view",
+        "bbmv": {
+            "name": "bbmv",
             "submodules": {},
             "classes": {},
             "fors": {},
@@ -51,14 +51,14 @@
     "classes": {},
     "classitems": [
         {
-            "file": "src/__bb-model-view/elements.js",
+            "file": "src/__bbmv/elements.js",
             "line": 9,
             "description": "The string by which binding ddata attributes are prefixed.\ndata-bind-somekey=\"method\"",
             "type": "{String}",
             "class": ""
         },
         {
-            "file": "src/__bb-model-view/elements.js",
+            "file": "src/__bbmv/elements.js",
             "line": 17,
             "description": "Method that returns ALL jquery elements that should\nhave any data-binding.",
             "return": {
@@ -68,7 +68,7 @@
             "class": ""
         },
         {
-            "file": "src/__bb-model-view/model-pump.js",
+            "file": "src/__bbmv/model-pump.js",
             "line": 10,
             "description": "Initializes pump and picks strngifiers and parser options.",
             "params": [
@@ -90,7 +90,7 @@
             "class": ""
         },
         {
-            "file": "src/__bb-model-view/model-pump.js",
+            "file": "src/__bbmv/model-pump.js",
             "line": 34,
             "description": "Method specified by pump API",
             "params": [
@@ -112,7 +112,7 @@
             "class": ""
         },
         {
-            "file": "src/__bb-model-view/model-pump.js",
+            "file": "src/__bbmv/model-pump.js",
             "line": 45,
             "description": "Method specified by pump API",
             "params": [
@@ -139,7 +139,7 @@
             "class": ""
         },
         {
-            "file": "src/__bb-model-view/update.js",
+            "file": "src/__bbmv/update.js",
             "line": 6,
             "description": "Updates the view by pumping data from the source model.",
             "return": {
@@ -149,7 +149,7 @@
             "class": ""
         },
         {
-            "file": "src/__bb-model-view/update.js",
+            "file": "src/__bbmv/update.js",
             "line": 18,
             "description": "Updates the model draining data from the view.",
             "params": [
@@ -171,7 +171,7 @@
             "description": "Name of parser and stringifier option names.",
             "type": "{Array}",
             "class": "",
-            "module": "bb-model-view"
+            "module": "bbmv"
         },
         {
             "file": "src/index.js",
@@ -179,7 +179,7 @@
             "description": "Options that will be picked and set onto the object\non initialization.",
             "type": "{Array}",
             "class": "",
-            "module": "bb-model-view"
+            "module": "bbmv"
         },
         {
             "file": "src/index.js",
@@ -202,7 +202,7 @@
                 "type": "[type]"
             },
             "class": "",
-            "module": "bb-model-view"
+            "module": "bbmv"
         },
         {
             "file": "src/index.js",
@@ -218,37 +218,37 @@
                 }
             ],
             "class": "",
-            "module": "bb-model-view"
+            "module": "bbmv"
         }
     ],
     "warnings": [
         {
             "message": "Missing item type\nThe string by which binding ddata attributes are prefixed.\ndata-bind-somekey=\"method\"",
-            "line": " src/__bb-model-view/elements.js:9"
+            "line": " src/__bbmv/elements.js:9"
         },
         {
             "message": "Missing item type\nMethod that returns ALL jquery elements that should\nhave any data-binding.",
-            "line": " src/__bb-model-view/elements.js:17"
+            "line": " src/__bbmv/elements.js:17"
         },
         {
             "message": "Missing item type\nInitializes pump and picks strngifiers and parser options.",
-            "line": " src/__bb-model-view/model-pump.js:10"
+            "line": " src/__bbmv/model-pump.js:10"
         },
         {
             "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bb-model-view/model-pump.js:34"
+            "line": " src/__bbmv/model-pump.js:34"
         },
         {
             "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bb-model-view/model-pump.js:45"
+            "line": " src/__bbmv/model-pump.js:45"
         },
         {
             "message": "Missing item type\nUpdates the view by pumping data from the source model.",
-            "line": " src/__bb-model-view/update.js:6"
+            "line": " src/__bbmv/update.js:6"
         },
         {
             "message": "Missing item type\nUpdates the model draining data from the view.",
-            "line": " src/__bb-model-view/update.js:18"
+            "line": " src/__bbmv/update.js:18"
         },
         {
             "message": "Missing item type\nName of parser and stringifier option names.",

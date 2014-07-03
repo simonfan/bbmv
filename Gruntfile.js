@@ -32,7 +32,7 @@ module.exports = function (grunt) {
 
 		yuidoc: {
 			compile: {
-				name: 'bb-model-view',
+				name: 'bbmv',
 				version: '0.0.0',
 			//	description: '',
 			// 	url: '',
@@ -89,9 +89,9 @@ module.exports = function (grunt) {
 					// (must coincide with that defined in mainConfigFile)
 					baseUrl: './src',
 					// module name
-					name: 'bb-model-view',
+					name: 'bbmv',
 					// output here
-					out: './built/bb-model-view.js',
+					out: './built/bbmv.js',
 					// config file
 					mainConfigFile: 'amdconfig.js',
 
@@ -117,9 +117,9 @@ module.exports = function (grunt) {
 					// (must coincide with that defined in mainConfigFile)
 					baseUrl: './src',
 					// module name
-					name: 'bb-model-view',
+					name: 'bbmv',
 					// output here
-					out: './built/bb-model-view.dev.js',
+					out: './built/bbmv.dev.js',
 					// config file
 					mainConfigFile: 'amdconfig.js',
 
