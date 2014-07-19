@@ -1,22 +1,52 @@
 define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 
 
-	var model = window.model = new Backbone.Model();
+	var control = window.control = new Backbone.Model(),
+		$el     = $('#demo');
 
-	var view  = bbmv({
-		el: $('#view'),
-		model: model,
+	var view = bbmv.extend({
+		hideIf: function (condition, value) {
 
-		methods: {
-			animateMarginLeft: function (value) {
 
-				console.log(this);
-				console.log(value);
-				this.stop().animate({ marginLeft: value }, 10000);
+			if (condition === value) {
+				this.css({ opacity: 0.5 });
+			} else {
+				this.css({ opacity: 1 });
 			}
+		},
+
+
+
+
+		rates: {
+			usd: 0.45,
+			cny: 2.77,
+			eur: 0.33
+		},
+
+		exchange: function exchange(currency) {
+
+		},
+
+
+		usd: {
+			'in': function (amount) { return amount / this.rates.usd; },
+			out : function (amount) { return amount * this.rates.usd; }
+		},
+
+		cny: {
+			'in': function (amount) { return amount / this.rates.cny },
+			out : function (amount) { return amount * this.rates.cny }
+		},
+
+		eur: {
+			'in': function (amount) { return amount / this.rates.eur },
+			out : function (amount) { return amount * this.rates.eur }
 		}
+	})
+
+	window.demo = view({
+		model: control,
+		el   : $el,
 	});
-
-	model.set('marginLeft', 1000);
-
 });

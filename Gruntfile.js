@@ -100,7 +100,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["jquery-meta-data", "jquery-selector-data-prefix", "jquery-pump", "jquery-value", "lowercase-backbone"],
+					exclude: ["jquery-selector-data-prefix", "jquery-value", "lowercase-backbone", "pipe"],
 
 					optimize: 'uglify2',
 
@@ -128,7 +128,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["jquery-meta-data", "jquery-selector-data-prefix", "jquery-pump", "jquery-value", "lowercase-backbone"],
+					exclude: ["jquery-selector-data-prefix", "jquery-value", "lowercase-backbone", "pipe"],
 
 					// excludeShallow
 					excludeShallow: [],

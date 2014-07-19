@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>bbmv - bbmv</title>
+    <title>src/bbmv/pipe/aux/parse-dest-str.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,38 +82,98 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>bbmv Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src/bbmv/pipe/aux/parse-dest-str.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(function (require, exports, module) {
+	&#x27;use strict&#x27;;
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_bbmv.js.html#l5"><code>src&#x2F;bbmv.js:5</code></a>
-        </div>
-    
+	var _ = require(&#x27;lodash&#x27;);
 
-    
-</div>
+	/**
+	 * Parses a string into methodName and args.
+	 * Example string: &#x27;css:background-color&#x27;
+	 *                 &#x27;attr:href&#x27;
+	 *                 &#x27;val&#x27;
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	var colonSplitter = /\s*:\s*/g;
+	function parseMethodString(str) {
+
+		// parsing out the method string
+		var tokens = str.split(colonSplitter),
+			method = tokens.shift();
+
+		return {
+			method  : method,
+			args    : tokens
+		};
+	};
+	exports.methodString = parseMethodString;
+
+	/**
+	 * Returns optionally destProp string and method string
+	 * [0] full match
+	 * [1] selector
+	 * [2] method string
+	 */
+//	var destPropMatcher = /(?:(.+?)\s*-&gt;)?\s*(.+)\s*/;
+//	function parseDestProp(str) {
+//
+//		var match = str.match(destPropMatcher);
+//
+//		return {
+//			selector    : match[1],
+//			methodString: match[2]
+//		};
+//	};
 
 
 
-<div class="box intro">
-    <p>The modeld is the object that links together $els and models.</p>
+	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*-&gt;)?\s*(.+)\s*/;
+	// \s*(?:(.+?)\s*\|)? -&gt; optional format |
+	// \s*(?:(.+?)\s*-&gt;)? -&gt; optional selector -&gt;
+	// \s*(.+)\s*/     -&gt; required methodString
+	//
 
-</div>
+	// &#x27;currency|.selector-&gt;attr:value&#x27;
+	// &#x27;format|.selector -&gt; method:partial1&#x27;
+	// &#x27;currency|html&#x27;
+	// &#x27;html&#x27;
+	/**
+	 * Parses the destination property of the jquery-pump.
+	 *
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	function parseDestProp(str) {
+		var match = str.match(destPropMatcher);
+
+		// match[0] the full matched string
+		// match[1] the format
+		// match[2] the selector
+		// match[3] the methodString
+
+		// parse out the methodString
+		var parsedMethodString = parseMethodString(match[3]);
+
+		return {
+			format  : match[1],
+			selector: match[2],
+			method  : parsedMethodString.method,
+			args    : parsedMethodString.args
+		};
+	}
 
 
+	module.exports = function parseDestStr(destStr) {
+		return _.map(destStr.split(/\s*,\s*/g), parseDestProp);
+	};
+});
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-    </div>
-
-    <div class="yui3-u-1-2">
-        
-    </div>
+    </pre>
 </div>
 
                     </div>

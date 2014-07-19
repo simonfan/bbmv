@@ -1,4 +1,65 @@
-<div id="prefix-test">
-	<div data-another-prefix-v1="html"></div>
-	<div data-another-prefix-v2="data:value"></div>
+<!-- pipe-extract-maps tests -->
+<div id="pipe-extract-maps"
+
+	data-prefix-in-div-color="css:color"
+	data-prefix-event="click"
+
+	data-prefix-out-bg-color="css:color"
+
+	data-prefix-out-name="html"
+
+	data-prefix-dual-top="css:top"
+>
+
+
+</div>
+<!-- pipe-extract-maps tests -->
+
+
+<!-- pipe-dest-get-set tests -->
+<div id="pipe-dest-get-set">
+</div>
+
+
+<div id="pipe"
+
+	data-bind-colors="input[name='colors'] -> value"
+
+	data-bind-out-something="data:something"
+>
+	<!--
+		These guys were already mapped on the dom definition.
+		Their mappings should be parsed out by the pipe initialization.
+	-->
+	<input type="checkbox" name="colors" value="blue">
+	<input type="checkbox" name="colors" value="green">
+	<input type="checkbox" name="colors" value="red">
+
+	<!--
+		These guys will be dinamically mapped
+		In other words, their mappings are not defined on the dom
+		on bbmv instantiation.
+	-->
+	<input type="checkbox" name="fruits" value="banana">
+	<input type="checkbox" name="fruits" value="apple" checked>
+	<input type="checkbox" name="fruits" value="watermelon" checked>
+</div>
+
+<!-- bbmv tests -->
+<div id="bbmv">
+	<div data-bind-out-name="html"></div>
+	<div data-bind-colors="input[name='colors'] -> value">
+		<input name="colors" type="checkbox" value="red"/>
+		<input name="colors" type="checkbox" value="green"/>
+		<input name="colors" type="checkbox" value="yellow"/>
+		<input name="colors" type="checkbox" value="blue"/>
+	</div>
+	<div data-bind-flavor="input[name='flavor'] -> value">
+		<input name="flavor" type="radio" value="sweet">
+		<input name="flavor" type="radio" value="bitter">
+		<input name="flavor" type="radio" value="sour">
+	</div>
+
+	<div data-bind-out-colors="html"></div>
+	<div data-bind-format="html"></div>
 </div>

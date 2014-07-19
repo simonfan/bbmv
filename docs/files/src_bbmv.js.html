@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/index.js - bbmv</title>
+    <title>src/bbmv.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/index.js</h1>
+                        <h1 class="file-heading">File: src/bbmv.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -105,35 +105,19 @@ define(function (require, exports, module) {
 
 
 	var _        = require(&#x27;lodash&#x27;),
-		backbone = require(&#x27;lowercase-backbone&#x27;),
-		jqValue  = require(&#x27;jquery-value&#x27;);
+		$        = require(&#x27;jquery&#x27;),
+		backbone = require(&#x27;lowercase-backbone&#x27;);
 
-
-	var bind = require(&#x27;./__bbmv/bind&#x27;);
-
-	/**
-	 * Name of parser and stringifier option names.
-	 * @type {Array}
-	 */
-	var pumpOptionNames = [&#x27;parse&#x27;, &#x27;parsers&#x27;, &#x27;stringify&#x27;, &#x27;stringifiers&#x27;, &#x27;prefix&#x27;, &#x27;formats&#x27;, &#x27;methods&#x27;];
-
-
-	/**
-	 * Options that will be picked and set onto the object
-	 * on initialization.
-	 * @type {Array}
-	 */
-	var initializationOptions = [&#x27;prefix&#x27;];
-
+	var mvPipe = require(&#x27;bbmv/pipe/index&#x27;),
+		aux    = require(&#x27;bbmv/aux&#x27;);
 
 
 	/**
 	 * Exports.
-	 * @param  {[type]} )                    {						backbone.view.prototype.initialize.apply(this, arguments);			this.initializeModelView.apply(this, arguments);		} [description]
 	 * @param  {[type]} initializeModelView: function                                               initializeModelView(options)                       {			if         (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }						var $boundElements = this.boundElements();									var pumpOptions = _.pick(options, pumpOptionNames [description]
 	 * @return {[type]}                      [description]
 	 */
-	var bbModelView = module.exports = backbone.view.extend({
+	var bbmv = module.exports = backbone.view.extend({
 
 		initialize: function initialize() {
 			// initialize basic backbone view
@@ -152,40 +136,101 @@ define(function (require, exports, module) {
 			if (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }
 			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }
 
+			/**
+			 * Array of pipes defined in the view.
+			 *
+			 * @type {Array}
+			 */
+			this.pipes = [];
+
 			// [0] pick initialization options
-			_.each(initializationOptions, function (opt) {
+			_.each([&#x27;namespace&#x27;, &#x27;event&#x27;], function (opt) {
 				this[opt] = options[opt] || this[opt];
 			}, this);
 
 			// [1] find all elements that have bindings defined.
-			var $boundElements = this.boundElements();
+			var $boundElements = aux.findBoundElements(this.$el, this.namespace);
 
-			// [2] create a jquery pump with those elements.
-			// [2.1] get stringifiers and parsers
-			var pumpOptions = _.pick(options, pumpOptionNames);
-			_.defaults(pumpOptions, _.pick(this, pumpOptionNames));
+			// [2] set up pipes
+			_.each($boundElements, function (el) {
 
-			// [2.2] set destination
-			pumpOptions.destination = $boundElements;
+				this.pipe($(el));
 
-			// [2.2] effectively create the pump
-			this.pump = this.modelPump(this.model, pumpOptions);
+			}, this);
 
-			// [3] listen to change events on $boundElements
-			bind.DOMToModel.call(this, $boundElements);
 
-			// [4] listen to change events on the model
-			bind.modelToDOM.call(this, this.model);
+			// listen to changes on model
+			this.model.on(this.event, function () {
 
-			// [5] initialize view by pumping the model data.
-			this.updateView();
+				this.pump();
+
+			}, this);
 		},
-	});
 
-	bbModelView
-		.assignProto(require(&#x27;./__bbmv/update&#x27;))
-		.assignProto(require(&#x27;./__bbmv/model-pump&#x27;))
-		.assignProto(require(&#x27;./__bbmv/elements&#x27;));
+		/**
+		 * Event to be listened on the model.
+		 *
+		 * @type {String}
+		 */
+		event: &#x27;change&#x27;,
+
+		/**
+		 * The namespace that designates bound elements.
+		 *
+		 * @type {String}
+		 */
+		namespace: &#x27;bind&#x27;,
+
+
+		mvPipe: mvPipe,
+
+		/**
+		 * Create a pipe.
+		 *
+		 * @param  {[type]} $dest [description]
+		 * @return {[type]}             [description]
+		 */
+		pipe: function definePipe($dest, map, options) {
+
+			options = options || {};
+
+			options.namespace = options.namespace || this.namespace;
+			options.bbmv      = this;
+
+			var _pipe = mvPipe(this.model, $dest, map, options);
+
+			// save pipe
+			this.pipes.push(_pipe);
+
+			return _pipe;
+		},
+
+		/**
+		 * Pump data.
+		 *
+		 * @param  {[type]} argument [description]
+		 * @return {[type]}          [description]
+		 */
+		pump: function pump() {
+			_.each(this.pipes, function (pipe) {
+				pipe.pump();
+			});
+
+			return this;
+		},
+
+		/**
+		 * [drain description]
+		 * @return {[type]} [description]
+		 */
+		drain: function drain() {
+			_.each(this.pipes, function (pipe) {
+				pipe.drain();
+			});
+
+			return this;
+		}
+	});
 });
 
     </pre>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/__bbmv/update.js - bbmv</title>
+    <title>src/bbmv/pipe/dest-get.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,40 +82,75 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/__bbmv/update.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/pipe/dest-get.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-	var _ = require(&#x27;lodash&#x27;);
+
+	// make jquery.value available for reading usage.
+	var jqValue = require(&#x27;jquery-value&#x27;),
+		_       = require(&#x27;lodash&#x27;);
+
+	var aux = require(&#x27;bbmv/pipe/aux/index&#x27;);
 
 	/**
-	 * Updates the view by pumping data from the source model.
+	 * Get from the jquery object
 	 *
-	 * @return {[type]} [description]
+	 * @param  {[type]} $el [description]
+	 * @param  {[type]} dest        [description]
+	 * @return {[type]}             [description]
 	 */
-	exports.updateView = function pumpModelDataToView() {
+	exports.destGet = function destGet($el, destStr) {
 
-		this.pump.pump();
+		// reference to the bbmv
+		var bbmv = this.bbmv;
 
-		return this;
+		// parse out dest string using the method
+		// in order to get the in-cache version
+		// GET ONLY THE FIRST :)
+		var dest = this.parseDestStr(destStr)[0];
+
+		// dest:
+		//   - method
+		//   - args
+		//   - format
+		//   - selector (to be ignored)
+
+		// get the method		// get the method
+		var methodName = dest.method,
+			method     = $el[methodName] || bbmv[methodName];
+
+		if (!method) {
+			throw new Error(&#x27;[bbmv|destGet] &#x27; + methodName + &#x27; could not be found.&#x27;)
+		}
+
+		// if selector is defined,
+		// ge tthe right $el
+		$el = dest.selector ? $el.find(dest.selector) : $el;
+
+		// get result
+		var res = method.apply($el, dest.args);
+
+		// check if a format was defined
+		var formatName = dest.format;
+		if (formatName) {
+
+			// get format &quot;in&quot;
+			var formatter = bbmv[formatName];
+			formatter = _.isFunction(formatter) ? formatter : formatter[&#x27;in&#x27;];
+
+			if (!formatter) {
+				throw new Error(&#x27;[bbmv|destGet] &#x27; + formatName + &#x27; could not be found.&#x27;);
+			}
+
+			res = formatter.call(bbmv, res);
+		}
+
+		return res;
 	};
-
-	/**
-	 * Updates the model draining data from the view.
-	 *
-	 * @param  {[type]} pipe [description]
-	 * @return {[type]}      [description]
-	 */
-	exports.updateModel = function drainViewDataToModel(pipe) {
-		this.pump.drain(pipe);
-
-		return this;
-	};
-
-
 });
 
     </pre>

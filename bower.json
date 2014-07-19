@@ -5,10 +5,9 @@
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",
-    "jquery-meta-data": "*",
     "jquery-selector-data-prefix": "~0.1.0",
-    "jquery-pump": "0.5.5",
-    "jquery-value": "~0.1.1"
+    "jquery-value": "~0.1.1",
+    "pipe": "0.8.8"
   },
   "devDependencies": {
     "requirejs": "*",
@@ -16,11 +15,12 @@
     "underscore": "*",
     "jquery": "*",
     "qunit": "*",
-    "bb-dock": "~0.7.10"
+    "bb-dock": "~0.7.10",
+    "q": "1.0.1"
   },
   "resolutions": {
     "subject": "~0.5.8",
     "jquery": "~2.1.1",
-    "jquery-pump": "0.5.5"
+    "pipe": "0.8.8"
   }
 }

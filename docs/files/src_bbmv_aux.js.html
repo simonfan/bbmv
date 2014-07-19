@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>bbmv - bbmv</title>
+    <title>src/bbmv/aux.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,38 +82,31 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>bbmv Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src/bbmv/aux.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(function (require, exports, module) {
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_bbmv.js.html#l5"><code>src&#x2F;bbmv.js:5</code></a>
-        </div>
-    
+	// :data-prefix(prefix) selector
+	require(&#x27;jquery-selector-data-prefix&#x27;);
 
-    
-</div>
+	/**
+	 * Finds all bound elements within the pipe.
+	 *
+	 * @param  {[type]} $el    [description]
+	 * @param  {[type]} namespace [description]
+	 * @return {[type]}        [description]
+	 */
+	exports.findBoundElements = function findBoundElements($el, namespace) {
+		// $el.add() creates a NEW SELECTION :)
+		// it does not add to the existing jq object.
+		var $boundDescendantElements = $el.find(&#x27;:data-prefix(&#x27; + namespace + &#x27;)&#x27;);
+		return $el.add($boundDescendantElements);
+	};
+});
 
-
-
-<div class="box intro">
-    <p>The modeld is the object that links together $els and models.</p>
-
-</div>
-
-
-
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-    </div>
-
-    <div class="yui3-u-1-2">
-        
-    </div>
+    </pre>
 </div>
 
                     </div>

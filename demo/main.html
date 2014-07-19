@@ -29,10 +29,64 @@
 
 	<a href="../index.html">Menu</a>
 
-	<div
-		id="view"
-		style="background-color: red; width: 100px; height: 100px;"
-		data-bind-margin-left="animateMarginLeft"></div>
+
+	<div id="demo">
+
+		<div>
+			<div data-bind-editor="html" style="height: 30px; border-bottom: 1px dashed gray;">
+
+				<input
+					data-bind-size="value"
+					data-bind-event="keyup"
+
+					placeholder="size"
+				>
+
+				<div
+					style="height: 40px; width: 300px; background-color: red; float: left;"
+					data-bind-out-size="hideIf:small, html"
+				></div>
+
+				<button
+					data-bind-out-reset-action="data:size"
+					data-size="small"
+
+					data-bind-in-size="data:size"
+					data-bind-event="click"
+				>RESET <span></span></button>
+
+				<input
+					data-bind-reset-action="value"
+					data-bind-event="keyup"
+
+					placeholder="reset action"
+				>
+
+
+				<input data-bind-amount="value" placeholder="BRL" size="4">
+				<input data-bind-amount="usd | value" placeholder="USD" size="4">
+				<input data-bind-amount="cny | value" placeholder="CNY" size="4">
+				<input data-bind-amount="eur | value" placeholder="EUR" size="4">
+
+			</div>
+			<div data-bind-size  ="html" style="height: 30px; border-bottom: 1px dashed gray;"></div>
+		</div>
+
+		<div
+			data-bind-in-size="data:size"
+			data-size="large"
+			data-bind-event="mouseover"
+		>
+			LARGE
+		</div>
+		<div
+			data-bind-in-size="data:size"
+			data-size="small"
+			data-bind-event="mouseover"
+		>
+			SMALL
+		</div>
+	</div>
 
 </body>
 

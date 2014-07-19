@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>bbmv - bbmv</title>
+    <title>src/bbmv/pipe/aux/extract-maps.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,38 +82,107 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1>bbmv Module</h1>
-<div class="box clearfix meta">
-    
+                        <h1 class="file-heading">File: src/bbmv/pipe/aux/extract-maps.js</h1>
 
-    
+<div class="file">
+    <pre class="code prettyprint linenums">
+define(function (require, exports, module) {
 
-    
-        <div class="foundat">
-            Defined in: <a href="../files/src_bbmv.js.html#l5"><code>src&#x2F;bbmv.js:5</code></a>
-        </div>
-    
+	var $ = require(&#x27;jquery&#x27;),
+		_ = require(&#x27;lodash&#x27;);
 
-    
-</div>
+	// circular...
+	var aux = require(&#x27;bbmv/pipe/aux/general&#x27;);
 
 
-
-<div class="box intro">
-    <p>The modeld is the object that links together $els and models.</p>
-
-</div>
+	// reserved &#x27;post-namespacees&#x27; (the word that goes after the namespace.)
+	var reserved = [&#x27;Event&#x27;, &#x27;Scope&#x27;];
 
 
+	function buildRegExps(namespace) {
 
-<div class="yui3-g">
-    <div class="yui3-u-1-2">
-        
-    </div>
+		return {
+			&#x27;in&#x27;    : aux.buildPrefixRegExp(namespace + &#x27;In&#x27;),
+			out     : aux.buildPrefixRegExp(namespace + &#x27;Out&#x27;),
+			dual    : aux.buildPrefixRegExp(namespace + &#x27;Dual&#x27;),
+			reserved: aux.buildPrefixRegExp(_.map(reserved, function (word) {
+				return namespace + word;
+			})),
 
-    <div class="yui3-u-1-2">
-        
-    </div>
+			all     : aux.buildPrefixRegExp(namespace),
+		};
+	}
+
+	/**
+	 * [exports description]
+	 * @param  {[type]} $el [description]
+	 * @return {[type]}     [description]
+	 */
+	module.exports = function extractBindingsMap($el, namespace) {
+
+		if (!namespace) {
+			throw new Error(&#x27;[bbmv-pipe-extract-maps] No namespace defined for binding map extraction.&#x27;)
+		}
+
+		var maps = {
+			in: {},
+			out: {},
+			dual: {}
+		};
+
+		var data = $el.data();
+
+		// build regexps
+		var re = buildRegExps(namespace);
+
+		_.each(data, function (value, key) {
+
+			var match;
+
+			// try to match &quot;in&quot;
+			if (match = key.match(re.in)) {
+				// &lt;div data-bind-in-attribute=&quot;html&quot;&gt;&lt;/div&gt;
+				// in bind
+				key = aux.lowercaseFirst(match[1]);
+
+				maps.in[key] = value;
+
+			} else if (match = key.match(re.out)) {
+				// &lt;div data-bind-out-attribute=&quot;html&quot;&gt;&lt;/div&gt;
+				// out bind
+				key = aux.lowercaseFirst(match[1]);
+
+				maps.out[key] = value;
+
+			} else if (match = key.match(re.dual)) {
+				// &lt;div data-bind-dual-attribute=&quot;html&quot;&gt;&lt;/div&gt;
+				// dual bind
+				key = aux.lowercaseFirst(match[1]);
+
+				maps.dual[key] = value;
+
+			} else if (!re.reserved.test(key) &amp;&amp; re.all.test(key)) {
+
+				// &lt;div data-bind-attribute=&quot;method&quot;&gt;&lt;/div&gt;
+				//
+				// check if there is a reserved keyword in
+				// the data value.
+				// if no reserved keywords,
+				// set them for dual binding.
+				// not reserved, thus, dual bind
+				match = key.match(re.all);
+				key   = aux.lowercaseFirst(match[1]);
+
+				maps.dual[key] = value;
+			}
+
+		});
+
+		return maps;
+	};
+});
+
+    </pre>
 </div>
 
                     </div>

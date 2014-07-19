@@ -9,13 +9,13 @@
 
 
 	<div data-bind-name="html"></div>
-	<div data-bind-price="brl|html, usd|data:usd"></div>
+	<div data-bind-price="html"></div>
 
 	<hr>
 
 	<input type="text" data-bind-name="value">
 
-	<div data-bind-colors='input[name="colors"]->value'>
+	<div data-bind-colors='input[name="colors"] | value'>
 
 		<input type="checkbox" name="colors" value="red">red
 		<input type="checkbox" name="colors" value="green">green
@@ -25,6 +25,6 @@
 
 	</div>
 
-	<div data-bind-color="price|.selector -> html"></div>
+	<div data-bind-color=".selector | html"></div>
 	<div data-bind-array="@string html"></div>
 </div>

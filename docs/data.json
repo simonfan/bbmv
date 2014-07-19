@@ -4,29 +4,57 @@
         "version": "0.0.0"
     },
     "files": {
-        "src/__bbmv/elements.js": {
-            "name": "src/__bbmv/elements.js",
+        "src/bbmv/pipe/aux/extract-maps.js": {
+            "name": "src/bbmv/pipe/aux/extract-maps.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/__bbmv/model-pump.js": {
-            "name": "src/__bbmv/model-pump.js",
+        "src/bbmv/pipe/aux/general.js": {
+            "name": "src/bbmv/pipe/aux/general.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/__bbmv/update.js": {
-            "name": "src/__bbmv/update.js",
+        "src/bbmv/pipe/aux/parse-dest-str.js": {
+            "name": "src/bbmv/pipe/aux/parse-dest-str.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/index.js": {
-            "name": "src/index.js",
+        "src/bbmv/pipe/dest-get.js": {
+            "name": "src/bbmv/pipe/dest-get.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/pipe/dest-set.js": {
+            "name": "src/bbmv/pipe/dest-set.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/pipe/index.js": {
+            "name": "src/bbmv/pipe/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/aux.js": {
+            "name": "src/bbmv/aux.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv.js": {
+            "name": "src/bbmv.js",
             "modules": {
                 "bbmv": 1
             },
@@ -43,7 +71,7 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/index.js",
+            "file": "src/bbmv.js",
             "line": 5,
             "description": "The modeld is the object that links together $els and models."
         }
@@ -51,34 +79,47 @@
     "classes": {},
     "classitems": [
         {
-            "file": "src/__bbmv/elements.js",
+            "file": "src/bbmv/pipe/aux/extract-maps.js",
+            "line": 28,
+            "description": "[exports description]",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe/aux/general.js",
             "line": 9,
-            "description": "The string by which binding ddata attributes are prefixed.\ndata-bind-somekey=\"method\"",
-            "type": "{String}",
+            "description": "Creates a Regular Expression to capture property name.",
             "class": ""
         },
         {
-            "file": "src/__bbmv/elements.js",
-            "line": 17,
-            "description": "Method that returns ALL jquery elements that should\nhave any data-binding.",
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
+            "file": "src/bbmv/pipe/aux/general.js",
+            "line": 21,
+            "description": "Returns the string with the first letter to lowercase.",
             "class": ""
         },
         {
-            "file": "src/__bbmv/model-pump.js",
-            "line": 10,
-            "description": "Initializes pump and picks strngifiers and parser options.",
+            "file": "src/bbmv/pipe/aux/general.js",
+            "line": 28,
+            "description": "Returns the string with the first letter to uppercase.",
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe/aux/parse-dest-str.js",
+            "line": 6,
+            "description": "Parses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'",
             "params": [
                 {
-                    "name": "source",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "options",
+                    "name": "str",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -90,17 +131,18 @@
             "class": ""
         },
         {
-            "file": "src/__bbmv/model-pump.js",
-            "line": 34,
-            "description": "Method specified by pump API",
+            "file": "src/bbmv/pipe/aux/parse-dest-str.js",
+            "line": 28,
+            "description": "Returns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe/aux/parse-dest-str.js",
+            "line": 57,
+            "description": "Parses the destination property of the jquery-pump.",
             "params": [
                 {
-                    "name": "model",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "property",
+                    "name": "str",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -112,17 +154,39 @@
             "class": ""
         },
         {
-            "file": "src/__bbmv/model-pump.js",
-            "line": 45,
-            "description": "Method specified by pump API",
+            "file": "src/bbmv/pipe/dest-get.js",
+            "line": 11,
+            "description": "Get from the jquery object",
             "params": [
                 {
-                    "name": "model",
+                    "name": "$el",
                     "description": "[description]",
                     "type": "[type]"
                 },
                 {
-                    "name": "property",
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe/dest-set.js",
+            "line": 61,
+            "description": "Set to the jquery object",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "dest",
                     "description": "[description]",
                     "type": "[type]"
                 },
@@ -139,22 +203,19 @@
             "class": ""
         },
         {
-            "file": "src/__bbmv/update.js",
-            "line": 6,
-            "description": "Updates the view by pumping data from the source model.",
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
+            "file": "src/bbmv/pipe/index.js",
+            "line": 59,
+            "description": "The default namespace used for binding map extraction.",
+            "type": "{String}",
             "class": ""
         },
         {
-            "file": "src/__bbmv/update.js",
-            "line": 18,
-            "description": "Updates the model draining data from the view.",
+            "file": "src/bbmv/pipe/index.js",
+            "line": 67,
+            "description": "Override the to method in order to\nlisten to events on the destination object.",
             "params": [
                 {
-                    "name": "pipe",
+                    "name": "dest",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -166,31 +227,32 @@
             "class": ""
         },
         {
-            "file": "src/index.js",
-            "line": 26,
-            "description": "Name of parser and stringifier option names.",
-            "type": "{Array}",
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/index.js",
-            "line": 33,
-            "description": "Options that will be picked and set onto the object\non initialization.",
-            "type": "{Array}",
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/index.js",
-            "line": 42,
-            "description": "Exports.",
+            "file": "src/bbmv/aux.js",
+            "line": 6,
+            "description": "Finds all bound elements within the pipe.",
             "params": [
                 {
-                    "name": ")",
-                    "description": "{\t\t\t\t\t\tbackbone.view.prototype.initialize.apply(this, arguments);\t\t\tthis.initializeModelView.apply(this, arguments);\t\t} [description]",
+                    "name": "$el",
+                    "description": "[description]",
                     "type": "[type]"
                 },
+                {
+                    "name": "namespace",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 27,
+            "description": "Exports.",
+            "params": [
                 {
                     "name": "initializeModelView:",
                     "description": "function                                               initializeModelView(options)                       {\t\t\tif         (!this.model) { throw new Error('No model set for model view.'); }\t\t\tif (!this.$el) { throw new Error('No el set on model view.'); }\t\t\t\t\t\tvar $boundElements = this.boundElements();\t\t\t\t\t\t\t\t\tvar pumpOptions = _.pick(options, pumpOptionNames [description]",
@@ -205,8 +267,8 @@
             "module": "bbmv"
         },
         {
-            "file": "src/index.js",
-            "line": 57,
+            "file": "src/bbmv.js",
+            "line": 41,
             "description": "Holds initialization logic for modelmodeld.",
             "itemtype": "method",
             "name": "initializeModelView",
@@ -219,48 +281,155 @@
             ],
             "class": "",
             "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 51,
+            "description": "Array of pipes defined in the view.",
+            "type": "{Array}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 82,
+            "description": "Event to be listened on the model.",
+            "type": "{String}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 89,
+            "description": "The namespace that designates bound elements.",
+            "type": "{String}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 99,
+            "description": "Create a pipe.",
+            "params": [
+                {
+                    "name": "$dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 120,
+            "description": "Pump data.",
+            "params": [
+                {
+                    "name": "argument",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 134,
+            "description": "[drain description]",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bbmv"
         }
     ],
     "warnings": [
         {
-            "message": "Missing item type\nThe string by which binding ddata attributes are prefixed.\ndata-bind-somekey=\"method\"",
-            "line": " src/__bbmv/elements.js:9"
+            "message": "Missing item type\n[exports description]",
+            "line": " src/bbmv/pipe/aux/extract-maps.js:28"
         },
         {
-            "message": "Missing item type\nMethod that returns ALL jquery elements that should\nhave any data-binding.",
-            "line": " src/__bbmv/elements.js:17"
+            "message": "Missing item type\nCreates a Regular Expression to capture property name.",
+            "line": " src/bbmv/pipe/aux/general.js:9"
         },
         {
-            "message": "Missing item type\nInitializes pump and picks strngifiers and parser options.",
-            "line": " src/__bbmv/model-pump.js:10"
+            "message": "Missing item type\nReturns the string with the first letter to lowercase.",
+            "line": " src/bbmv/pipe/aux/general.js:21"
         },
         {
-            "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bbmv/model-pump.js:34"
+            "message": "Missing item type\nReturns the string with the first letter to uppercase.",
+            "line": " src/bbmv/pipe/aux/general.js:28"
         },
         {
-            "message": "Missing item type\nMethod specified by pump API",
-            "line": " src/__bbmv/model-pump.js:45"
+            "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'",
+            "line": " src/bbmv/pipe/aux/parse-dest-str.js:6"
         },
         {
-            "message": "Missing item type\nUpdates the view by pumping data from the source model.",
-            "line": " src/__bbmv/update.js:6"
+            "message": "Missing item type\nReturns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
+            "line": " src/bbmv/pipe/aux/parse-dest-str.js:28"
         },
         {
-            "message": "Missing item type\nUpdates the model draining data from the view.",
-            "line": " src/__bbmv/update.js:18"
+            "message": "Missing item type\nParses the destination property of the jquery-pump.",
+            "line": " src/bbmv/pipe/aux/parse-dest-str.js:57"
         },
         {
-            "message": "Missing item type\nName of parser and stringifier option names.",
-            "line": " src/index.js:26"
+            "message": "Missing item type\nGet from the jquery object",
+            "line": " src/bbmv/pipe/dest-get.js:11"
         },
         {
-            "message": "Missing item type\nOptions that will be picked and set onto the object\non initialization.",
-            "line": " src/index.js:33"
+            "message": "Missing item type\nSet to the jquery object",
+            "line": " src/bbmv/pipe/dest-set.js:61"
+        },
+        {
+            "message": "Missing item type\nThe default namespace used for binding map extraction.",
+            "line": " src/bbmv/pipe/index.js:59"
+        },
+        {
+            "message": "Missing item type\nOverride the to method in order to\nlisten to events on the destination object.",
+            "line": " src/bbmv/pipe/index.js:67"
+        },
+        {
+            "message": "Missing item type\nFinds all bound elements within the pipe.",
+            "line": " src/bbmv/aux.js:6"
         },
         {
             "message": "Missing item type\nExports.",
-            "line": " src/index.js:42"
+            "line": " src/bbmv.js:27"
+        },
+        {
+            "message": "Missing item type\nArray of pipes defined in the view.",
+            "line": " src/bbmv.js:51"
+        },
+        {
+            "message": "Missing item type\nEvent to be listened on the model.",
+            "line": " src/bbmv.js:82"
+        },
+        {
+            "message": "Missing item type\nThe namespace that designates bound elements.",
+            "line": " src/bbmv.js:89"
+        },
+        {
+            "message": "Missing item type\nCreate a pipe.",
+            "line": " src/bbmv.js:99"
+        },
+        {
+            "message": "Missing item type\nPump data.",
+            "line": " src/bbmv.js:120"
+        },
+        {
+            "message": "Missing item type\n[drain description]",
+            "line": " src/bbmv.js:134"
         }
     ]
 }
