@@ -720,6 +720,9 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 				this.pump();
 
 			}, this);
+
+			// initial pump
+			this.pump();
 		},
 
 		/**

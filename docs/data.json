@@ -292,7 +292,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 178,
+            "line": 181,
             "description": "Event to be listened on the model.",
             "type": "{String}",
             "class": "",
@@ -300,7 +300,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 185,
+            "line": 188,
             "description": "The namespace that designates bound elements.",
             "type": "{String}",
             "class": "",
@@ -308,7 +308,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 195,
+            "line": 198,
             "description": "Create a pipe.",
             "params": [
                 {
@@ -326,7 +326,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 216,
+            "line": 219,
             "description": "Pump data.",
             "params": [
                 {
@@ -344,7 +344,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 230,
+            "line": 233,
             "description": "[drain description]",
             "return": {
                 "description": "[description]",
@@ -413,23 +413,23 @@
         },
         {
             "message": "Missing item type\nEvent to be listened on the model.",
-            "line": " src/bbmv.js:178"
+            "line": " src/bbmv.js:181"
         },
         {
             "message": "Missing item type\nThe namespace that designates bound elements.",
-            "line": " src/bbmv.js:185"
+            "line": " src/bbmv.js:188"
         },
         {
             "message": "Missing item type\nCreate a pipe.",
-            "line": " src/bbmv.js:195"
+            "line": " src/bbmv.js:198"
         },
         {
             "message": "Missing item type\nPump data.",
-            "line": " src/bbmv.js:216"
+            "line": " src/bbmv.js:219"
         },
         {
             "message": "Missing item type\n[drain description]",
-            "line": " src/bbmv.js:230"
+            "line": " src/bbmv.js:233"
         }
     ]
 }

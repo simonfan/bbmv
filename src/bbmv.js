@@ -173,6 +173,9 @@ define(function (require, exports, module) {
 				this.pump();
 
 			}, this);
+
+			// initial pump
+			this.pump();
 		},
 
 		/**
