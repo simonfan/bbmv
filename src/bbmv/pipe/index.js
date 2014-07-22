@@ -121,8 +121,9 @@ define(function defPipe(require, exports, module) {
 		},
 	});
 
-	mvpipe
-		.assignProto(require('bbmv/pipe/dest-get'))
-		.assignProto(require('bbmv/pipe/dest-set'));
+	mvpipe.assignProto({
+		destGet: require('bbmv/pipe/dest-get'),
+		destSet: require('bbmv/pipe/dest-set')
+	});
 
 });

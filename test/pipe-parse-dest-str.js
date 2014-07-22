@@ -46,7 +46,7 @@ function ($     ,  should ,  pipeParseDestStr             ) {
 
 			destdef[0].method.should.eql('css');
 			destdef[0].args.should.eql(['background-color']);
-			destdef[0].format.should.eql('rgb');
+			destdef[0].format.method.should.eql('rgb');
 		});
 
 		it('format and selector: "money | input -> value"', function () {
@@ -57,7 +57,14 @@ function ($     ,  should ,  pipeParseDestStr             ) {
 
 			destdef.method.should.eql('value');
 			destdef.selector.should.eql('input');
-			destdef.format.should.eql('money');
+			destdef.format.method.should.eql('money');
+		});
+
+		it('format and format args: "currency:usd | input -> value"', function () {
+			var destdef = pipeParseDestStr("currency:usd:no-comma | input -> value")[0];
+
+			destdef.format.method.should.eql('currency');
+			destdef.format.args.should.eql(['usd', 'no-comma']);
 		})
 
 	});

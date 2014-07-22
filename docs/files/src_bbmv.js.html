@@ -106,10 +106,106 @@ define(function (require, exports, module) {
 
 	var _        = require(&#x27;lodash&#x27;),
 		$        = require(&#x27;jquery&#x27;),
+		bbdv     = require(&#x27;bbdv&#x27;),
 		backbone = require(&#x27;lowercase-backbone&#x27;);
 
 	var mvPipe = require(&#x27;bbmv/pipe/index&#x27;),
 		aux    = require(&#x27;bbmv/aux&#x27;);
+
+
+	function genPipeIdAttr() {
+		return [&#x27;bbdv&#x27;, this.cid, this.namespace, &#x27;id&#x27;].join(&#x27;_&#x27;);
+	}
+
+	var bbmv = bbdv.extend({
+
+		initialize: function initializeBbmv(options) {
+
+			this.namespace = options.namespace || this.namespace;
+
+
+			this.pipeIdAttr = genPipeIdAttr.call(this);
+
+			this.pipes = {};
+
+			bbdv.prototype.initialize.call(this, options);
+
+		},
+
+		namespace: &#x27;bind&#x27;,
+
+
+		directives: {
+			&#x27;in&#x27;: &#x27;bindIn&#x27;,
+			&#x27;out&#x27;: &#x27;bindOut&#x27;,
+			&#x27;&#x27;: &#x27;bindDual&#x27;,
+			&#x27;dual&#x27;: &#x27;bindDual&#x27;,
+			&#x27;event&#x27;: &#x27;bindEvent&#x27;
+		},
+
+		pipe: function definePipe($el) {
+
+			var pipe;
+
+			// get the pipeid
+			var pipeid = $el.data(this.pipeIdAttr);
+
+			if (pipeid &amp;&amp; this.pipes[pipeid]) {
+				// get pipe from cache
+				pipe = this.pipes[pipeid];
+
+			} else {
+				// generate a unique id
+				pipeid = _.uniqueId(this.pipeIdAttr);
+
+				// create pipe
+				pipe = this.pipes[pipeid] = mvPipe(this.model, $el);
+
+				// save pipe id on el.
+				$el.data(this.pipeIdAttr, pipeid);
+			}
+
+			return pipe;
+		},
+
+		bindEvent: function bindEvent($el, event) {
+
+			var pipe = this.pipe($el);
+
+			if (_.isObject(event)) {
+
+				_.each(event, function (attr, evt) {
+
+					$el.on(evt, function () {
+						pipe.drain(attr.split(/\s*,\s*/), { force: true });
+					});
+				});
+
+			} else if (_.isString(event)) {
+				$el.on(event, function () {
+					pipe.drain({ force: true });
+				});
+			}
+		},
+
+		bindIn: function bindIn($el, map) {
+
+			var pipe = this.pipe($el);
+
+			pipe.map(map, &#x27;from&#x27;);
+		},
+
+		bindOut: function bindOut($el, map) {
+
+			var pipe = this.pipe($el);
+			pipe.map(map, &#x27;to&#x27;);
+		},
+
+		bindDual: function bindDual($el, map) {
+			var pipe = this.pipe($el);
+			pipe.map(map, &#x27;both&#x27;);
+		}
+	});
 
 
 	/**

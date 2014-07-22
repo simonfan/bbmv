@@ -20,17 +20,21 @@ define(function (require, exports, module) {
 
 
 		// format
-		var formatName = dest.format;
-		if (formatName) {
+		var format = dest.format;
+		if (format) {
 			// get format "out"
-			var formatter = bbmv[formatName];
+			var formatter = bbmv[format.method];
 			formatter = _.isFunction(formatter) ? formatter : formatter.out;
 
 			if (!formatter) {
-				throw new Error('[bbmv|destGet] ' + formatName + ' could not be found.');
+				throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.');
 			}
 
-			value = formatter.call(bbmv, value);
+			// clone args so that they remain unmodified
+			var args = _.clone(format.args);
+			args.push(value);
+
+			value = formatter.apply(bbmv, args);
 		}
 
 		// clone the args array, so that the original one remains untouched
@@ -65,7 +69,7 @@ define(function (require, exports, module) {
 	 * @param  {[type]} value       [description]
 	 * @return {[type]}             [description]
 	 */
-	exports.destSet = function destSet($el, destStr, value) {
+	module.exports = function destSet($el, destStr, value) {
 
 		var dests = this.parseDestStr(destStr);
 

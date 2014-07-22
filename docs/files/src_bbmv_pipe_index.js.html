@@ -209,9 +209,10 @@ define(function defPipe(require, exports, module) {
 		},
 	});
 
-	mvpipe
-		.assignProto(require(&#x27;bbmv/pipe/dest-get&#x27;))
-		.assignProto(require(&#x27;bbmv/pipe/dest-set&#x27;));
+	mvpipe.assignProto({
+		destGet: require(&#x27;bbmv/pipe/dest-get&#x27;),
+		destSet: require(&#x27;bbmv/pipe/dest-set&#x27;)
+	});
 
 });
 

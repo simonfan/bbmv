@@ -69,14 +69,18 @@ define(function (require, exports, module) {
 		// match[3] the methodString
 
 		// parse out the methodString
-		var parsedMethodString = parseMethodString(match[3]);
+		var res = parseMethodString(match[3]);
 
-		return {
-			format  : match[1],
-			selector: match[2],
-			method  : parsedMethodString.method,
-			args    : parsedMethodString.args
-		};
+		// set format and selector onto res;
+		if (match[2]) {
+			res.selector = match[2];
+		}
+
+		if (match[1]) {
+			res.format   = parseMethodString(match[1]);
+		}
+
+		return res;
 	}
 
 

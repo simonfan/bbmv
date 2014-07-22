@@ -18,10 +18,106 @@ define(function (require, exports, module) {
 
 	var _        = require('lodash'),
 		$        = require('jquery'),
+		bbdv     = require('bbdv'),
 		backbone = require('lowercase-backbone');
 
 	var mvPipe = require('bbmv/pipe/index'),
 		aux    = require('bbmv/aux');
+
+
+	function genPipeIdAttr() {
+		return ['bbdv', this.cid, this.namespace, 'id'].join('_');
+	}
+
+	var bbmv = bbdv.extend({
+
+		initialize: function initializeBbmv(options) {
+
+			this.namespace = options.namespace || this.namespace;
+
+
+			this.pipeIdAttr = genPipeIdAttr.call(this);
+
+			this.pipes = {};
+
+			bbdv.prototype.initialize.call(this, options);
+
+		},
+
+		namespace: 'bind',
+
+
+		directives: {
+			'in': 'bindIn',
+			'out': 'bindOut',
+			'': 'bindDual',
+			'dual': 'bindDual',
+			'event': 'bindEvent'
+		},
+
+		pipe: function definePipe($el) {
+
+			var pipe;
+
+			// get the pipeid
+			var pipeid = $el.data(this.pipeIdAttr);
+
+			if (pipeid && this.pipes[pipeid]) {
+				// get pipe from cache
+				pipe = this.pipes[pipeid];
+
+			} else {
+				// generate a unique id
+				pipeid = _.uniqueId(this.pipeIdAttr);
+
+				// create pipe
+				pipe = this.pipes[pipeid] = mvPipe(this.model, $el);
+
+				// save pipe id on el.
+				$el.data(this.pipeIdAttr, pipeid);
+			}
+
+			return pipe;
+		},
+
+		bindEvent: function bindEvent($el, event) {
+
+			var pipe = this.pipe($el);
+
+			if (_.isObject(event)) {
+
+				_.each(event, function (attr, evt) {
+
+					$el.on(evt, function () {
+						pipe.drain(attr.split(/\s*,\s*/), { force: true });
+					});
+				});
+
+			} else if (_.isString(event)) {
+				$el.on(event, function () {
+					pipe.drain({ force: true });
+				});
+			}
+		},
+
+		bindIn: function bindIn($el, map) {
+
+			var pipe = this.pipe($el);
+
+			pipe.map(map, 'from');
+		},
+
+		bindOut: function bindOut($el, map) {
+
+			var pipe = this.pipe($el);
+			pipe.map(map, 'to');
+		},
+
+		bindDual: function bindDual($el, map) {
+			var pipe = this.pipe($el);
+			pipe.map(map, 'both');
+		}
+	});
 
 
 	/**

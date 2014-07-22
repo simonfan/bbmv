@@ -15,7 +15,7 @@ define(function (require, exports, module) {
 	 * @param  {[type]} dest        [description]
 	 * @return {[type]}             [description]
 	 */
-	exports.destGet = function destGet($el, destStr) {
+	module.exports = function destGet($el, destStr) {
 
 		// reference to the bbmv
 		var bbmv = this.bbmv;
@@ -47,18 +47,22 @@ define(function (require, exports, module) {
 		var res = method.apply($el, dest.args);
 
 		// check if a format was defined
-		var formatName = dest.format;
-		if (formatName) {
+		var format = dest.format;
+		if (format) {
 
 			// get format "in"
-			var formatter = bbmv[formatName];
+			var formatter = bbmv[format.method];
 			formatter = _.isFunction(formatter) ? formatter : formatter['in'];
 
 			if (!formatter) {
-				throw new Error('[bbmv|destGet] ' + formatName + ' could not be found.');
+				throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.');
 			}
 
-			res = formatter.call(bbmv, res);
+			// clone args so that the original ones remain unchanged
+			var args = _.clone(format.args);
+			args.push(res);
+
+			res = formatter.apply(bbmv, args);
 		}
 
 		return res;

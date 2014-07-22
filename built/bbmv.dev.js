@@ -1,3 +1,12 @@
+//     jquery-selector-data-prefix
+//     (c) simonfan
+//     jquery-selector-data-prefix is licensed under the MIT terms.
+
+//     Bbdv
+//     (c) simonfan
+//     Bbdv is licensed under the MIT terms.
+
+define("jquery-selector-data-prefix",["require","exports","module","jquery","lodash"],function(e){var t=e("jquery"),r=e("lodash");t.expr[":"]["data-prefix"]=function(e,i,n){var a=t(e).data(),s=n[3],u=new RegExp("^"+s+"([A-Z$_].*$)");return r.some(a,function(e,t){return u.test(t)})}}),define("bbdv/aux",["require","exports","module"],function(e,t){t.camelCase=function(e){return e.replace(/[-_\s]+(.)?/g,function(e,t){return t?t.toUpperCase():""})},t.buildPrefixRegExp=function(e){return new RegExp("^"+e+"([A-Z$_].*$|$)")},t.lowercaseFirst=function(e){return e.charAt(0).toLowerCase()+e.slice(1)},t.uppercaseFirst=function(e){return e.charAt(0).toUpperCase()+e.slice(1)}}),define("bbdv/extract-directive-arguments",["require","exports","module","lodash","bbdv/aux"],function(e,t,r){function i(e,t){return a.camelCase(e+"-"+t)}var n=e("lodash"),a=e("bbdv/aux");r.exports=function(e,t,r){e=e||"",t.sort(function(e,t){return t.length-e.length});var s={};return n.each(r,function(r,u){n.any(t,function(t){var c=i(e,t);if(n.has(s,t)&&!n.isObject(s[t]))return!1;if(c===u)return s[t]=r,!0;var o=a.buildPrefixRegExp(c),d=u.match(o);if(d){var f=s[t];return f||(f=s[t]={}),f[a.lowercaseFirst(d[1])]=r,!0}return!1},this)},this),s}}),define("bbdv/execute-directives",["require","exports","module","lodash","bbdv/extract-directive-arguments","bbdv/aux"],function(e,t,r){var i=e("lodash"),n=e("bbdv/extract-directive-arguments"),a=e("bbdv/aux");r.exports=function(e,t,r,s){s=i.map(s,a.camelCase);var u=n(r,s,t.data());i.each(u,function(r,i){e[i].call(this,t,r)},this)}}),define("bbdv",["require","exports","module","jquery-selector-data-prefix","lowercase-backbone","jquery","bbdv/execute-directives"],function(e,t,r){function i(e,t){var r;return r=e.is(t)?e.add(e.find(t)):e.find(t)}e("jquery-selector-data-prefix");var n=e("lowercase-backbone"),a=e("jquery"),s=e("bbdv/execute-directives"),u=n.view.prototype.initialize,c=r.exports=n.view.extend({initialize:function(e){u.call(this,e),_.each(["namespace"],function(t){this[t]=e[t]||this[t]},this);var t=this.selector(this.namespace),r=i(this.$el,t),n=this.namespace,c=this.directives;_.each(r,function(e){s(this,a(e),n,c)},this)},directives:[],namespace:"dir",selector:function(e){return":data-prefix("+e+")"}});c.assignStatic("extendDirectives",function(){var e,t=_.clone(this.prototype.directives);return 1===arguments.length?(e=arguments[0],t=_.union(t,_.keys(e))):2===arguments.length&&(e={},e[arguments[0]]=arguments[1],t.push(arguments[0])),e.directives=t,this.extend(e)})});
 define('bbmv/pipe/aux/general',['require','exports','module','lodash'],function (require, exports, module) {
 	
 
@@ -104,14 +113,18 @@ define('bbmv/pipe/aux/parse-dest-str',['require','exports','module','lodash'],fu
 		// match[3] the methodString
 
 		// parse out the methodString
-		var parsedMethodString = parseMethodString(match[3]);
+		var res = parseMethodString(match[3]);
 
-		return {
-			format  : match[1],
-			selector: match[2],
-			method  : parsedMethodString.method,
-			args    : parsedMethodString.args
-		};
+		// set format and selector onto res;
+		if (match[2]) {
+			res.selector = match[2];
+		}
+
+		if (match[1]) {
+			res.format   = parseMethodString(match[1]);
+		}
+
+		return res;
 	}
 
 
@@ -245,7 +258,7 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 	 * @param  {[type]} dest        [description]
 	 * @return {[type]}             [description]
 	 */
-	exports.destGet = function destGet($el, destStr) {
+	module.exports = function destGet($el, destStr) {
 
 		// reference to the bbmv
 		var bbmv = this.bbmv;
@@ -277,18 +290,22 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 		var res = method.apply($el, dest.args);
 
 		// check if a format was defined
-		var formatName = dest.format;
-		if (formatName) {
+		var format = dest.format;
+		if (format) {
 
 			// get format "in"
-			var formatter = bbmv[formatName];
+			var formatter = bbmv[format.method];
 			formatter = _.isFunction(formatter) ? formatter : formatter['in'];
 
 			if (!formatter) {
-				throw new Error('[bbmv|destGet] ' + formatName + ' could not be found.');
+				throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.');
 			}
 
-			res = formatter.call(bbmv, res);
+			// clone args so that the original ones remain unchanged
+			var args = _.clone(format.args);
+			args.push(res);
+
+			res = formatter.apply(bbmv, args);
 		}
 
 		return res;
@@ -317,17 +334,21 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 
 
 		// format
-		var formatName = dest.format;
-		if (formatName) {
+		var format = dest.format;
+		if (format) {
 			// get format "out"
-			var formatter = bbmv[formatName];
+			var formatter = bbmv[format.method];
 			formatter = _.isFunction(formatter) ? formatter : formatter.out;
 
 			if (!formatter) {
-				throw new Error('[bbmv|destGet] ' + formatName + ' could not be found.');
+				throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.');
 			}
 
-			value = formatter.call(bbmv, value);
+			// clone args so that they remain unmodified
+			var args = _.clone(format.args);
+			args.push(value);
+
+			value = formatter.apply(bbmv, args);
 		}
 
 		// clone the args array, so that the original one remains untouched
@@ -362,7 +383,7 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 	 * @param  {[type]} value       [description]
 	 * @return {[type]}             [description]
 	 */
-	exports.destSet = function destSet($el, destStr, value) {
+	module.exports = function destSet($el, destStr, value) {
 
 		var dests = this.parseDestStr(destStr);
 
@@ -497,9 +518,10 @@ define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/pip
 		},
 	});
 
-	mvpipe
-		.assignProto(require('bbmv/pipe/dest-get'))
-		.assignProto(require('bbmv/pipe/dest-set'));
+	mvpipe.assignProto({
+		destGet: require('bbmv/pipe/dest-get'),
+		destSet: require('bbmv/pipe/dest-set')
+	});
 
 });
 
@@ -537,16 +559,112 @@ define('bbmv/aux',['require','exports','module','jquery-selector-data-prefix'],f
 
 /* jshint ignore:end */
 
-define('bbmv',['require','exports','module','lodash','jquery','lowercase-backbone','bbmv/pipe/index','bbmv/aux'],function (require, exports, module) {
+define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux'],function (require, exports, module) {
 	
 
 
 	var _        = require('lodash'),
 		$        = require('jquery'),
+		bbdv     = require('bbdv'),
 		backbone = require('lowercase-backbone');
 
 	var mvPipe = require('bbmv/pipe/index'),
 		aux    = require('bbmv/aux');
+
+
+	function genPipeIdAttr() {
+		return ['bbdv', this.cid, this.namespace, 'id'].join('_');
+	}
+
+	var bbmv = bbdv.extend({
+
+		initialize: function initializeBbmv(options) {
+
+			this.namespace = options.namespace || this.namespace;
+
+
+			this.pipeIdAttr = genPipeIdAttr.call(this);
+
+			this.pipes = {};
+
+			bbdv.prototype.initialize.call(this, options);
+
+		},
+
+		namespace: 'bind',
+
+
+		directives: {
+			'in': 'bindIn',
+			'out': 'bindOut',
+			'': 'bindDual',
+			'dual': 'bindDual',
+			'event': 'bindEvent'
+		},
+
+		pipe: function definePipe($el) {
+
+			var pipe;
+
+			// get the pipeid
+			var pipeid = $el.data(this.pipeIdAttr);
+
+			if (pipeid && this.pipes[pipeid]) {
+				// get pipe from cache
+				pipe = this.pipes[pipeid];
+
+			} else {
+				// generate a unique id
+				pipeid = _.uniqueId(this.pipeIdAttr);
+
+				// create pipe
+				pipe = this.pipes[pipeid] = mvPipe(this.model, $el);
+
+				// save pipe id on el.
+				$el.data(this.pipeIdAttr, pipeid);
+			}
+
+			return pipe;
+		},
+
+		bindEvent: function bindEvent($el, event) {
+
+			var pipe = this.pipe($el);
+
+			if (_.isObject(event)) {
+
+				_.each(event, function (attr, evt) {
+
+					$el.on(evt, function () {
+						pipe.drain(attr.split(/\s*,\s*/), { force: true });
+					});
+				});
+
+			} else if (_.isString(event)) {
+				$el.on(event, function () {
+					pipe.drain({ force: true });
+				});
+			}
+		},
+
+		bindIn: function bindIn($el, map) {
+
+			var pipe = this.pipe($el);
+
+			pipe.map(map, 'from');
+		},
+
+		bindOut: function bindOut($el, map) {
+
+			var pipe = this.pipe($el);
+			pipe.map(map, 'to');
+		},
+
+		bindDual: function bindDual($el, map) {
+			var pipe = this.pipe($el);
+			pipe.map(map, 'both');
+		}
+	});
 
 
 	/**
