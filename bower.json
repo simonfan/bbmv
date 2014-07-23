@@ -1,16 +1,13 @@
 {
   "name": "bbmv",
   "main": "built/bbmv.js",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "~0.2.5",
-    "jquery-selector-data-prefix": "~0.1.0",
     "jquery-value": "~0.1.1",
     "pipe": "0.8.9",
-    "bbdv": "0.2.3",
-    "bool": "*",
-    "swtch": "~0.2.2"
+    "bbdv": "0.3.4"
   },
   "devDependencies": {
     "requirejs": "*",
@@ -24,6 +21,6 @@
   "resolutions": {
     "subject": "~0.5.9",
     "jquery": "~2.1.1",
-    "pipe": "0.8.9"
+    "bbdv": "0.3.4"
   }
 }

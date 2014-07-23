@@ -97,7 +97,6 @@ define(function (require, exports, module) {
 		&#x27;in&#x27;: &#x27;bindIn&#x27;,
 		&#x27;out&#x27;: &#x27;bindOut&#x27;,
 		&#x27;dual&#x27;: &#x27;bindDual&#x27;,
-		&#x27;on&#x27;: &#x27;bindEvent&#x27;,
 		&#x27;set&#x27;: &#x27;bindSet&#x27;,
 		&#x27;&#x27;: &#x27;bindDual&#x27;,
 	};
@@ -109,41 +108,6 @@ define(function (require, exports, module) {
 	};
 
 	/**
-	 * Establishes a specific event on the DOM element
-	 * to listen for drains.
-	 *
-	 * Does not remove the default event listeners set on input
-	 * elements (&#x27;change&#x27;).
-	 *
-	 * Those should be set on the &#x27;defaultDOMEvents&#x27; hash.
-	 *
-	 *
-	 * @param  {[type]} $el   [description]
-	 * @param  {[type]} event [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.bindEvent = function bindEvent($el, event) {
-
-		// var pipe = this.pipe($el);
-
-		// if (_.isObject(event)) {
-
-		// 	_.each(event, function (attr, evt) {
-
-		// 		$el.on(evt, function () {
-		// 			pipe.drain(attr.split(/\s*,\s*/), { force: true });
-		// 		});
-		// 	});
-
-		// } else {
-
-		// 	event = (_.isString(event) &amp;&amp; event !== &#x27;&#x27;) ? event : this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
-
-		// 	$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
-		// }
-	};
-
-	/**
 	 * Binds the $el data to the model in
 	 * uni-directional mode:
 	 * from DOM to MODEL
@@ -152,26 +116,22 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = {
-		args: [&#x27;on&#x27;],
-
-		fn: function bindIn($el, map, on) {
+	exports.bindIn = function bindIn($el, map) {
 
 		//	console.log(&#x27;bindIn&#x27;);
 		//	console.log($el[0]);
 		//	console.log(map);
 
-			var pipe = this.pipe($el);
-			pipe.map(map, &#x27;from&#x27;);
+		var pipe = this.pipe($el);
+		pipe.map(map, &#x27;from&#x27;);
 
-			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+		var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
 
-			if (evt) {
-				$el.on(evt, function () {
-					pipe.drain({ force: true });
-				});
-			}
+		if (evt) {
+			$el.on(evt, function () {
+				pipe.drain({ force: true });
+			});
 		}
 	};
 
@@ -203,15 +163,14 @@ define(function (require, exports, module) {
 	 * @return {[type]}     [description]
 	 */
 	exports.bindDual = {
-		args: [&#x27;on&#x27;],
 		exclude: [&#x27;on&#x27;],
-		fn: function bindDual($el, map, on) {
+		fn: function bindDual($el, map) {
 
 		//	console.log(&#x27;bindDual&#x27;);
 		//	console.log($el[0]);
 		//	console.log(map);
 
-			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+			var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
 			if (evt) {
 				$el.on(evt, function () {
@@ -224,17 +183,12 @@ define(function (require, exports, module) {
 		},
 	};
 
-	exports.bindSet = {
-		args: [&#x27;on&#x27;],
-		fn: function bindSet($el, map, on) {
+	exports.bindSet = function bindSet($el, map) {
 
-			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+		var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
-			$el.on(on, _.partial(_.bind(this.model.set, this.model), map) );
-		}
-
+		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map) );
 	};
-
 });
 
     </pre>

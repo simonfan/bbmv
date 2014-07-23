@@ -9,7 +9,6 @@ define(function (require, exports, module) {
 		'in': 'bindIn',
 		'out': 'bindOut',
 		'dual': 'bindDual',
-		'on': 'bindEvent',
 		'set': 'bindSet',
 		'': 'bindDual',
 	};
@@ -21,41 +20,6 @@ define(function (require, exports, module) {
 	};
 
 	/**
-	 * Establishes a specific event on the DOM element
-	 * to listen for drains.
-	 *
-	 * Does not remove the default event listeners set on input
-	 * elements ('change').
-	 *
-	 * Those should be set on the 'defaultDOMEvents' hash.
-	 *
-	 *
-	 * @param  {[type]} $el   [description]
-	 * @param  {[type]} event [description]
-	 * @return {[type]}       [description]
-	 */
-	exports.bindEvent = function bindEvent($el, event) {
-
-		// var pipe = this.pipe($el);
-
-		// if (_.isObject(event)) {
-
-		// 	_.each(event, function (attr, evt) {
-
-		// 		$el.on(evt, function () {
-		// 			pipe.drain(attr.split(/\s*,\s*/), { force: true });
-		// 		});
-		// 	});
-
-		// } else {
-
-		// 	event = (_.isString(event) && event !== '') ? event : this.defaultDOMEvents[$el.prop('tagName')];
-
-		// 	$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
-		// }
-	};
-
-	/**
 	 * Binds the $el data to the model in
 	 * uni-directional mode:
 	 * from DOM to MODEL
@@ -64,26 +28,22 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = {
-		args: ['on'],
-
-		fn: function bindIn($el, map, on) {
+	exports.bindIn = function bindIn($el, map) {
 
 		//	console.log('bindIn');
 		//	console.log($el[0]);
 		//	console.log(map);
 
-			var pipe = this.pipe($el);
-			pipe.map(map, 'from');
+		var pipe = this.pipe($el);
+		pipe.map(map, 'from');
 
-			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
 
-			if (evt) {
-				$el.on(evt, function () {
-					pipe.drain({ force: true });
-				});
-			}
+		if (evt) {
+			$el.on(evt, function () {
+				pipe.drain({ force: true });
+			});
 		}
 	};
 
@@ -115,15 +75,14 @@ define(function (require, exports, module) {
 	 * @return {[type]}     [description]
 	 */
 	exports.bindDual = {
-		args: ['on'],
 		exclude: ['on'],
-		fn: function bindDual($el, map, on) {
+		fn: function bindDual($el, map) {
 
 		//	console.log('bindDual');
 		//	console.log($el[0]);
 		//	console.log(map);
 
-			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
+			var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
 			if (evt) {
 				$el.on(evt, function () {
@@ -136,15 +95,10 @@ define(function (require, exports, module) {
 		},
 	};
 
-	exports.bindSet = {
-		args: ['on'],
-		fn: function bindSet($el, map, on) {
+	exports.bindSet = function bindSet($el, map) {
 
-			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
-			$el.on(on, _.partial(_.bind(this.model.set, this.model), map) );
-		}
-
+		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map) );
 	};
-
 });
