@@ -8,10 +8,6 @@
  * @module bbmv
  */
 
-/* jshint ignore:start */
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	'use strict';
 
@@ -52,11 +48,7 @@ define(function (require, exports, module) {
 
 			// listen to changes on model
 			this.model.on(this.event, function () {
-
-				console.log('change')
-
 				this.pump();
-
 			}, this);
 
 			// initial pump
@@ -86,12 +78,13 @@ define(function (require, exports, module) {
 
 
 		/**
-		 * [drain description]
-		 * @return {[type]} [description]
+		 * Drains data from a single element
+		 * @param  {[type]} $el [description]
+		 * @return {[type]}     [description]
 		 */
-		drain: function drain($el) {
+		drain: function drain($el, attributes, options) {
 
-			this.pipe($el).drain();
+			this.pipe($el).drain(attributes, options);
 
 			return this;
 		},
@@ -137,11 +130,8 @@ define(function (require, exports, module) {
 
 			return pipe;
 		},
-
-		hide: function ($el) {
-			$el.hide();
-		}
 	});
 
-	bbmv.assignProto(require('bbmv/directives'));
+	bbmv.assignProto(require('bbmv/directives'))
+		.assignProto(require('bbmv/pipe-methods/if'));
 });

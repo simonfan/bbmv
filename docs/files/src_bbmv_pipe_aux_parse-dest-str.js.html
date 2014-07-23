@@ -96,19 +96,26 @@ define(function (require, exports, module) {
 	 * Example string: &#x27;css:background-color&#x27;
 	 *                 &#x27;attr:href&#x27;
 	 *                 &#x27;val&#x27;
+	 *                 &#x27;someMethod:arg1, arg2, arg3;&#x27;
 	 * @param  {[type]} str [description]
 	 * @return {[type]}     [description]
 	 */
-	var colonSplitter = /\s*:\s*/g;
+	var colonSplitter = /\s*:\s*/g,
+		commaSplitter = /\s*,\s*/g;
+
 	function parseMethodString(str) {
 
-		// parsing out the method string
-		var tokens = str.split(colonSplitter),
-			method = tokens.shift();
+			// method:$argsString
+		var methodAndArgsSplit = str.split(colonSplitter),
+			method             = methodAndArgsSplit[0],
+			argsString         = methodAndArgsSplit[1];
+
+			// arg1, arg2, arg3
+		var args = argsString ? argsString.split(commaSplitter) : [];
 
 		return {
 			method  : method,
-			args    : tokens
+			args    : args
 		};
 	};
 	exports.methodString = parseMethodString;
@@ -172,8 +179,10 @@ define(function (require, exports, module) {
 	}
 
 
+	var semiColonSplitter = /\s*;\s*/g;
+	// &quot;method: arg1, arg2; method1: arg;&quot;
 	module.exports = function parseDestStr(destStr) {
-		return _.map(destStr.split(/\s*,\s*/g), parseDestProp);
+		return _(destStr.split(semiColonSplitter)).map(parseDestProp).compact().value();
 	};
 });
 

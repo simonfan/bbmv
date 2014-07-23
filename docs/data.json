@@ -32,6 +32,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/bbmv/pipe-methods/if.js": {
+            "name": "src/bbmv/pipe-methods/if.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/bbmv/aux.js": {
             "name": "src/bbmv/aux.js",
             "modules": {},
@@ -41,15 +48,6 @@
         },
         "src/bbmv/directives.js": {
             "name": "src/bbmv/directives.js",
-            "modules": {
-                "bbmv": 1
-            },
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/bbmv/pipe-methods.js": {
-            "name": "src/bbmv/pipe-methods.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -57,7 +55,9 @@
         },
         "src/bbmv.js": {
             "name": "src/bbmv.js",
-            "modules": {},
+            "modules": {
+                "bbmv": 1
+            },
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -71,7 +71,7 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/bbmv/directives.js",
+            "file": "src/bbmv.js",
             "line": 5,
             "description": "The modeld is the object that links together $els and models."
         }
@@ -99,7 +99,7 @@
         {
             "file": "src/bbmv/pipe/aux/parse-dest-str.js",
             "line": 6,
-            "description": "Parses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'",
+            "description": "Parses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
             "params": [
                 {
                     "name": "str",
@@ -115,13 +115,13 @@
         },
         {
             "file": "src/bbmv/pipe/aux/parse-dest-str.js",
-            "line": 28,
+            "line": 35,
             "description": "Returns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
             "class": ""
         },
         {
             "file": "src/bbmv/pipe/aux/parse-dest-str.js",
-            "line": 57,
+            "line": 64,
             "description": "Parses the destination property of the jquery-pump.",
             "params": [
                 {
@@ -160,7 +160,7 @@
         },
         {
             "file": "src/bbmv/pipe/dest-set.js",
-            "line": 65,
+            "line": 79,
             "description": "Set to the jquery object",
             "params": [
                 {
@@ -179,6 +179,16 @@
                     "type": "[type]"
                 }
             ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe-methods/if.js",
+            "line": 44,
+            "description": "Takes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
             "return": {
                 "description": "[description]",
                 "type": "[type]"
@@ -209,7 +219,7 @@
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 38,
+            "line": 23,
             "description": "Establishes a specific event on the DOM element\nto listen for drains.\n\nDoes not remove the default event listeners set on input\nelements ('change').\n\nThose should be set on the 'defaultDOMEvents' hash.",
             "params": [
                 {
@@ -227,12 +237,11 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bbmv"
+            "class": ""
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 73,
+            "line": 58,
             "description": "Binds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
             "params": [
                 {
@@ -250,12 +259,11 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bbmv"
+            "class": ""
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 105,
+            "line": 90,
             "description": "Binds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
             "params": [
                 {
@@ -273,12 +281,11 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bbmv"
+            "class": ""
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 125,
+            "line": 110,
             "description": "Dual way data binding.",
             "params": [
                 {
@@ -296,12 +303,11 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": "",
-            "module": "bbmv"
+            "class": ""
         },
         {
             "file": "src/bbmv.js",
-            "line": 38,
+            "line": 34,
             "description": "The attribute used to store the pipe id\nonto the $dest elements.",
             "type": "{[type]}",
             "class": "",
@@ -309,7 +315,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 72,
+            "line": 64,
             "description": "Pump data.",
             "params": [
                 {
@@ -327,8 +333,15 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 88,
-            "description": "[drain description]",
+            "line": 80,
+            "description": "Drains data from a single element",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
             "return": {
                 "description": "[description]",
                 "type": "[type]"
@@ -338,7 +351,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 99,
+            "line": 92,
             "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
             "params": [
                 {
@@ -379,16 +392,16 @@
             "line": " src/bbmv/pipe/aux/general.js:28"
         },
         {
-            "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'",
+            "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
             "line": " src/bbmv/pipe/aux/parse-dest-str.js:6"
         },
         {
             "message": "Missing item type\nReturns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
-            "line": " src/bbmv/pipe/aux/parse-dest-str.js:28"
+            "line": " src/bbmv/pipe/aux/parse-dest-str.js:35"
         },
         {
             "message": "Missing item type\nParses the destination property of the jquery-pump.",
-            "line": " src/bbmv/pipe/aux/parse-dest-str.js:57"
+            "line": " src/bbmv/pipe/aux/parse-dest-str.js:64"
         },
         {
             "message": "Missing item type\nGet from the jquery object",
@@ -396,7 +409,11 @@
         },
         {
             "message": "Missing item type\nSet to the jquery object",
-            "line": " src/bbmv/pipe/dest-set.js:65"
+            "line": " src/bbmv/pipe/dest-set.js:79"
+        },
+        {
+            "message": "Missing item type\nTakes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
+            "line": " src/bbmv/pipe-methods/if.js:44"
         },
         {
             "message": "Missing item type\nFinds all bound elements within the pipe.",
@@ -404,35 +421,35 @@
         },
         {
             "message": "Missing item type\nEstablishes a specific event on the DOM element\nto listen for drains.\n\nDoes not remove the default event listeners set on input\nelements ('change').\n\nThose should be set on the 'defaultDOMEvents' hash.",
-            "line": " src/bbmv/directives.js:38"
+            "line": " src/bbmv/directives.js:23"
         },
         {
             "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
-            "line": " src/bbmv/directives.js:73"
+            "line": " src/bbmv/directives.js:58"
         },
         {
             "message": "Missing item type\nBinds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
-            "line": " src/bbmv/directives.js:105"
+            "line": " src/bbmv/directives.js:90"
         },
         {
             "message": "Missing item type\nDual way data binding.",
-            "line": " src/bbmv/directives.js:125"
+            "line": " src/bbmv/directives.js:110"
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",
-            "line": " src/bbmv.js:38"
+            "line": " src/bbmv.js:34"
         },
         {
             "message": "Missing item type\nPump data.",
-            "line": " src/bbmv.js:72"
+            "line": " src/bbmv.js:64"
         },
         {
-            "message": "Missing item type\n[drain description]",
-            "line": " src/bbmv.js:88"
+            "message": "Missing item type\nDrains data from a single element",
+            "line": " src/bbmv.js:80"
         },
         {
             "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "line": " src/bbmv.js:99"
+            "line": " src/bbmv.js:92"
         }
     ]
 }

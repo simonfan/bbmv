@@ -44,7 +44,7 @@
 
 				<div
 					style="height: 40px; width: 300px; background-color: red; float: left;"
-					data-bind-out-size="hideIf:small, html"
+					data-bind-out-size="hideIf:small; html"
 				></div>
 
 				<button
@@ -83,6 +83,10 @@
 			data-bind-in-size="data:size"
 			data-size="small"
 			data-bind-on="mouseover"
+
+
+			data-bind-out-money="if:50=>half / <20=>hide / show"
+
 		>
 			SMALL
 		</div>
@@ -92,8 +96,6 @@
 			data-bind-set-money="50"
 
 			data-bind-on="click"
-
-			data-bind-if-money="50:hide"
 
 		>
 			DATA BIND SET

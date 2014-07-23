@@ -8,19 +8,26 @@ define(function (require, exports, module) {
 	 * Example string: 'css:background-color'
 	 *                 'attr:href'
 	 *                 'val'
+	 *                 'someMethod:arg1, arg2, arg3;'
 	 * @param  {[type]} str [description]
 	 * @return {[type]}     [description]
 	 */
-	var colonSplitter = /\s*:\s*/g;
+	var colonSplitter = /\s*:\s*/g,
+		commaSplitter = /\s*,\s*/g;
+
 	function parseMethodString(str) {
 
-		// parsing out the method string
-		var tokens = str.split(colonSplitter),
-			method = tokens.shift();
+			// method:$argsString
+		var methodAndArgsSplit = str.split(colonSplitter),
+			method             = methodAndArgsSplit[0],
+			argsString         = methodAndArgsSplit[1];
+
+			// arg1, arg2, arg3
+		var args = argsString ? argsString.split(commaSplitter) : [];
 
 		return {
 			method  : method,
-			args    : tokens
+			args    : args
 		};
 	};
 	exports.methodString = parseMethodString;
@@ -84,7 +91,9 @@ define(function (require, exports, module) {
 	}
 
 
+	var semiColonSplitter = /\s*;\s*/g;
+	// "method: arg1, arg2; method1: arg;"
 	module.exports = function parseDestStr(destStr) {
-		return _.map(destStr.split(/\s*,\s*/g), parseDestProp);
+		return _(destStr.split(semiColonSplitter)).map(parseDestProp).compact().value();
 	};
 });

@@ -25,27 +25,46 @@ define(function (require, exports, module) {
 		// GET ONLY THE FIRST :)
 		var dest = this.parseDestStr(destStr)[0];
 
+		///////////////////////
+		// element retrieval //
+		///////////////////////
+		// if selector is defined,
+		// ge tthe right $el
+		$el = dest.selector ? $el.find(dest.selector) : $el;
+
 		// dest:
 		//   - method
 		//   - args
 		//   - format
 		//   - selector (to be ignored)
 
-		// get the method		// get the method
+		//////////////////////
+		// method execution //
+		//////////////////////
+		// get the method
 		var methodName = dest.method,
-			method     = $el[methodName] || context[methodName];
+			res;
 
-		if (!method) {
-			throw new Error('[bbmv pipe|destGet] ' + methodName + ' could not be found.')
+		// if there is a jquery method with the given name,
+		// use it. Otherwise, try to find the method on the context object.
+		if (_.isFunction($el[methodName])) {
+			// get method on the $el.
+			// and execute it passing the args
+			res = $el[methodName].apply($el, dest.args);
+
+		} else {
+			// get the method on the context object
+			// passing the args
+			// add $el to args
+			var args = _.clone(dest.args);
+			args.unshift($el);
+
+			res = context[methodName].apply(context, args);
 		}
 
-		// if selector is defined,
-		// ge tthe right $el
-		$el = dest.selector ? $el.find(dest.selector) : $el;
-
-		// get result
-		var res = method.apply($el, dest.args);
-
+		////////////////
+		// formatting //
+		////////////////
 		// check if a format was defined
 		var format = dest.format;
 		if (format) {

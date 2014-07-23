@@ -79,7 +79,7 @@ function ($     ,  should ,  mvPipe          ,  Backbone ) {
 		});
 
 
-		it..skip('show (to-only) piping', function () {
+		it.skip('show (to-only) piping', function () {
 
 			var model = new Backbone.Model(),
 				pipe  = mvPipe().from(model).to(this.$el);

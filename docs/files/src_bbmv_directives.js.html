@@ -86,20 +86,6 @@
 
 <div class="file">
     <pre class="code prettyprint linenums">
-//     bbmv
-//     (c) simonfan
-//     bbmv is licensed under the MIT terms.
-
-/**
- * The modeld is the object that links together $els and models.
- *
- * @module bbmv
- */
-
-/* jshint ignore:start */
-if (typeof define !== &#x27;function&#x27;) { var define = require(&#x27;amdefine&#x27;)(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
@@ -112,7 +98,6 @@ define(function (require, exports, module) {
 		&#x27;out&#x27;: &#x27;bindOut&#x27;,
 		&#x27;dual&#x27;: &#x27;bindDual&#x27;,
 		&#x27;on&#x27;: &#x27;bindEvent&#x27;,
-		&#x27;if&#x27;: &#x27;bindIf&#x27;,
 		&#x27;set&#x27;: &#x27;bindSet&#x27;,
 		&#x27;&#x27;: &#x27;bindDual&#x27;,
 	};
@@ -177,16 +162,16 @@ define(function (require, exports, module) {
 		//	console.log(map);
 
 			var pipe = this.pipe($el);
+			pipe.map(map, &#x27;from&#x27;);
 
 			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+
 
 			if (evt) {
 				$el.on(evt, function () {
 					pipe.drain({ force: true });
 				});
 			}
-
-			pipe.map(map, &#x27;from&#x27;);
 		}
 	};
 
@@ -219,6 +204,7 @@ define(function (require, exports, module) {
 	 */
 	exports.bindDual = {
 		args: [&#x27;on&#x27;],
+		exclude: [&#x27;on&#x27;],
 		fn: function bindDual($el, map, on) {
 
 		//	console.log(&#x27;bindDual&#x27;);
@@ -237,34 +223,6 @@ define(function (require, exports, module) {
 			pipe.map(map, &#x27;both&#x27;);
 		},
 	};
-
-	// k1:a, k2:b
-	exports.bindIf = function bindIf($el, map) {
-
-		var model = this.model;
-
-		this.listenTo(model, &#x27;change&#x27;, function () {
-
-			_.each(map, function (condition, attr) {
-
-				var split = condition.split(&#x27;:&#x27;);
-
-
-
-				if (model.get(attr) == split[0]) {
-
-
-					console.log(split[1])
-					this[split[1]]($el);
-
-				}
-
-			}, this);
-
-		});
-
-	};
-
 
 	exports.bindSet = {
 		args: [&#x27;on&#x27;],

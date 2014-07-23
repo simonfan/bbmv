@@ -1,17 +1,3 @@
-//     bbmv
-//     (c) simonfan
-//     bbmv is licensed under the MIT terms.
-
-/**
- * The modeld is the object that links together $els and models.
- *
- * @module bbmv
- */
-
-/* jshint ignore:start */
-if (typeof define !== 'function') { var define = require('amdefine')(module) }
-/* jshint ignore:end */
-
 define(function (require, exports, module) {
 	'use strict';
 
@@ -24,7 +10,6 @@ define(function (require, exports, module) {
 		'out': 'bindOut',
 		'dual': 'bindDual',
 		'on': 'bindEvent',
-		'if': 'bindIf',
 		'set': 'bindSet',
 		'': 'bindDual',
 	};
@@ -89,16 +74,16 @@ define(function (require, exports, module) {
 		//	console.log(map);
 
 			var pipe = this.pipe($el);
+			pipe.map(map, 'from');
 
 			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
+
 
 			if (evt) {
 				$el.on(evt, function () {
 					pipe.drain({ force: true });
 				});
 			}
-
-			pipe.map(map, 'from');
 		}
 	};
 
@@ -131,6 +116,7 @@ define(function (require, exports, module) {
 	 */
 	exports.bindDual = {
 		args: ['on'],
+		exclude: ['on'],
 		fn: function bindDual($el, map, on) {
 
 		//	console.log('bindDual');
@@ -149,34 +135,6 @@ define(function (require, exports, module) {
 			pipe.map(map, 'both');
 		},
 	};
-
-	// k1:a, k2:b
-	exports.bindIf = function bindIf($el, map) {
-
-		var model = this.model;
-
-		this.listenTo(model, 'change', function () {
-
-			_.each(map, function (condition, attr) {
-
-				var split = condition.split(':');
-
-
-
-				if (model.get(attr) == split[0]) {
-
-
-					console.log(split[1])
-					this[split[1]]($el);
-
-				}
-
-			}, this);
-
-		});
-
-	};
-
 
 	exports.bindSet = {
 		args: ['on'],

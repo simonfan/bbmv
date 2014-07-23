@@ -28,7 +28,8 @@ require.config({
 		pump: '../bower_components/pump/built/pump',
 		'jquery-value': '../bower_components/jquery-value/built/jquery-value',
 		bbdv: '../bower_components/bbdv/built/bbdv',
-		swtch: '../bower_components/swtch/built/swtch'
+		swtch: '../bower_components/swtch/built/swtch',
+		bool: '../bower_components/bool/built/bool'
 	},
 	shim: {
 		backbone: {

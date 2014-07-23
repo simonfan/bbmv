@@ -23,9 +23,9 @@ function ($     ,  should ,  pipeParseDestStr             ) {
 			destdef[0].selector.should.eql('.some-class');
 		})
 
-		it('multiple methods: "css:color, html, input -> val"', function () {
+		it('multiple methods: "css:color; html; input -> val"', function () {
 
-			var destdef = pipeParseDestStr('css:color, html, input -> val');
+			var destdef = pipeParseDestStr('css:color; html; input -> val');
 
 			destdef.length.should.eql(3);
 
@@ -61,7 +61,7 @@ function ($     ,  should ,  pipeParseDestStr             ) {
 		});
 
 		it('format and format args: "currency:usd | input -> value"', function () {
-			var destdef = pipeParseDestStr("currency:usd:no-comma | input -> value")[0];
+			var destdef = pipeParseDestStr("currency:usd, no-comma | input -> value")[0];
 
 			destdef.format.method.should.eql('currency');
 			destdef.format.args.should.eql(['usd', 'no-comma']);

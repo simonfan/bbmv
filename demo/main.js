@@ -5,18 +5,28 @@ define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 		$el     = $('#demo');
 
 	var view = bbmv.extend({
-		hideIf: function (condition, value) {
+		hideIf: function ($el, condition, value) {
 
 
 			if (condition === value) {
-				this.css({ opacity: 0.5 });
+				$el.css({ opacity: 0.5 });
 			} else {
-				this.css({ opacity: 1 });
+				$el.css({ opacity: 1 });
 			}
 		},
 
 
+		hide: function ($el, value) {
+			$el.css({ opacity: value * 0.01 });
+		},
 
+		half: function ($el, value) {
+			$el.css({ opacity: 0.5 });
+		},
+
+		show: function ($el, value) {
+			$el.css({ opacity: 1 });
+		},
 
 		rates: {
 			usd: 0.45,

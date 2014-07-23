@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/pipe/dest-get.js - bbmv</title>
+    <title>src/bbmv/pipe-methods/if.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,97 +82,96 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/pipe/dest-get.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/pipe-methods/if.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
+	var conditions = {
+		&#x27;&gt;&#x27;  : function gt(condition, value) { return parseFloat(value) &gt; parseFloat(condition); },
+		&#x27;&gt;=&#x27; : function gte(condition, value) { return parseFloat(value) &gt;= parseFloat(condition); },
+		&#x27;&lt;&#x27;  : function lt(condition, value) { return parseFloat(value) &lt; parseFloat(condition); },
+		&#x27;&lt;=&#x27; : function lte(condition, value) { return parseFloat(value) &lt;= parseFloat(condition); },
+		&#x27;s&gt;&#x27; : function stringGt(condition, value) { return value &gt; condition },
+		&#x27;s&gt;=&#x27;: function stringGte(condition, value) { return value &gt;= condition },
+		&#x27;s&lt;&#x27; : function stringLt(condition, value) { return value &lt; condition },
+		&#x27;s&lt;=&#x27;: function stringLte(condition, value) { return value &lt;= condition },
+		&#x27;=&#x27;  : function equal(condition, value) { return value == condition; },
+		&#x27;==&#x27; : function strictEqual(condition, value) { return value === condition; },
+		&#x27;!&#x27;  : function notEqual(condition, value) { return value != condition; },
+		&#x27;!=&#x27; : function notStrictEqual(condition, value) { return value !== condition; },
+		&#x27;#&#x27;  : function exists(condition, value) { return !_.isUndefined(value); },
+		&#x27;!#&#x27; : function notExist(condition, value) { return _.isUndefined(value); }
+	};
 
-	// make jquery.value available for reading usage.
-	var jqValue = require(&#x27;jquery-value&#x27;),
-		_       = require(&#x27;lodash&#x27;);
+	var conditionRegExp = /^(&gt;=|&gt;|&lt;=|&lt;|s&gt;=|s&gt;|s&lt;=|s&lt;|==|=|#|!#|!=|!)?\s*(.*)\s*/;
 
-	var aux = require(&#x27;bbmv/pipe/aux/index&#x27;);
+	function evaluateCondition(condition, value) {
+
+		var match = condition.match(conditionRegExp);
+
+		var operator = match[1] || &#x27;=&#x27;;
+		condition = match[2];
+
+		return conditions[operator](condition, value);
+	}
+
+	// data-bind-if-lala=&quot;lalala:do&quot;
+	// data-bind-lala=&quot;if:lalala ~&gt; do, value ~&gt; doOther, doDefault;&quot;
+
+
+	var arrowSplitter = /\s*=&gt;\s*/,
+		slashSplitter = /\s*\/\s*/;
+
+
+	// data-bind-fruit=&quot;if:banana-&gt;yellow:apple-&gt;red:green&quot;
+	// ifDoElseDo($el, &quot;banana-&gt;yellow&quot;, &quot;apple-&gt;red&quot;, &quot;green&quot;, $value)
 
 	/**
-	 * Get from the jquery object
+	 * Takes variable number of arguments
+	 * Each argument before the last is a &#x27;condition-&gt;method&#x27; pair.
+	 * If no &#x27;-&gt;&#x27; is found within the pair string, we assume the method is
+	 * to be used in default cases.
 	 *
-	 * @param  {[type]} $el [description]
-	 * @param  {[type]} dest        [description]
-	 * @return {[type]}             [description]
+	 * @return {[type]} [description]
 	 */
-	module.exports = function destGet($el, destStr) {
+	exports[&#x27;if&#x27;] = function ifdo($el, casesString, value) {
 
-		// reference to the bbmv
-		var context = this.context;
+		var cases = casesString.split(slashSplitter);
 
-		// parse out dest string using the method
-		// in order to get the in-cache version
-		// GET ONLY THE FIRST :)
-		var dest = this.parseDestStr(destStr)[0];
+		// loop cases
+		return _.find(cases, function (pairStr) {
 
-		///////////////////////
-		// element retrieval //
-		///////////////////////
-		// if selector is defined,
-		// ge tthe right $el
-		$el = dest.selector ? $el.find(dest.selector) : $el;
+			var split = pairStr.split(arrowSplitter);
 
-		// dest:
-		//   - method
-		//   - args
-		//   - format
-		//   - selector (to be ignored)
+			if (split.length === 1) {
 
-		//////////////////////
-		// method execution //
-		//////////////////////
-		// get the method
-		var methodName = dest.method,
-			res;
+				// split = [methodName]
+				// directly execute, it is the default case
+				this[split[0]].call(this, $el, value);
 
-		// if there is a jquery method with the given name,
-		// use it. Otherwise, try to find the method on the context object.
-		if (_.isFunction($el[methodName])) {
-			// get method on the $el.
-			// and execute it passing the args
-			res = $el[methodName].apply($el, dest.args);
+				// break loop
+				return true;
 
-		} else {
-			// get the method on the context object
-			// passing the args
-			// add $el to args
-			var args = _.clone(dest.args);
-			args.unshift($el);
+			} else {
+				// split = [condition, methodName]
+				//
+				// check if condition is valid
+				if (evaluateCondition(split[0], value)) {
+					this[split[1]].call(this, $el, value);
 
-			res = context[methodName].apply(context, args);
-		}
-
-		////////////////
-		// formatting //
-		////////////////
-		// check if a format was defined
-		var format = dest.format;
-		if (format) {
-
-			// get format &quot;in&quot;
-			var formatter = context[format.method];
-			formatter = _.isFunction(formatter) ? formatter : formatter[&#x27;in&#x27;];
-
-			if (!formatter) {
-				throw new Error(&#x27;[bbmv|destGet] &#x27; + format.method + &#x27; could not be found.&#x27;);
+					// break loop
+					return true;
+				}
 			}
 
-			// clone args so that the original ones remain unchanged
-			var args = _.clone(format.args);
-			args.push(res);
+			// continue looping, no one found
+			return false;
 
-			res = formatter.apply(context, args);
-		}
+		}, this);
 
-		return res;
 	};
 });
 

@@ -9,6 +9,10 @@ define(function (require, exports, module) {
 	var aux = require('bbmv/pipe/aux/index');
 
 	function destSetSingle(pipe, $el, dest, value) {
+
+		// if $el is active, do not set it.
+		if ($el.is(':focus')) { return; }
+
 		// dest:
 		//   - method
 		//   - args
@@ -18,7 +22,9 @@ define(function (require, exports, module) {
 		// reference to bbmv
 		var context = pipe.context;
 
-
+		//////////////////////
+		// value formatting //
+		//////////////////////
 		// format
 		var format = dest.format;
 		if (format) {
@@ -31,33 +37,41 @@ define(function (require, exports, module) {
 			}
 
 			// clone args so that they remain unmodified
-			var args = _.clone(format.args);
-			args.push(value);
+			var formatArgs = _.clone(format.args);
+			formatArgs.push(value);
 
-			value = formatter.apply(context, args);
+			value = formatter.apply(context, formatArgs);
 		}
 
-		// clone the args array, so that the original one remains untouched
-		// AND add the value to the arguments array
-		var args = _.clone(dest.args);
-		args.push(value);
 
-		// get the method
-		var methodName = dest.method,
-			method     = $el[methodName] || context[methodName];
-
-		if (!method) {
-			throw new Error('[bbmv|destSet] ' + methodName + ' could not be found.')
-		}
-
+		///////////////////////
+		// element retrieval //
+		///////////////////////
 		// if therer is a selector defined,
 		// call the find method on the dest object.
 		if (dest.selector) {
 			$el = $el.find(dest.selector);
 		}
 
-		// run the method
-		return method.apply($el, args);
+		//////////////////////
+		// method execution //
+		//////////////////////
+		// clone the args array, so that the original one remains untouched
+		// AND add the value to the arguments array
+		var destArgs = _.clone(dest.args);
+		destArgs.push(value);
+
+		// get the method
+		var methodName = dest.method;
+
+		if ($el[methodName]) {
+			return $el[methodName].apply($el, destArgs);
+		} else {
+			// add the $el to the args
+			destArgs.unshift($el);
+
+			return context[methodName].apply(context, destArgs);
+		}
 	}
 
 
