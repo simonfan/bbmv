@@ -1,15 +1,17 @@
 define(function (require, exports, module) {
 	'use strict';
 
+	var _ = require('lodash');
+
 	var conditions = {
 		'>'  : function gt(condition, value) { return parseFloat(value) > parseFloat(condition); },
 		'>=' : function gte(condition, value) { return parseFloat(value) >= parseFloat(condition); },
 		'<'  : function lt(condition, value) { return parseFloat(value) < parseFloat(condition); },
 		'<=' : function lte(condition, value) { return parseFloat(value) <= parseFloat(condition); },
-		's>' : function stringGt(condition, value) { return value > condition },
-		's>=': function stringGte(condition, value) { return value >= condition },
-		's<' : function stringLt(condition, value) { return value < condition },
-		's<=': function stringLte(condition, value) { return value <= condition },
+		's>' : function stringGt(condition, value) { return value > condition; },
+		's>=': function stringGte(condition, value) { return value >= condition; },
+		's<' : function stringLt(condition, value) { return value < condition; },
+		's<=': function stringLte(condition, value) { return value <= condition; },
 		'='  : function equal(condition, value) { return value == condition; },
 		'==' : function strictEqual(condition, value) { return value === condition; },
 		'!'  : function notEqual(condition, value) { return value != condition; },

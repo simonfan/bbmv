@@ -4,15 +4,43 @@
         "version": "0.0.0"
     },
     "files": {
-        "src/bbmv/pipe/aux/general.js": {
-            "name": "src/bbmv/pipe/aux/general.js",
+        "src/bbmv/aux/general.js": {
+            "name": "src/bbmv/aux/general.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/pipe/aux/parse-dest-str.js": {
-            "name": "src/bbmv/pipe/aux/parse-dest-str.js",
+        "src/bbmv/aux/index.js": {
+            "name": "src/bbmv/aux/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/aux/parse-dest-str.js": {
+            "name": "src/bbmv/aux/parse-dest-str.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/directives/data-bind.js": {
+            "name": "src/bbmv/directives/data-bind.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/directives/event.js": {
+            "name": "src/bbmv/directives/event.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/directives/index.js": {
+            "name": "src/bbmv/directives/index.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -46,13 +74,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/directives.js": {
-            "name": "src/bbmv/directives.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/bbmv.js": {
             "name": "src/bbmv.js",
             "modules": {
@@ -79,25 +100,47 @@
     "classes": {},
     "classitems": [
         {
-            "file": "src/bbmv/pipe/aux/general.js",
+            "file": "src/bbmv/aux/general.js",
             "line": 9,
             "description": "Creates a Regular Expression to capture property name.",
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux/general.js",
+            "file": "src/bbmv/aux/general.js",
             "line": 21,
             "description": "Returns the string with the first letter to lowercase.",
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux/general.js",
+            "file": "src/bbmv/aux/general.js",
             "line": 28,
             "description": "Returns the string with the first letter to uppercase.",
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux/parse-dest-str.js",
+            "file": "src/bbmv/aux/index.js",
+            "line": 12,
+            "description": "Finds all bound elements within the pipe.",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "namespace",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/aux/parse-dest-str.js",
             "line": 6,
             "description": "Parses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
             "params": [
@@ -114,13 +157,13 @@
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux/parse-dest-str.js",
+            "file": "src/bbmv/aux/parse-dest-str.js",
             "line": 35,
             "description": "Returns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux/parse-dest-str.js",
+            "file": "src/bbmv/aux/parse-dest-str.js",
             "line": 64,
             "description": "Parses the destination property of the jquery-pump.",
             "params": [
@@ -134,6 +177,184 @@
                 "description": "[description]",
                 "type": "[type]"
             },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/data-bind.js",
+            "line": 9,
+            "description": "Binds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/data-bind.js",
+            "line": 37,
+            "description": "Binds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/data-bind.js",
+            "line": 57,
+            "description": "Dual way data binding.",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/data-bind.js",
+            "line": 85,
+            "description": "Set directive.",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/event.js",
+            "line": 13,
+            "description": "Parses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
+            "params": [
+                {
+                    "name": "methodStr",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/event.js",
+            "line": 38,
+            "description": "Parses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
+            "params": [
+                {
+                    "name": "evtStr",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/event.js",
+            "line": 60,
+            "description": "Sets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
+            "params": [
+                {
+                    "name": "view",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "evtName",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "methodStr",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/event.js",
+            "line": 96,
+            "description": "Event directive, binds events to actions on the view.",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "evtStr_evtMap",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/directives/index.js",
+            "line": 13,
+            "description": "The directives to be exported.",
             "class": ""
         },
         {
@@ -187,7 +408,7 @@
         },
         {
             "file": "src/bbmv/pipe-methods/if.js",
-            "line": 44,
+            "line": 46,
             "description": "Takes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
             "return": {
                 "description": "[description]",
@@ -197,7 +418,7 @@
         },
         {
             "file": "src/bbmv/aux.js",
-            "line": 6,
+            "line": 8,
             "description": "Finds all bound elements within the pipe.",
             "params": [
                 {
@@ -207,72 +428,6 @@
                 },
                 {
                     "name": "namespace",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/directives.js",
-            "line": 22,
-            "description": "Binds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "map",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/directives.js",
-            "line": 50,
-            "description": "Binds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "map",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/directives.js",
-            "line": 70,
-            "description": "Dual way data binding.",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "map",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -359,27 +514,67 @@
     "warnings": [
         {
             "message": "Missing item type\nCreates a Regular Expression to capture property name.",
-            "line": " src/bbmv/pipe/aux/general.js:9"
+            "line": " src/bbmv/aux/general.js:9"
         },
         {
             "message": "Missing item type\nReturns the string with the first letter to lowercase.",
-            "line": " src/bbmv/pipe/aux/general.js:21"
+            "line": " src/bbmv/aux/general.js:21"
         },
         {
             "message": "Missing item type\nReturns the string with the first letter to uppercase.",
-            "line": " src/bbmv/pipe/aux/general.js:28"
+            "line": " src/bbmv/aux/general.js:28"
+        },
+        {
+            "message": "Missing item type\nFinds all bound elements within the pipe.",
+            "line": " src/bbmv/aux/index.js:12"
         },
         {
             "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
-            "line": " src/bbmv/pipe/aux/parse-dest-str.js:6"
+            "line": " src/bbmv/aux/parse-dest-str.js:6"
         },
         {
             "message": "Missing item type\nReturns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
-            "line": " src/bbmv/pipe/aux/parse-dest-str.js:35"
+            "line": " src/bbmv/aux/parse-dest-str.js:35"
         },
         {
             "message": "Missing item type\nParses the destination property of the jquery-pump.",
-            "line": " src/bbmv/pipe/aux/parse-dest-str.js:64"
+            "line": " src/bbmv/aux/parse-dest-str.js:64"
+        },
+        {
+            "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
+            "line": " src/bbmv/directives/data-bind.js:9"
+        },
+        {
+            "message": "Missing item type\nBinds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
+            "line": " src/bbmv/directives/data-bind.js:37"
+        },
+        {
+            "message": "Missing item type\nDual way data binding.",
+            "line": " src/bbmv/directives/data-bind.js:57"
+        },
+        {
+            "message": "Missing item type\nSet directive.",
+            "line": " src/bbmv/directives/data-bind.js:85"
+        },
+        {
+            "message": "Missing item type\nParses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
+            "line": " src/bbmv/directives/event.js:13"
+        },
+        {
+            "message": "Missing item type\nParses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
+            "line": " src/bbmv/directives/event.js:38"
+        },
+        {
+            "message": "Missing item type\nSets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
+            "line": " src/bbmv/directives/event.js:60"
+        },
+        {
+            "message": "Missing item type\nEvent directive, binds events to actions on the view.",
+            "line": " src/bbmv/directives/event.js:96"
+        },
+        {
+            "message": "Missing item type\nThe directives to be exported.",
+            "line": " src/bbmv/directives/index.js:13"
         },
         {
             "message": "Missing item type\nGet from the jquery object",
@@ -391,23 +586,11 @@
         },
         {
             "message": "Missing item type\nTakes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
-            "line": " src/bbmv/pipe-methods/if.js:44"
+            "line": " src/bbmv/pipe-methods/if.js:46"
         },
         {
             "message": "Missing item type\nFinds all bound elements within the pipe.",
-            "line": " src/bbmv/aux.js:6"
-        },
-        {
-            "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
-            "line": " src/bbmv/directives.js:22"
-        },
-        {
-            "message": "Missing item type\nBinds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
-            "line": " src/bbmv/directives.js:50"
-        },
-        {
-            "message": "Missing item type\nDual way data binding.",
-            "line": " src/bbmv/directives.js:70"
+            "line": " src/bbmv/aux.js:8"
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",

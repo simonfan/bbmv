@@ -6,7 +6,7 @@ define(function (require, exports, module) {
 	var jqValue = require('jquery-value'),
 		_       = require('lodash');
 
-	var aux = require('bbmv/pipe/aux/index');
+	var aux = require('bbmv/aux/index');
 
 	function destSetSingle(pipe, $el, dest, value) {
 

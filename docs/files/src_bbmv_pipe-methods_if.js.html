@@ -89,15 +89,17 @@
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
+	var _ = require(&#x27;lodash&#x27;);
+
 	var conditions = {
 		&#x27;&gt;&#x27;  : function gt(condition, value) { return parseFloat(value) &gt; parseFloat(condition); },
 		&#x27;&gt;=&#x27; : function gte(condition, value) { return parseFloat(value) &gt;= parseFloat(condition); },
 		&#x27;&lt;&#x27;  : function lt(condition, value) { return parseFloat(value) &lt; parseFloat(condition); },
 		&#x27;&lt;=&#x27; : function lte(condition, value) { return parseFloat(value) &lt;= parseFloat(condition); },
-		&#x27;s&gt;&#x27; : function stringGt(condition, value) { return value &gt; condition },
-		&#x27;s&gt;=&#x27;: function stringGte(condition, value) { return value &gt;= condition },
-		&#x27;s&lt;&#x27; : function stringLt(condition, value) { return value &lt; condition },
-		&#x27;s&lt;=&#x27;: function stringLte(condition, value) { return value &lt;= condition },
+		&#x27;s&gt;&#x27; : function stringGt(condition, value) { return value &gt; condition; },
+		&#x27;s&gt;=&#x27;: function stringGte(condition, value) { return value &gt;= condition; },
+		&#x27;s&lt;&#x27; : function stringLt(condition, value) { return value &lt; condition; },
+		&#x27;s&lt;=&#x27;: function stringLte(condition, value) { return value &lt;= condition; },
 		&#x27;=&#x27;  : function equal(condition, value) { return value == condition; },
 		&#x27;==&#x27; : function strictEqual(condition, value) { return value === condition; },
 		&#x27;!&#x27;  : function notEqual(condition, value) { return value != condition; },

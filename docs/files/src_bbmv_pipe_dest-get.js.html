@@ -94,7 +94,7 @@ define(function (require, exports, module) {
 	var jqValue = require(&#x27;jquery-value&#x27;),
 		_       = require(&#x27;lodash&#x27;);
 
-	var aux = require(&#x27;bbmv/pipe/aux/index&#x27;);
+	var aux = require(&#x27;bbmv/aux/index&#x27;);
 
 	/**
 	 * Get from the jquery object
@@ -166,10 +166,10 @@ define(function (require, exports, module) {
 			}
 
 			// clone args so that the original ones remain unchanged
-			var args = _.clone(format.args);
-			args.push(res);
+			var formatterArgs = _.clone(format.args);
+			formatterArgs.push(res);
 
-			res = formatter.apply(context, args);
+			res = formatter.apply(context, formatterArgs);
 		}
 
 		return res;

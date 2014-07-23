@@ -1,23 +1,10 @@
-define(function (require, exports, module) {
+define(function defBindDirectives(require, exports, module) {
+
 	'use strict';
 
-
-	var _        = require('lodash'),
-		$        = require('jquery');
-
-	exports.directives = {
-		'in': 'bindIn',
-		'out': 'bindOut',
-		'dual': 'bindDual',
-		'set': 'bindSet',
-		'': 'bindDual',
-	};
+	var _ = require('lodash');
 
 
-	exports.defaultDOMEvents = {
-		'INPUT': 'change',
-		'BUTTON': 'click',
-	};
 
 	/**
 	 * Binds the $el data to the model in
@@ -28,7 +15,7 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = function bindIn($el, map) {
+	exports['in'] = function bindIn($el, map) {
 
 		//	console.log('bindIn');
 		//	console.log($el[0]);
@@ -56,7 +43,7 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindOut = function bindOut($el, map) {
+	exports['out'] = function bindOut($el, map) {
 
 
 		var pipe = this.pipe($el);
@@ -74,7 +61,7 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindDual = {
+	exports['dual'] = exports[''] = {
 		exclude: ['on'],
 		fn: function bindDual($el, map) {
 
@@ -95,10 +82,20 @@ define(function (require, exports, module) {
 		},
 	};
 
-	exports.bindSet = function bindSet($el, map) {
+	/**
+	 * Set directive.
+	 *
+	 * @param  {[type]} $el [description]
+	 * @param  {[type]} map [description]
+	 * @return {[type]}     [description]
+	 */
+	exports['set'] = function bindSet($el, map) {
 
 		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
-		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map) );
+		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
 	};
+
+
+
 });

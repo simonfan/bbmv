@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/directives.js - bbmv</title>
+    <title>src/bbmv/aux/general.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,112 +82,42 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/directives.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/aux/general.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
-
-	var _        = require(&#x27;lodash&#x27;),
-		$        = require(&#x27;jquery&#x27;);
-
-	exports.directives = {
-		&#x27;in&#x27;: &#x27;bindIn&#x27;,
-		&#x27;out&#x27;: &#x27;bindOut&#x27;,
-		&#x27;dual&#x27;: &#x27;bindDual&#x27;,
-		&#x27;set&#x27;: &#x27;bindSet&#x27;,
-		&#x27;&#x27;: &#x27;bindDual&#x27;,
-	};
+	var _ = require(&#x27;lodash&#x27;);
 
 
-	exports.defaultDOMEvents = {
-		&#x27;INPUT&#x27;: &#x27;change&#x27;,
-		&#x27;BUTTON&#x27;: &#x27;click&#x27;,
+//	/^prefix([A-Z$_].*$|$)/;
+
+	/**
+	 * Creates a Regular Expression to capture property name.
+	 *
+	 *
+	 */
+	exports.buildPrefixRegExp = function buildPrefixRegExp(prefixes) {
+
+		prefixes = _.isArray(prefixes) ? prefixes : [prefixes];
+
+		return new RegExp(&#x27;^(?:&#x27; + prefixes.join(&#x27;|&#x27;) + &#x27;)([A-Z$_].*$)?&#x27;);
 	};
 
 	/**
-	 * Binds the $el data to the model in
-	 * uni-directional mode:
-	 * from DOM to MODEL
-	 *
-	 * @param  {[type]} $el [description]
-	 * @param  {[type]} map [description]
-	 * @return {[type]}     [description]
+	 * Returns the string with the first letter to lowercase.
 	 */
-	exports.bindIn = function bindIn($el, map) {
-
-		//	console.log(&#x27;bindIn&#x27;);
-		//	console.log($el[0]);
-		//	console.log(map);
-
-		var pipe = this.pipe($el);
-		pipe.map(map, &#x27;from&#x27;);
-
-		var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
-
-
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
-		}
+	exports.lowercaseFirst = function lowercaseFirst(str) {
+		return str.charAt(0).toLowerCase() + str.slice(1);
 	};
 
 	/**
-	 * Binds the model data to the $el in
-	 * uni-directional mode:
-	 * from MODEL to DOM
-	 *
-	 * @param  {[type]} $el [description]
-	 * @param  {[type]} map [description]
-	 * @return {[type]}     [description]
+	 * Returns the string with the first letter to uppercase.
 	 */
-	exports.bindOut = function bindOut($el, map) {
-
-
-		var pipe = this.pipe($el);
-		pipe.map(map, &#x27;to&#x27;);
-
-	//	console.log(&#x27;bindOut&#x27;);
-	//	console.log($el[0]);
-	//	console.log(map);
-	};
-
-	/**
-	 * Dual way data binding.
-	 *
-	 * @param  {[type]} $el [description]
-	 * @param  {[type]} map [description]
-	 * @return {[type]}     [description]
-	 */
-	exports.bindDual = {
-		exclude: [&#x27;on&#x27;],
-		fn: function bindDual($el, map) {
-
-		//	console.log(&#x27;bindDual&#x27;);
-		//	console.log($el[0]);
-		//	console.log(map);
-
-			var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
-
-			if (evt) {
-				$el.on(evt, function () {
-					pipe.drain({ force: true });
-				});
-			}
-
-			var pipe = this.pipe($el);
-			pipe.map(map, &#x27;both&#x27;);
-		},
-	};
-
-	exports.bindSet = function bindSet($el, map) {
-
-		var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
-
-		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map) );
+	exports.uppercaseFirst = function uppercaseFirst(str) {
+		return str.charAt(0).toUpperCase() + str.slice(1);
 	};
 });
 

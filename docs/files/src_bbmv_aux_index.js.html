@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/aux.js - bbmv</title>
+    <title>src/bbmv/aux/index.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,17 +82,21 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/aux.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/aux/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
 define(function (require, exports, module) {
-
 	&#x27;use strict&#x27;;
+
+	var _ = require(&#x27;lodash&#x27;);
+
+	_.assign(exports, require(&#x27;bbmv/aux/general&#x27;));
+
+	exports.parseDestStr = require(&#x27;bbmv/aux/parse-dest-str&#x27;);
 
 	// :data-prefix(prefix) selector
 	require(&#x27;jquery-selector-data-prefix&#x27;);
-
 	/**
 	 * Finds all bound elements within the pipe.
 	 *
@@ -106,6 +110,7 @@ define(function (require, exports, module) {
 		var $boundDescendantElements = $el.find(&#x27;:data-prefix(&#x27; + namespace + &#x27;)&#x27;);
 		return $el.add($boundDescendantElements);
 	};
+
 });
 
     </pre>

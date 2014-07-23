@@ -1,10 +1,14 @@
 define(function (require, exports, module) {
-
 	'use strict';
+
+	var _ = require('lodash');
+
+	_.assign(exports, require('bbmv/aux/general'));
+
+	exports.parseDestStr = require('bbmv/aux/parse-dest-str');
 
 	// :data-prefix(prefix) selector
 	require('jquery-selector-data-prefix');
-
 	/**
 	 * Finds all bound elements within the pipe.
 	 *
@@ -18,4 +22,5 @@ define(function (require, exports, module) {
 		var $boundDescendantElements = $el.find(':data-prefix(' + namespace + ')');
 		return $el.add($boundDescendantElements);
 	};
+
 });

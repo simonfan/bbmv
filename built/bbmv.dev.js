@@ -1,4 +1,4 @@
-define('bbmv/pipe/aux/general',['require','exports','module','lodash'],function (require, exports, module) {
+define('bbmv/aux/general',['require','exports','module','lodash'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
@@ -33,7 +33,7 @@ define('bbmv/pipe/aux/general',['require','exports','module','lodash'],function 
 	};
 });
 
-define('bbmv/pipe/aux/parse-dest-str',['require','exports','module','lodash'],function (require, exports, module) {
+define('bbmv/aux/parse-dest-str',['require','exports','module','lodash'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
@@ -133,17 +133,34 @@ define('bbmv/pipe/aux/parse-dest-str',['require','exports','module','lodash'],fu
 	};
 });
 
-define('bbmv/pipe/aux/index',['require','exports','module','lodash','bbmv/pipe/aux/general','bbmv/pipe/aux/parse-dest-str'],function (require, exports, module) {
+define('bbmv/aux/index',['require','exports','module','lodash','bbmv/aux/general','bbmv/aux/parse-dest-str','jquery-selector-data-prefix'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
 
-	_.assign(exports, require('bbmv/pipe/aux/general'));
+	_.assign(exports, require('bbmv/aux/general'));
 
-	exports.parseDestStr = require('bbmv/pipe/aux/parse-dest-str');
+	exports.parseDestStr = require('bbmv/aux/parse-dest-str');
+
+	// :data-prefix(prefix) selector
+	require('jquery-selector-data-prefix');
+	/**
+	 * Finds all bound elements within the pipe.
+	 *
+	 * @param  {[type]} $el    [description]
+	 * @param  {[type]} namespace [description]
+	 * @return {[type]}        [description]
+	 */
+	exports.findBoundElements = function findBoundElements($el, namespace) {
+		// $el.add() creates a NEW SELECTION :)
+		// it does not add to the existing jq object.
+		var $boundDescendantElements = $el.find(':data-prefix(' + namespace + ')');
+		return $el.add($boundDescendantElements);
+	};
+
 });
 
-define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash','bbmv/pipe/aux/index'],function (require, exports, module) {
+define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash','bbmv/aux/index'],function (require, exports, module) {
 	
 
 
@@ -151,7 +168,7 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 	var jqValue = require('jquery-value'),
 		_       = require('lodash');
 
-	var aux = require('bbmv/pipe/aux/index');
+	var aux = require('bbmv/aux/index');
 
 	/**
 	 * Get from the jquery object
@@ -223,17 +240,17 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 			}
 
 			// clone args so that the original ones remain unchanged
-			var args = _.clone(format.args);
-			args.push(res);
+			var formatterArgs = _.clone(format.args);
+			formatterArgs.push(res);
 
-			res = formatter.apply(context, args);
+			res = formatter.apply(context, formatterArgs);
 		}
 
 		return res;
 	};
 });
 
-define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash','bbmv/pipe/aux/index'],function (require, exports, module) {
+define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash','bbmv/aux/index'],function (require, exports, module) {
 	
 
 
@@ -241,7 +258,7 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 	var jqValue = require('jquery-value'),
 		_       = require('lodash');
 
-	var aux = require('bbmv/pipe/aux/index');
+	var aux = require('bbmv/aux/index');
 
 	function destSetSingle(pipe, $el, dest, value) {
 
@@ -330,13 +347,15 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 	};
 });
 
-define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/pipe/aux/index','bbmv/pipe/dest-get','bbmv/pipe/dest-set'],function defPipe(require, exports, module) {
+define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/aux/index','bbmv/pipe/dest-get','bbmv/pipe/dest-set'],function defPipe(require, exports, module) {
 
-	var pipe = require('pipe')
+	
+
+	var pipe = require('pipe'),
 		_    = require('lodash');
 
 		// parses out the maps defined on the $el.
-	var aux = require('bbmv/pipe/aux/index');
+	var aux = require('bbmv/aux/index');
 
 	// direct reference to original methods
 	var _to         = pipe.prototype.to,
@@ -401,6 +420,8 @@ define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/pip
 
 define('bbmv/aux',['require','exports','module','jquery-selector-data-prefix'],function (require, exports, module) {
 
+	
+
 	// :data-prefix(prefix) selector
 	require('jquery-selector-data-prefix');
 
@@ -419,26 +440,13 @@ define('bbmv/aux',['require','exports','module','jquery-selector-data-prefix'],f
 	};
 });
 
-define('bbmv/directives',['require','exports','module','lodash','jquery'],function (require, exports, module) {
+define('bbmv/directives/data-bind',['require','exports','module','lodash'],function defBindDirectives(require, exports, module) {
+
 	
 
-
-	var _        = require('lodash'),
-		$        = require('jquery');
-
-	exports.directives = {
-		'in': 'bindIn',
-		'out': 'bindOut',
-		'dual': 'bindDual',
-		'set': 'bindSet',
-		'': 'bindDual',
-	};
+	var _ = require('lodash');
 
 
-	exports.defaultDOMEvents = {
-		'INPUT': 'change',
-		'BUTTON': 'click',
-	};
 
 	/**
 	 * Binds the $el data to the model in
@@ -449,7 +457,7 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = function bindIn($el, map) {
+	exports['in'] = function bindIn($el, map) {
 
 		//	console.log('bindIn');
 		//	console.log($el[0]);
@@ -477,7 +485,7 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindOut = function bindOut($el, map) {
+	exports['out'] = function bindOut($el, map) {
 
 
 		var pipe = this.pipe($el);
@@ -495,7 +503,7 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindDual = {
+	exports['dual'] = exports[''] = {
 		exclude: ['on'],
 		fn: function bindDual($el, map) {
 
@@ -516,26 +524,193 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 		},
 	};
 
-	exports.bindSet = function bindSet($el, map) {
+	/**
+	 * Set directive.
+	 *
+	 * @param  {[type]} $el [description]
+	 * @param  {[type]} map [description]
+	 * @return {[type]}     [description]
+	 */
+	exports['set'] = function bindSet($el, map) {
 
 		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
-		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map) );
+		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
 	};
+
+
+
 });
 
-define('bbmv/pipe-methods/if',['require','exports','module'],function (require, exports, module) {
+define('bbmv/directives/event',['require','exports','module','lodash'],function defEventDirectives(require, exports, module) {
+
 	
+
+	var _ = require('lodash');
+
+
+	var arrowRegExp = /\s*=>\s*/,
+		colonRegExp = /\s*:\s*/,
+		commaRegExp = /\s*,\s*/;
+
+
+	/**
+	 * Parses the methos string into an object
+	 * with name and arguments array.
+	 *
+	 * method: arg1, arg2
+	 *
+	 * @param  {[type]} methodStr [description]
+	 * @return {[type]}           [description]
+	 */
+	function parseMethodStr(methodStr) {
+
+		// parse methodStr
+		var methodStrSplit = methodStr.split(colonRegExp),
+			methodName     = methodStrSplit[0],
+			methodArgsStr  = methodStrSplit[1];
+
+		// parse argsStr
+		var methodArgs = methodArgsStr ? methodArgsStr.split(commaRegExp) : [];
+
+		return {
+			name: methodName,
+			args: methodArgs
+		};
+	}
+
+	/**
+	 * Parses the event string into an object
+	 * with evetn name, method and arguments for the method.
+	 *
+	 * event=>method: arg1, arg2
+	 *
+	 * @param  {[type]} evtStr [description]
+	 * @return {[type]}        [description]
+	 */
+	function parseEvtStr(evtStr) {
+
+		// parse evtStr
+		var evtStrSplit = evtStr.split(arrowRegExp),
+			evtName     = evtStrSplit[0],
+			methodStr   = evtStrSplit[1];
+
+		return {
+			name      : evtName,
+			method    : parseMethodStr(methodStr)
+		};
+	}
+
+	/**
+	 * Sets an event listener that tries to invoke
+	 * a method either on the $el or on the bbmv view instance.
+	 *
+	 * @param {[type]} view      [description]
+	 * @param {[type]} $el       [description]
+	 * @param {[type]} evtName   [description]
+	 * @param {[type]} methodStr [description]
+	 */
+	function setEventListener(view, $el, evtName, methodStr) {
+
+		// parse out the method.
+		var method = parseMethodStr(methodStr);
+
+		// set listener
+		$el.on(evtName, function () {
+
+			// if method is available on the $el,
+			// use the $el method.
+			// otherwise, use the view's method
+			// passing the $el as first argument.
+
+			if ($el[method.name]) {
+				// run the method defined on $el.
+				$el[method.name].apply($el, method.args);
+
+			} else {
+				// run the method defined on the view
+				// passing the $el as the first argument
+				method.args.unshift($el);
+				view[method.name].apply(view, method.args);
+			}
+		});
+
+	}
+
+	/**
+	 * Event directive, binds events to actions on the view.
+	 *
+	 * @param  {[type]} $el           [description]
+	 * @param  {[type]} evtStr_evtMap [description]
+	 * @return {[type]}               [description]
+	 */
+	exports['event'] = function bindEvent($el, evtStr_evtMap) {
+
+		// keep reference to the view.
+		var view = this;
+
+		if (_.isObject(evtStr_evtMap)) {
+
+			// loop through events.
+			_.each(evtStr_evtMap, function (methodStr, evtName) {
+
+				// set event listener
+				setEventListener(this, $el, evtName, methodStr);
+
+			}, this);
+
+		} else {
+
+			// parse evtStr
+			var evtStrSplit = evtStr_evtMap.split(arrowRegExp),
+				evtName     = evtStrSplit[0],
+				methodStr   = evtStrSplit[1];
+
+			// set event listener
+			setEventListener(this, $el, evtName, methodStr);
+		}
+
+	};
+
+});
+
+define('bbmv/directives/index',['require','exports','module','lodash','jquery','bbmv/directives/data-bind','bbmv/directives/event'],function (require, exports, module) {
+	
+
+	var _        = require('lodash'),
+		$        = require('jquery');
+
+	exports.defaultDOMEvents = {
+		'INPUT': 'change',
+		'BUTTON': 'click',
+	};
+
+
+	/**
+	 * The directives to be exported.
+	 */
+	var directives = {};
+	exports.directives = directives;
+
+	// extend directives
+	_.assign(directives, require('bbmv/directives/data-bind'));
+	_.assign(directives, require('bbmv/directives/event'));
+});
+
+define('bbmv/pipe-methods/if',['require','exports','module','lodash'],function (require, exports, module) {
+	
+
+	var _ = require('lodash');
 
 	var conditions = {
 		'>'  : function gt(condition, value) { return parseFloat(value) > parseFloat(condition); },
 		'>=' : function gte(condition, value) { return parseFloat(value) >= parseFloat(condition); },
 		'<'  : function lt(condition, value) { return parseFloat(value) < parseFloat(condition); },
 		'<=' : function lte(condition, value) { return parseFloat(value) <= parseFloat(condition); },
-		's>' : function stringGt(condition, value) { return value > condition },
-		's>=': function stringGte(condition, value) { return value >= condition },
-		's<' : function stringLt(condition, value) { return value < condition },
-		's<=': function stringLte(condition, value) { return value <= condition },
+		's>' : function stringGt(condition, value) { return value > condition; },
+		's>=': function stringGte(condition, value) { return value >= condition; },
+		's<' : function stringLt(condition, value) { return value < condition; },
+		's<=': function stringLte(condition, value) { return value <= condition; },
 		'='  : function equal(condition, value) { return value == condition; },
 		'==' : function strictEqual(condition, value) { return value === condition; },
 		'!'  : function notEqual(condition, value) { return value != condition; },
@@ -613,6 +788,16 @@ define('bbmv/pipe-methods/if',['require','exports','module'],function (require, 
 	};
 });
 
+define('bbmv/pipe-methods/model-methods',['require','exports','module'],function defPipeMethodsModelMethods(require, exports, module) {
+
+	
+
+	exports.save = function save($el) {
+		return this.model.save();
+	};
+
+});
+
 //     bbmv
 //     (c) simonfan
 //     bbmv is licensed under the MIT terms.
@@ -623,7 +808,7 @@ define('bbmv/pipe-methods/if',['require','exports','module'],function (require, 
  * @module bbmv
  */
 
-define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives','bbmv/pipe-methods/if'],function (require, exports, module) {
+define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives/index','bbmv/pipe-methods/if','bbmv/pipe-methods/model-methods'],function (require, exports, module) {
 	
 
 
@@ -747,7 +932,8 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 		},
 	});
 
-	bbmv.assignProto(require('bbmv/directives'))
-		.assignProto(require('bbmv/pipe-methods/if'));
+	bbmv.assignProto(require('bbmv/directives/index'))
+		.assignProto(require('bbmv/pipe-methods/if'))
+		.assignProto(require('bbmv/pipe-methods/model-methods'));
 });
 

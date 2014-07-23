@@ -1,10 +1,12 @@
 define(function defPipe(require, exports, module) {
 
-	var pipe = require('pipe')
+	'use strict';
+
+	var pipe = require('pipe'),
 		_    = require('lodash');
 
 		// parses out the maps defined on the $el.
-	var aux = require('bbmv/pipe/aux/index');
+	var aux = require('bbmv/aux/index');
 
 	// direct reference to original methods
 	var _to         = pipe.prototype.to,

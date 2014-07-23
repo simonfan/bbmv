@@ -132,6 +132,7 @@ define(function (require, exports, module) {
 		},
 	});
 
-	bbmv.assignProto(require('bbmv/directives'))
-		.assignProto(require('bbmv/pipe-methods/if'));
+	bbmv.assignProto(require('bbmv/directives/index'))
+		.assignProto(require('bbmv/pipe-methods/if'))
+		.assignProto(require('bbmv/pipe-methods/model-methods'));
 });
