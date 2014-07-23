@@ -7,7 +7,7 @@ function ($     ,  should ,  mvPipe          ,  Backbone ) {
 			this.$el = $('#pipe');
 		});
 
-		it(':) general demo', function () {
+		it.skip(':) general demo', function () {
 
 			// create a model
 			var model = new Backbone.Model();
@@ -37,7 +37,7 @@ function ($     ,  should ,  mvPipe          ,  Backbone ) {
 			model.get('colors').should.eql(['red']);
 		});
 
-		it('instantiation mapping', function () {
+		it.skip('instantiation mapping', function () {
 			var model = new Backbone.Model(),
 				pipe  = mvPipe(model, this.$el, {
 					height: 'css:height',
@@ -79,7 +79,7 @@ function ($     ,  should ,  mvPipe          ,  Backbone ) {
 		});
 
 
-		it('show (to-only) piping', function () {
+		it..skip('show (to-only) piping', function () {
 
 			var model = new Backbone.Model(),
 				pipe  = mvPipe().from(model).to(this.$el);

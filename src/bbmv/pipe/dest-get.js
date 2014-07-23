@@ -18,7 +18,7 @@ define(function (require, exports, module) {
 	module.exports = function destGet($el, destStr) {
 
 		// reference to the bbmv
-		var bbmv = this.bbmv;
+		var context = this.context;
 
 		// parse out dest string using the method
 		// in order to get the in-cache version
@@ -33,10 +33,10 @@ define(function (require, exports, module) {
 
 		// get the method		// get the method
 		var methodName = dest.method,
-			method     = $el[methodName] || bbmv[methodName];
+			method     = $el[methodName] || context[methodName];
 
 		if (!method) {
-			throw new Error('[bbmv|destGet] ' + methodName + ' could not be found.')
+			throw new Error('[bbmv pipe|destGet] ' + methodName + ' could not be found.')
 		}
 
 		// if selector is defined,
@@ -51,7 +51,7 @@ define(function (require, exports, module) {
 		if (format) {
 
 			// get format "in"
-			var formatter = bbmv[format.method];
+			var formatter = context[format.method];
 			formatter = _.isFunction(formatter) ? formatter : formatter['in'];
 
 			if (!formatter) {
@@ -62,7 +62,7 @@ define(function (require, exports, module) {
 			var args = _.clone(format.args);
 			args.push(res);
 
-			res = formatter.apply(bbmv, args);
+			res = formatter.apply(context, args);
 		}
 
 		return res;

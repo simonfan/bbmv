@@ -114,41 +114,95 @@ define(function (require, exports, module) {
 
 
 	function genPipeIdAttr() {
-		return [&#x27;bbdv&#x27;, this.cid, this.namespace, &#x27;id&#x27;].join(&#x27;_&#x27;);
+		return [&#x27;bbdv&#x27;, this.namespace, this.cid, &#x27;id&#x27;].join(&#x27;_&#x27;);
 	}
 
-	var bbmv = bbdv.extend({
+	var bbmv = module.exports = bbdv.extend({
 
 		initialize: function initializeBbmv(options) {
 
 			this.namespace = options.namespace || this.namespace;
 
-
+			/**
+			 * The attribute used to store the pipe id
+			 * onto the $dest elements.
+			 *
+			 * @type {[type]}
+			 */
 			this.pipeIdAttr = genPipeIdAttr.call(this);
 
 			this.pipes = {};
 
 			bbdv.prototype.initialize.call(this, options);
 
+			if (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }
+			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }
+
+			// listen to changes on model
+			this.model.on(this.event, function () {
+
+				console.log(&#x27;change&#x27;)
+
+				this.pump();
+
+			}, this);
+
+			// initial pump
+			this.pump();
+
 		},
+
+		event: &#x27;change&#x27;,
+
 
 		namespace: &#x27;bind&#x27;,
 
+		/**
+		 * Pump data.
+		 *
+		 * @param  {[type]} argument [description]
+		 * @return {[type]}          [description]
+		 */
+		pump: function pump() {
 
-		directives: {
-			&#x27;in&#x27;: &#x27;bindIn&#x27;,
-			&#x27;out&#x27;: &#x27;bindOut&#x27;,
-			&#x27;&#x27;: &#x27;bindDual&#x27;,
-			&#x27;dual&#x27;: &#x27;bindDual&#x27;,
-			&#x27;event&#x27;: &#x27;bindEvent&#x27;
+			_.each(this.pipes, function (pipe) {
+				pipe.pump();
+			});
+
+			return this;
 		},
 
-		pipe: function definePipe($el) {
+
+		/**
+		 * [drain description]
+		 * @return {[type]} [description]
+		 */
+		drain: function drain($el) {
+
+			this.pipe($el).drain();
+
+			return this;
+		},
+
+		/**
+		 * Attempts to get the pipe id from the $dest object
+		 * and then checks for a pipe in cache.
+		 *
+		 * If no pipe is found in cache, instantiate a pipe
+		 * set id onto $dest using the .data method
+		 * and save pipe to cache using that id.
+		 *
+		 * @param  {[type]} $dest   [description]
+		 * @param  {[type]} map     [description]
+		 * @param  {[type]} options [description]
+		 * @return {[type]}         [description]
+		 */
+		pipe: function definePipe($dest, map, options) {
 
 			var pipe;
 
 			// get the pipeid
-			var pipeid = $el.data(this.pipeIdAttr);
+			var pipeid = $dest.data(this.pipeIdAttr);
 
 			if (pipeid &amp;&amp; this.pipes[pipeid]) {
 				// get pipe from cache
@@ -158,178 +212,22 @@ define(function (require, exports, module) {
 				// generate a unique id
 				pipeid = _.uniqueId(this.pipeIdAttr);
 
+				// set namespace onto options
+				options = options || {};
+				options.context = this;
+
 				// create pipe
-				pipe = this.pipes[pipeid] = mvPipe(this.model, $el);
+				pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
 
 				// save pipe id on el.
-				$el.data(this.pipeIdAttr, pipeid);
+				$dest.data(this.pipeIdAttr, pipeid);
 			}
 
 			return pipe;
 		},
-
-		bindEvent: function bindEvent($el, event) {
-
-			var pipe = this.pipe($el);
-
-			if (_.isObject(event)) {
-
-				_.each(event, function (attr, evt) {
-
-					$el.on(evt, function () {
-						pipe.drain(attr.split(/\s*,\s*/), { force: true });
-					});
-				});
-
-			} else if (_.isString(event)) {
-				$el.on(event, function () {
-					pipe.drain({ force: true });
-				});
-			}
-		},
-
-		bindIn: function bindIn($el, map) {
-
-			var pipe = this.pipe($el);
-
-			pipe.map(map, &#x27;from&#x27;);
-		},
-
-		bindOut: function bindOut($el, map) {
-
-			var pipe = this.pipe($el);
-			pipe.map(map, &#x27;to&#x27;);
-		},
-
-		bindDual: function bindDual($el, map) {
-			var pipe = this.pipe($el);
-			pipe.map(map, &#x27;both&#x27;);
-		}
 	});
 
-
-	/**
-	 * Exports.
-	 * @param  {[type]} initializeModelView: function                                               initializeModelView(options)                       {			if         (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }						var $boundElements = this.boundElements();									var pumpOptions = _.pick(options, pumpOptionNames [description]
-	 * @return {[type]}                      [description]
-	 */
-	var bbmv = module.exports = backbone.view.extend({
-
-		initialize: function initialize() {
-			// initialize basic backbone view
-			backbone.view.prototype.initialize.apply(this, arguments);
-
-			this.initializeModelView.apply(this, arguments);
-		},
-
-		/**
-		 * Holds initialization logic for modelmodeld.
-		 *
-		 * @method initializeModelView
-		 * @param options {Object}
-		 */
-		initializeModelView: function initializeModelView(options) {
-			if (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }
-			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }
-
-			/**
-			 * Array of pipes defined in the view.
-			 *
-			 * @type {Array}
-			 */
-			this.pipes = [];
-
-			// [0] pick initialization options
-			_.each([&#x27;namespace&#x27;, &#x27;event&#x27;], function (opt) {
-				this[opt] = options[opt] || this[opt];
-			}, this);
-
-			// [1] find all elements that have bindings defined.
-			var $boundElements = aux.findBoundElements(this.$el, this.namespace);
-
-			// [2] set up pipes
-			_.each($boundElements, function (el) {
-
-				this.pipe($(el));
-
-			}, this);
-
-
-			// listen to changes on model
-			this.model.on(this.event, function () {
-
-				this.pump();
-
-			}, this);
-
-			// initial pump
-			this.pump();
-		},
-
-		/**
-		 * Event to be listened on the model.
-		 *
-		 * @type {String}
-		 */
-		event: &#x27;change&#x27;,
-
-		/**
-		 * The namespace that designates bound elements.
-		 *
-		 * @type {String}
-		 */
-		namespace: &#x27;bind&#x27;,
-
-
-		mvPipe: mvPipe,
-
-		/**
-		 * Create a pipe.
-		 *
-		 * @param  {[type]} $dest [description]
-		 * @return {[type]}             [description]
-		 */
-		pipe: function definePipe($dest, map, options) {
-
-			options = options || {};
-
-			options.namespace = options.namespace || this.namespace;
-			options.bbmv      = this;
-
-			var _pipe = mvPipe(this.model, $dest, map, options);
-
-			// save pipe
-			this.pipes.push(_pipe);
-
-			return _pipe;
-		},
-
-		/**
-		 * Pump data.
-		 *
-		 * @param  {[type]} argument [description]
-		 * @return {[type]}          [description]
-		 */
-		pump: function pump() {
-			_.each(this.pipes, function (pipe) {
-				pipe.pump();
-			});
-
-			return this;
-		},
-
-		/**
-		 * [drain description]
-		 * @return {[type]} [description]
-		 */
-		drain: function drain() {
-			_.each(this.pipes, function (pipe) {
-				pipe.drain();
-			});
-
-			return this;
-		}
-	});
+	bbmv.assignProto(require(&#x27;bbmv/directives&#x27;));
 });
 
     </pre>

@@ -67,7 +67,7 @@ function ($     ,  should ,  pipeDestSet        ,  parseDestStr                 
 				parseDestStr: parseDestStr,
 
 				// formatting methods are looked for on the bbmv object.
-				bbmv: bbmvStub
+				context: bbmvStub
 			};
 
 			pipeDestSet.call(pipeStub, this.$el, 'someFormat | html', 'some-value');

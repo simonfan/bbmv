@@ -16,25 +16,25 @@ define(function (require, exports, module) {
 		//   - selector (to be ignored)
 
 		// reference to bbmv
-		var bbmv = pipe.bbmv;
+		var context = pipe.context;
 
 
 		// format
 		var format = dest.format;
 		if (format) {
 			// get format "out"
-			var formatter = bbmv[format.method];
+			var formatter = context[format.method];
 			formatter = _.isFunction(formatter) ? formatter : formatter.out;
 
 			if (!formatter) {
-				throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.');
+				throw new Error('[bbmv pipe|destGet] ' + format.method + ' could not be found.');
 			}
 
 			// clone args so that they remain unmodified
 			var args = _.clone(format.args);
 			args.push(value);
 
-			value = formatter.apply(bbmv, args);
+			value = formatter.apply(context, args);
 		}
 
 		// clone the args array, so that the original one remains untouched
@@ -44,7 +44,7 @@ define(function (require, exports, module) {
 
 		// get the method
 		var methodName = dest.method,
-			method     = $el[methodName] || bbmv[methodName];
+			method     = $el[methodName] || context[methodName];
 
 		if (!method) {
 			throw new Error('[bbmv|destSet] ' + methodName + ' could not be found.')

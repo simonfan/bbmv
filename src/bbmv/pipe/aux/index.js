@@ -6,6 +6,4 @@ define(function (require, exports, module) {
 	_.assign(exports, require('bbmv/pipe/aux/general'));
 
 	exports.parseDestStr = require('bbmv/pipe/aux/parse-dest-str');
-
-	exports.extractMaps = require('bbmv/pipe/aux/extract-maps');
 });

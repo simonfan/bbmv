@@ -4,13 +4,6 @@
         "version": "0.0.0"
     },
     "files": {
-        "src/bbmv/pipe/aux/extract-maps.js": {
-            "name": "src/bbmv/pipe/aux/extract-maps.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/bbmv/pipe/aux/general.js": {
             "name": "src/bbmv/pipe/aux/general.js",
             "modules": {},
@@ -39,13 +32,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/pipe/index.js": {
-            "name": "src/bbmv/pipe/index.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/bbmv/aux.js": {
             "name": "src/bbmv/aux.js",
             "modules": {},
@@ -53,11 +39,18 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv.js": {
-            "name": "src/bbmv.js",
+        "src/bbmv/directives.js": {
+            "name": "src/bbmv/directives.js",
             "modules": {
                 "bbmv": 1
             },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv.js": {
+            "name": "src/bbmv.js",
+            "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
@@ -71,30 +64,13 @@
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/bbmv.js",
+            "file": "src/bbmv/directives.js",
             "line": 5,
             "description": "The modeld is the object that links together $els and models."
         }
     },
     "classes": {},
     "classitems": [
-        {
-            "file": "src/bbmv/pipe/aux/extract-maps.js",
-            "line": 28,
-            "description": "[exports description]",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
         {
             "file": "src/bbmv/pipe/aux/general.js",
             "line": 9,
@@ -203,30 +179,6 @@
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/index.js",
-            "line": 59,
-            "description": "The default namespace used for binding map extraction.",
-            "type": "{String}",
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/pipe/index.js",
-            "line": 67,
-            "description": "Override the to method in order to\nlisten to events on the destination object.",
-            "params": [
-                {
-                    "name": "dest",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
             "file": "src/bbmv/aux.js",
             "line": 6,
             "description": "Finds all bound elements within the pipe.",
@@ -249,13 +201,18 @@
             "class": ""
         },
         {
-            "file": "src/bbmv.js",
-            "line": 123,
-            "description": "Exports.",
+            "file": "src/bbmv/directives.js",
+            "line": 36,
+            "description": "Establishes a specific event on the DOM element\nto listen for drains.\n\nDoes not remove the default event listeners set on input\nelements ('change').\n\nThose should be set on the 'defaultDOMEvents' hash.",
             "params": [
                 {
-                    "name": "initializeModelView:",
-                    "description": "function                                               initializeModelView(options)                       {\t\t\tif         (!this.model) { throw new Error('No model set for model view.'); }\t\t\tif (!this.$el) { throw new Error('No el set on model view.'); }\t\t\t\t\t\tvar $boundElements = this.boundElements();\t\t\t\t\t\t\t\t\tvar pumpOptions = _.pick(options, pumpOptionNames [description]",
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "event",
+                    "description": "[description]",
                     "type": "[type]"
                 }
             ],
@@ -267,52 +224,63 @@
             "module": "bbmv"
         },
         {
-            "file": "src/bbmv.js",
-            "line": 137,
-            "description": "Holds initialization logic for modelmodeld.",
-            "itemtype": "method",
-            "name": "initializeModelView",
+            "file": "src/bbmv/directives.js",
+            "line": 71,
+            "description": "Binds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
             "params": [
                 {
-                    "name": "options",
-                    "description": "",
-                    "type": "Object"
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
                 }
             ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
             "class": "",
             "module": "bbmv"
         },
         {
-            "file": "src/bbmv.js",
-            "line": 147,
-            "description": "Array of pipes defined in the view.",
-            "type": "{Array}",
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 181,
-            "description": "Event to be listened on the model.",
-            "type": "{String}",
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 188,
-            "description": "The namespace that designates bound elements.",
-            "type": "{String}",
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 198,
-            "description": "Create a pipe.",
+            "file": "src/bbmv/directives.js",
+            "line": 102,
+            "description": "Binds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
             "params": [
                 {
-                    "name": "$dest",
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv/directives.js",
+            "line": 122,
+            "description": "Dual way data binding.",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -326,7 +294,15 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 219,
+            "line": 38,
+            "description": "The attribute used to store the pipe id\nonto the $dest elements.",
+            "type": "{[type]}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 72,
             "description": "Pump data.",
             "params": [
                 {
@@ -344,8 +320,36 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 233,
+            "line": 88,
             "description": "[drain description]",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 99,
+            "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
+            "params": [
+                {
+                    "name": "$dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "map",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "options",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
             "return": {
                 "description": "[description]",
                 "type": "[type]"
@@ -355,10 +359,6 @@
         }
     ],
     "warnings": [
-        {
-            "message": "Missing item type\n[exports description]",
-            "line": " src/bbmv/pipe/aux/extract-maps.js:28"
-        },
         {
             "message": "Missing item type\nCreates a Regular Expression to capture property name.",
             "line": " src/bbmv/pipe/aux/general.js:9"
@@ -392,44 +392,40 @@
             "line": " src/bbmv/pipe/dest-set.js:65"
         },
         {
-            "message": "Missing item type\nThe default namespace used for binding map extraction.",
-            "line": " src/bbmv/pipe/index.js:59"
-        },
-        {
-            "message": "Missing item type\nOverride the to method in order to\nlisten to events on the destination object.",
-            "line": " src/bbmv/pipe/index.js:67"
-        },
-        {
             "message": "Missing item type\nFinds all bound elements within the pipe.",
             "line": " src/bbmv/aux.js:6"
         },
         {
-            "message": "Missing item type\nExports.",
-            "line": " src/bbmv.js:123"
+            "message": "Missing item type\nEstablishes a specific event on the DOM element\nto listen for drains.\n\nDoes not remove the default event listeners set on input\nelements ('change').\n\nThose should be set on the 'defaultDOMEvents' hash.",
+            "line": " src/bbmv/directives.js:36"
         },
         {
-            "message": "Missing item type\nArray of pipes defined in the view.",
-            "line": " src/bbmv.js:147"
+            "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
+            "line": " src/bbmv/directives.js:71"
         },
         {
-            "message": "Missing item type\nEvent to be listened on the model.",
-            "line": " src/bbmv.js:181"
+            "message": "Missing item type\nBinds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
+            "line": " src/bbmv/directives.js:102"
         },
         {
-            "message": "Missing item type\nThe namespace that designates bound elements.",
-            "line": " src/bbmv.js:188"
+            "message": "Missing item type\nDual way data binding.",
+            "line": " src/bbmv/directives.js:122"
         },
         {
-            "message": "Missing item type\nCreate a pipe.",
-            "line": " src/bbmv.js:198"
+            "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",
+            "line": " src/bbmv.js:38"
         },
         {
             "message": "Missing item type\nPump data.",
-            "line": " src/bbmv.js:219"
+            "line": " src/bbmv.js:72"
         },
         {
             "message": "Missing item type\n[drain description]",
-            "line": " src/bbmv.js:233"
+            "line": " src/bbmv.js:88"
+        },
+        {
+            "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
+            "line": " src/bbmv.js:99"
         }
     ]
 }
