@@ -23,7 +23,9 @@ define(function (require, exports, module) {
 		'in': 'bindIn',
 		'out': 'bindOut',
 		'dual': 'bindDual',
-		'event': 'bindEvent',
+		'on': 'bindEvent',
+		'if': 'bindIf',
+		'set': 'bindSet',
 		'': 'bindDual',
 	};
 
@@ -49,23 +51,23 @@ define(function (require, exports, module) {
 	 */
 	exports.bindEvent = function bindEvent($el, event) {
 
-		var pipe = this.pipe($el);
+		// var pipe = this.pipe($el);
 
-		if (_.isObject(event)) {
+		// if (_.isObject(event)) {
 
-			_.each(event, function (attr, evt) {
+		// 	_.each(event, function (attr, evt) {
 
-				$el.on(evt, function () {
-					pipe.drain(attr.split(/\s*,\s*/), { force: true });
-				});
-			});
+		// 		$el.on(evt, function () {
+		// 			pipe.drain(attr.split(/\s*,\s*/), { force: true });
+		// 		});
+		// 	});
 
-		} else {
+		// } else {
 
-			event = (_.isString(event) && event !== '') ? event : this.defaultDOMEvents[$el.prop('tagName')];
+		// 	event = (_.isString(event) && event !== '') ? event : this.defaultDOMEvents[$el.prop('tagName')];
 
-			$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
-		}
+		// 	$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
+		// }
 	};
 
 	/**
@@ -77,26 +79,27 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = function bindIn($el, map) {
+	exports.bindIn = {
+		args: ['on'],
 
-	//	console.log('bindIn');
-	//	console.log($el[0]);
-	//	console.log(map);
+		fn: function bindIn($el, map, on) {
 
-		var pipe = this.pipe($el);
+		//	console.log('bindIn');
+		//	console.log($el[0]);
+		//	console.log(map);
 
+			var pipe = this.pipe($el);
 
-		var evt = this.defaultDOMEvents[$el.prop('tagName')];
+			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
 
-		console.log(this)
+			if (evt) {
+				$el.on(evt, function () {
+					pipe.drain({ force: true });
+				});
+			}
 
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
+			pipe.map(map, 'from');
 		}
-
-		pipe.map(map, 'from');
 	};
 
 	/**
@@ -111,12 +114,12 @@ define(function (require, exports, module) {
 	exports.bindOut = function bindOut($el, map) {
 
 
+		var pipe = this.pipe($el);
+		pipe.map(map, 'to');
+
 	//	console.log('bindOut');
 	//	console.log($el[0]);
 	//	console.log(map);
-
-		var pipe = this.pipe($el);
-		pipe.map(map, 'to');
 	};
 
 	/**
@@ -126,22 +129,64 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindDual = function bindDual($el, map) {
+	exports.bindDual = {
+		args: ['on'],
+		fn: function bindDual($el, map, on) {
 
-	//	console.log('bindDual');
-	//	console.log($el[0]);
-	//	console.log(map);
+		//	console.log('bindDual');
+		//	console.log($el[0]);
+		//	console.log(map);
 
-		var evt = this.defaultDOMEvents[$el.prop('tagName')];
+			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
 
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
-		}
+			if (evt) {
+				$el.on(evt, function () {
+					pipe.drain({ force: true });
+				});
+			}
 
-		var pipe = this.pipe($el);
-		pipe.map(map, 'both');
+			var pipe = this.pipe($el);
+			pipe.map(map, 'both');
+		},
+	};
+
+	// k1:a, k2:b
+	exports.bindIf = function bindIf($el, map) {
+
+		var model = this.model;
+
+		this.listenTo(model, 'change', function () {
+
+			_.each(map, function (condition, attr) {
+
+				var split = condition.split(':');
+
+
+
+				if (model.get(attr) == split[0]) {
+
+
+					console.log(split[1])
+					this[split[1]]($el);
+
+				}
+
+			}, this);
+
+		});
 
 	};
+
+
+	exports.bindSet = {
+		args: ['on'],
+		fn: function bindSet($el, map, on) {
+
+			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
+
+			$el.on(on, _.partial(_.bind(this.model.set, this.model), map) );
+		}
+
+	};
+
 });

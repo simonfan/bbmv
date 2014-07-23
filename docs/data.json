@@ -48,6 +48,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/bbmv/pipe-methods.js": {
+            "name": "src/bbmv/pipe-methods.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/bbmv.js": {
             "name": "src/bbmv.js",
             "modules": {},
@@ -202,7 +209,7 @@
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 36,
+            "line": 38,
             "description": "Establishes a specific event on the DOM element\nto listen for drains.\n\nDoes not remove the default event listeners set on input\nelements ('change').\n\nThose should be set on the 'defaultDOMEvents' hash.",
             "params": [
                 {
@@ -225,7 +232,7 @@
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 71,
+            "line": 73,
             "description": "Binds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
             "params": [
                 {
@@ -248,7 +255,7 @@
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 102,
+            "line": 105,
             "description": "Binds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
             "params": [
                 {
@@ -271,7 +278,7 @@
         },
         {
             "file": "src/bbmv/directives.js",
-            "line": 122,
+            "line": 125,
             "description": "Dual way data binding.",
             "params": [
                 {
@@ -397,19 +404,19 @@
         },
         {
             "message": "Missing item type\nEstablishes a specific event on the DOM element\nto listen for drains.\n\nDoes not remove the default event listeners set on input\nelements ('change').\n\nThose should be set on the 'defaultDOMEvents' hash.",
-            "line": " src/bbmv/directives.js:36"
+            "line": " src/bbmv/directives.js:38"
         },
         {
             "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
-            "line": " src/bbmv/directives.js:71"
+            "line": " src/bbmv/directives.js:73"
         },
         {
             "message": "Missing item type\nBinds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
-            "line": " src/bbmv/directives.js:102"
+            "line": " src/bbmv/directives.js:105"
         },
         {
             "message": "Missing item type\nDual way data binding.",
-            "line": " src/bbmv/directives.js:122"
+            "line": " src/bbmv/directives.js:125"
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",

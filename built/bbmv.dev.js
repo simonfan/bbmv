@@ -2,7 +2,7 @@
 //     (c) simonfan
 //     Bbdv is licensed under the MIT terms.
 
-define("bbdv/aux",["require","exports","module"],function(e,t){t.camelCase=function(e){return e.replace(/[-_\s]+(.)?/g,function(e,t){return t?t.toUpperCase():""})},t.buildPrefixRegExp=function(e){return new RegExp("^"+e+"([A-Z$_].*$|$)")},t.lowercaseFirst=function(e){return e.charAt(0).toLowerCase()+e.slice(1)},t.uppercaseFirst=function(e){return e.charAt(0).toUpperCase()+e.slice(1)}}),define("bbdv/extract-directive-arguments",["require","exports","module","lodash","bbdv/aux"],function(e,t,i){function r(e,t){return s.camelCase(e+"-"+t)}var n=e("lodash"),s=e("bbdv/aux");i.exports=function(e,t,i){e=e||"",t.sort(function(e,t){return t.length-e.length});var a={};return n.each(i,function(i,c){n.any(t,function(t){var u=r(e,t);if(n.has(a,t)&&!n.isObject(a[t]))return!1;if(u===c)return a[t]=i,!0;var o=s.buildPrefixRegExp(u),d=c.match(o);if(d){var v=a[t];return v||(v=a[t]={}),v[s.lowercaseFirst(d[1])]=i,!0}return!1},this)},this),a}}),define("bbdv/execute-directives",["require","exports","module","lodash","bbdv/extract-directive-arguments","bbdv/aux"],function(e,t,i){{var r=e("lodash"),n=e("bbdv/extract-directive-arguments");e("bbdv/aux")}i.exports=function(e,t,i){var s=n(t,r.keys(i),e.data());r.each(s,function(t,r){if(""===r){var n=i[""]||i["default"];n.call(this,e,t)}else i[r].call(this,e,t)},this)}}),define("bbdv",["require","exports","module","jquery-selector-data-prefix","lowercase-backbone","jquery","lodash","bbdv/execute-directives","bbdv/aux"],function(e,t,i){function r(e,t){var i;return i=e.is(t)?e.add(e.find(t)):e.find(t)}e("jquery-selector-data-prefix");var n=e("lowercase-backbone"),s=e("jquery");_=e("lodash");var a=e("bbdv/execute-directives"),c=e("bbdv/aux"),u=n.view.prototype.initialize,o=i.exports=n.view.extend({initialize:function(e){u.call(this,e),_.each(["namespace","directives"],function(t){this[t]=e[t]||this[t]},this);var t=this.selector(this.namespace),i=r(this.$el,t);this.directives=_.reduce(this.directives,function(e,t,i){return e[c.camelCase(i)]=_.isFunction(t)?t:this[t],e},{},this);var n=this.namespace,o=this.directives;_.each(i,function(e){a.call(this,s(e),n,o)},this)},directives:{},namespace:"dir",selector:function(e){return":data-prefix("+e+")"}});o.assignStatic("directive",function(){_.isObject(arguments[0])?_.assign(this.prototype.directives,arguments[0]):this.prototype.directives[arguments[0]]=arguments[1]}),o.assignStatic("extendDirectives",function(e){var t=_.create(this.prototype.directives);_.assign(t,e);var i=this.extend({directives:t});return i})});
+define("bbdv/aux",["require","exports","module"],function(e,t){t.camelCase=function(e){return e.replace(/[-_\s]+(.)?/g,function(e,t){return t?t.toUpperCase():""})},t.buildPrefixRegExp=function(e){return new RegExp("^"+e+"([A-Z$_].*$|$)")},t.lowercaseFirst=function(e){return e.charAt(0).toLowerCase()+e.slice(1)},t.uppercaseFirst=function(e){return e.charAt(0).toUpperCase()+e.slice(1)}}),define("bbdv/extract-directive-arguments",["require","exports","module","lodash","bbdv/aux"],function(e,t,i){function r(e,t){return s.camelCase(e+"-"+t)}var n=e("lodash"),s=e("bbdv/aux");i.exports=function(e,t,i){e=e||"",t.sort(function(e,t){return t.length-e.length});var a={};return n.each(i,function(i,c){n.any(t,function(t){var u=r(e,t);if(n.has(a,t)&&!n.isObject(a[t]))return!1;if(u===c)return a[t]=i,!0;var o=s.buildPrefixRegExp(u),d=c.match(o);if(d){var v=a[t];return v||(v=a[t]={}),v[s.lowercaseFirst(d[1])]=i,!0}return!1},this)},this),a}}),define("bbdv/execute-directives",["require","exports","module","lodash","bbdv/extract-directive-arguments","bbdv/aux"],function(e,t,i){{var r=e("lodash"),n=e("bbdv/extract-directive-arguments");e("bbdv/aux")}i.exports=function(e,t,i){var s=n(t,r.keys(i),e.data());r.each(s,function(t,n){var a=[e,t],c=i[n];r.isFunction(c)?c.apply(this,a):(c.args&&c.args.length>0&&(a=a.concat(r.map(c.args,function(e){return s[e]}))),c.fn.apply(this,a))},this)}}),define("bbdv",["require","exports","module","jquery-selector-data-prefix","lowercase-backbone","jquery","lodash","bbdv/execute-directives","bbdv/aux"],function(e,t,i){function r(e,t){var i;return i=e.is(t)?e.add(e.find(t)):e.find(t)}e("jquery-selector-data-prefix");var n=e("lowercase-backbone"),s=e("jquery");_=e("lodash");var a=e("bbdv/execute-directives"),c=e("bbdv/aux"),u=n.view.prototype.initialize,o=i.exports=n.view.extend({initialize:function(e){u.call(this,e),_.each(["namespace","directives"],function(t){this[t]=e[t]||this[t]},this);var t=this.selector(this.namespace),i=r(this.$el,t);this.directives=_.reduce(this.directives,function(e,t,i){return e[c.camelCase(i)]=_.isString(t)?this[t]:t,e},{},this);var n=this.namespace,o=this.directives;_.each(i,function(e){a.call(this,s(e),n,o)},this)},directives:{},namespace:"dir",selector:function(e){return":data-prefix("+e+")"}});o.assignStatic("directive",function(){_.isObject(arguments[0])?_.assign(this.prototype.directives,arguments[0]):this.prototype.directives[arguments[0]]=arguments[1]}),o.assignStatic("extendDirectives",function(e){var t=_.create(this.prototype.directives);_.assign(t,e);var i=this.extend({directives:t});return i})});
 define('bbmv/pipe/aux/general',['require','exports','module','lodash'],function (require, exports, module) {
 	
 
@@ -407,7 +407,9 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 		'in': 'bindIn',
 		'out': 'bindOut',
 		'dual': 'bindDual',
-		'event': 'bindEvent',
+		'on': 'bindEvent',
+		'if': 'bindIf',
+		'set': 'bindSet',
 		'': 'bindDual',
 	};
 
@@ -433,23 +435,23 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	 */
 	exports.bindEvent = function bindEvent($el, event) {
 
-		var pipe = this.pipe($el);
+		// var pipe = this.pipe($el);
 
-		if (_.isObject(event)) {
+		// if (_.isObject(event)) {
 
-			_.each(event, function (attr, evt) {
+		// 	_.each(event, function (attr, evt) {
 
-				$el.on(evt, function () {
-					pipe.drain(attr.split(/\s*,\s*/), { force: true });
-				});
-			});
+		// 		$el.on(evt, function () {
+		// 			pipe.drain(attr.split(/\s*,\s*/), { force: true });
+		// 		});
+		// 	});
 
-		} else {
+		// } else {
 
-			event = (_.isString(event) && event !== '') ? event : this.defaultDOMEvents[$el.prop('tagName')];
+		// 	event = (_.isString(event) && event !== '') ? event : this.defaultDOMEvents[$el.prop('tagName')];
 
-			$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
-		}
+		// 	$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
+		// }
 	};
 
 	/**
@@ -461,26 +463,27 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = function bindIn($el, map) {
+	exports.bindIn = {
+		args: ['on'],
 
-	//	console.log('bindIn');
-	//	console.log($el[0]);
-	//	console.log(map);
+		fn: function bindIn($el, map, on) {
 
-		var pipe = this.pipe($el);
+		//	console.log('bindIn');
+		//	console.log($el[0]);
+		//	console.log(map);
 
+			var pipe = this.pipe($el);
 
-		var evt = this.defaultDOMEvents[$el.prop('tagName')];
+			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
 
-		console.log(this)
+			if (evt) {
+				$el.on(evt, function () {
+					pipe.drain({ force: true });
+				});
+			}
 
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
+			pipe.map(map, 'from');
 		}
-
-		pipe.map(map, 'from');
 	};
 
 	/**
@@ -495,12 +498,12 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	exports.bindOut = function bindOut($el, map) {
 
 
+		var pipe = this.pipe($el);
+		pipe.map(map, 'to');
+
 	//	console.log('bindOut');
 	//	console.log($el[0]);
 	//	console.log(map);
-
-		var pipe = this.pipe($el);
-		pipe.map(map, 'to');
 	};
 
 	/**
@@ -510,24 +513,66 @@ define('bbmv/directives',['require','exports','module','lodash','jquery'],functi
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindDual = function bindDual($el, map) {
+	exports.bindDual = {
+		args: ['on'],
+		fn: function bindDual($el, map, on) {
 
-	//	console.log('bindDual');
-	//	console.log($el[0]);
-	//	console.log(map);
+		//	console.log('bindDual');
+		//	console.log($el[0]);
+		//	console.log(map);
 
-		var evt = this.defaultDOMEvents[$el.prop('tagName')];
+			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
 
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
-		}
+			if (evt) {
+				$el.on(evt, function () {
+					pipe.drain({ force: true });
+				});
+			}
 
-		var pipe = this.pipe($el);
-		pipe.map(map, 'both');
+			var pipe = this.pipe($el);
+			pipe.map(map, 'both');
+		},
+	};
+
+	// k1:a, k2:b
+	exports.bindIf = function bindIf($el, map) {
+
+		var model = this.model;
+
+		this.listenTo(model, 'change', function () {
+
+			_.each(map, function (condition, attr) {
+
+				var split = condition.split(':');
+
+
+
+				if (model.get(attr) == split[0]) {
+
+
+					console.log(split[1])
+					this[split[1]]($el);
+
+				}
+
+			}, this);
+
+		});
 
 	};
+
+
+	exports.bindSet = {
+		args: ['on'],
+		fn: function bindSet($el, map, on) {
+
+			var evt = on || this.defaultDOMEvents[$el.prop('tagName')];
+
+			$el.on(on, _.partial(_.bind(this.model.set, this.model), map) );
+		}
+
+	};
+
 });
 
 //     bbmv
@@ -669,6 +714,10 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 
 			return pipe;
 		},
+
+		hide: function ($el) {
+			$el.hide();
+		}
 	});
 
 	bbmv.assignProto(require('bbmv/directives'));

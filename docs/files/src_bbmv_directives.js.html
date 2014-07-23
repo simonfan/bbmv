@@ -111,7 +111,9 @@ define(function (require, exports, module) {
 		&#x27;in&#x27;: &#x27;bindIn&#x27;,
 		&#x27;out&#x27;: &#x27;bindOut&#x27;,
 		&#x27;dual&#x27;: &#x27;bindDual&#x27;,
-		&#x27;event&#x27;: &#x27;bindEvent&#x27;,
+		&#x27;on&#x27;: &#x27;bindEvent&#x27;,
+		&#x27;if&#x27;: &#x27;bindIf&#x27;,
+		&#x27;set&#x27;: &#x27;bindSet&#x27;,
 		&#x27;&#x27;: &#x27;bindDual&#x27;,
 	};
 
@@ -137,23 +139,23 @@ define(function (require, exports, module) {
 	 */
 	exports.bindEvent = function bindEvent($el, event) {
 
-		var pipe = this.pipe($el);
+		// var pipe = this.pipe($el);
 
-		if (_.isObject(event)) {
+		// if (_.isObject(event)) {
 
-			_.each(event, function (attr, evt) {
+		// 	_.each(event, function (attr, evt) {
 
-				$el.on(evt, function () {
-					pipe.drain(attr.split(/\s*,\s*/), { force: true });
-				});
-			});
+		// 		$el.on(evt, function () {
+		// 			pipe.drain(attr.split(/\s*,\s*/), { force: true });
+		// 		});
+		// 	});
 
-		} else {
+		// } else {
 
-			event = (_.isString(event) &amp;&amp; event !== &#x27;&#x27;) ? event : this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+		// 	event = (_.isString(event) &amp;&amp; event !== &#x27;&#x27;) ? event : this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
-			$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
-		}
+		// 	$el.on(event, _.partial(_.bind(pipe.drain, pipe), { force: true }));
+		// }
 	};
 
 	/**
@@ -165,26 +167,27 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindIn = function bindIn($el, map) {
+	exports.bindIn = {
+		args: [&#x27;on&#x27;],
 
-	//	console.log(&#x27;bindIn&#x27;);
-	//	console.log($el[0]);
-	//	console.log(map);
+		fn: function bindIn($el, map, on) {
 
-		var pipe = this.pipe($el);
+		//	console.log(&#x27;bindIn&#x27;);
+		//	console.log($el[0]);
+		//	console.log(map);
 
+			var pipe = this.pipe($el);
 
-		var evt = this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
-		console.log(this)
+			if (evt) {
+				$el.on(evt, function () {
+					pipe.drain({ force: true });
+				});
+			}
 
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
+			pipe.map(map, &#x27;from&#x27;);
 		}
-
-		pipe.map(map, &#x27;from&#x27;);
 	};
 
 	/**
@@ -199,12 +202,12 @@ define(function (require, exports, module) {
 	exports.bindOut = function bindOut($el, map) {
 
 
+		var pipe = this.pipe($el);
+		pipe.map(map, &#x27;to&#x27;);
+
 	//	console.log(&#x27;bindOut&#x27;);
 	//	console.log($el[0]);
 	//	console.log(map);
-
-		var pipe = this.pipe($el);
-		pipe.map(map, &#x27;to&#x27;);
 	};
 
 	/**
@@ -214,24 +217,66 @@ define(function (require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.bindDual = function bindDual($el, map) {
+	exports.bindDual = {
+		args: [&#x27;on&#x27;],
+		fn: function bindDual($el, map, on) {
 
-	//	console.log(&#x27;bindDual&#x27;);
-	//	console.log($el[0]);
-	//	console.log(map);
+		//	console.log(&#x27;bindDual&#x27;);
+		//	console.log($el[0]);
+		//	console.log(map);
 
-		var evt = this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
-		if (evt) {
-			$el.on(evt, function () {
-				pipe.drain({ force: true });
-			});
-		}
+			if (evt) {
+				$el.on(evt, function () {
+					pipe.drain({ force: true });
+				});
+			}
 
-		var pipe = this.pipe($el);
-		pipe.map(map, &#x27;both&#x27;);
+			var pipe = this.pipe($el);
+			pipe.map(map, &#x27;both&#x27;);
+		},
+	};
+
+	// k1:a, k2:b
+	exports.bindIf = function bindIf($el, map) {
+
+		var model = this.model;
+
+		this.listenTo(model, &#x27;change&#x27;, function () {
+
+			_.each(map, function (condition, attr) {
+
+				var split = condition.split(&#x27;:&#x27;);
+
+
+
+				if (model.get(attr) == split[0]) {
+
+
+					console.log(split[1])
+					this[split[1]]($el);
+
+				}
+
+			}, this);
+
+		});
 
 	};
+
+
+	exports.bindSet = {
+		args: [&#x27;on&#x27;],
+		fn: function bindSet($el, map, on) {
+
+			var evt = on || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+
+			$el.on(on, _.partial(_.bind(this.model.set, this.model), map) );
+		}
+
+	};
+
 });
 
     </pre>

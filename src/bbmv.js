@@ -137,6 +137,10 @@ define(function (require, exports, module) {
 
 			return pipe;
 		},
+
+		hide: function ($el) {
+			$el.hide();
+		}
 	});
 
 	bbmv.assignProto(require('bbmv/directives'));

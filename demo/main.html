@@ -37,7 +37,7 @@
 
 				<input
 					data-bind-size="value"
-					data-bind-event="keyup"
+					data-bind-on="keyup"
 
 					placeholder="size"
 				>
@@ -52,21 +52,21 @@
 					data-size="small"
 
 					data-bind-in-size="data:size"
-					data-bind-event="click"
+					data-bind-on="click"
 				>RESET <span></span></button>
 
 				<input
 					data-bind-reset-action="value"
-					data-bind-event="keyup"
+					data-bind-on="keyup"
 
 					placeholder="reset action"
 				>
 
 
-				<input data-bind-money="value" data-bind-event placeholder="BRL" size="4">
-				<input data-bind-money="usd | value" data-bind-event placeholder="USD" size="4">
-				<input data-bind-money="cny | value" placeholder="CNY" size="4">
-				<input data-bind-money="eur | value" placeholder="EUR" size="4">
+				<input data-bind-money="value" data-bind-on="keyup" placeholder="BRL" size="4">
+				<input data-bind-money="usd | value" data-bind-on="keyup" placeholder="USD" size="4">
+				<input data-bind-money="cny | value" data-bind-on="keyup" placeholder="CNY" size="4">
+				<input data-bind-money="eur | value" data-bind-on="keyup" placeholder="EUR" size="4">
 
 			</div>
 			<div data-bind-size  ="html" style="height: 30px; border-bottom: 1px dashed gray;"></div>
@@ -75,16 +75,28 @@
 		<div
 			data-bind-in-size="data:size"
 			data-size="large"
-			data-bind-event="mouseover"
+			data-bind-on="mouseover"
 		>
 			LARGE
 		</div>
 		<div
 			data-bind-in-size="data:size"
 			data-size="small"
-			data-bind-event="mouseover"
+			data-bind-on="mouseover"
 		>
 			SMALL
+		</div>
+
+		<div
+			data-bind-set-size="medium"
+			data-bind-set-money="50"
+
+			data-bind-on="click"
+
+			data-bind-if-money="50:hide"
+
+		>
+			DATA BIND SET
 		</div>
 	</div>
 

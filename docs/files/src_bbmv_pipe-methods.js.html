@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv.js - bbmv</title>
+    <title>src/bbmv/pipe-methods.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/pipe-methods.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -104,134 +104,6 @@ define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
 
-	var _        = require(&#x27;lodash&#x27;),
-		$        = require(&#x27;jquery&#x27;),
-		bbdv     = require(&#x27;bbdv&#x27;),
-		backbone = require(&#x27;lowercase-backbone&#x27;);
-
-	var mvPipe = require(&#x27;bbmv/pipe/index&#x27;),
-		aux    = require(&#x27;bbmv/aux&#x27;);
-
-
-	function genPipeIdAttr() {
-		return [&#x27;bbdv&#x27;, this.namespace, this.cid, &#x27;id&#x27;].join(&#x27;_&#x27;);
-	}
-
-	var bbmv = module.exports = bbdv.extend({
-
-		initialize: function initializeBbmv(options) {
-
-			this.namespace = options.namespace || this.namespace;
-
-			/**
-			 * The attribute used to store the pipe id
-			 * onto the $dest elements.
-			 *
-			 * @type {[type]}
-			 */
-			this.pipeIdAttr = genPipeIdAttr.call(this);
-
-			this.pipes = {};
-
-			bbdv.prototype.initialize.call(this, options);
-
-			if (!this.model) { throw new Error(&#x27;No model set for model view.&#x27;); }
-			if (!this.$el) { throw new Error(&#x27;No el set on model view.&#x27;); }
-
-			// listen to changes on model
-			this.model.on(this.event, function () {
-
-				console.log(&#x27;change&#x27;)
-
-				this.pump();
-
-			}, this);
-
-			// initial pump
-			this.pump();
-
-		},
-
-		event: &#x27;change&#x27;,
-
-
-		namespace: &#x27;bind&#x27;,
-
-		/**
-		 * Pump data.
-		 *
-		 * @param  {[type]} argument [description]
-		 * @return {[type]}          [description]
-		 */
-		pump: function pump() {
-
-			_.each(this.pipes, function (pipe) {
-				pipe.pump();
-			});
-
-			return this;
-		},
-
-
-		/**
-		 * [drain description]
-		 * @return {[type]} [description]
-		 */
-		drain: function drain($el) {
-
-			this.pipe($el).drain();
-
-			return this;
-		},
-
-		/**
-		 * Attempts to get the pipe id from the $dest object
-		 * and then checks for a pipe in cache.
-		 *
-		 * If no pipe is found in cache, instantiate a pipe
-		 * set id onto $dest using the .data method
-		 * and save pipe to cache using that id.
-		 *
-		 * @param  {[type]} $dest   [description]
-		 * @param  {[type]} map     [description]
-		 * @param  {[type]} options [description]
-		 * @return {[type]}         [description]
-		 */
-		pipe: function definePipe($dest, map, options) {
-
-			var pipe;
-
-			// get the pipeid
-			var pipeid = $dest.data(this.pipeIdAttr);
-
-			if (pipeid &amp;&amp; this.pipes[pipeid]) {
-				// get pipe from cache
-				pipe = this.pipes[pipeid];
-
-			} else {
-				// generate a unique id
-				pipeid = _.uniqueId(this.pipeIdAttr);
-
-				// set namespace onto options
-				options = options || {};
-				options.context = this;
-
-				// create pipe
-				pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
-
-				// save pipe id on el.
-				$dest.data(this.pipeIdAttr, pipeid);
-			}
-
-			return pipe;
-		},
-
-		hide: function ($el) {
-			$el.hide();
-		}
-	});
-
-	bbmv.assignProto(require(&#x27;bbmv/directives&#x27;));
 });
 
     </pre>

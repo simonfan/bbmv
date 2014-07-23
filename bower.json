@@ -8,7 +8,7 @@
     "jquery-selector-data-prefix": "~0.1.0",
     "jquery-value": "~0.1.1",
     "pipe": "0.8.8",
-    "bbdv": "0.1.3"
+    "bbdv": "0.2.3"
   },
   "devDependencies": {
     "requirejs": "*",
@@ -22,6 +22,6 @@
   "resolutions": {
     "subject": "~0.5.9",
     "jquery": "~2.1.1",
-    "bbdv": "0.1.3"
+    "bbdv": "0.2.3"
   }
 }
