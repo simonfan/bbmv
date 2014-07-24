@@ -113,13 +113,19 @@ define(function (require, exports, module) {
 				// get pipe from cache
 				pipe = this.pipes[pipeid];
 
+				// if map is set,
+				// set it.
+				if (map) {
+
+				}
+
 			} else {
 				// generate a unique id
 				pipeid = _.uniqueId(this.pipeIdAttr);
 
 				// set namespace onto options
 				options = options || {};
-				options.context = this;
+				options.bbmvInstance = this;
 
 				// create pipe
 				pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
@@ -133,6 +139,6 @@ define(function (require, exports, module) {
 	});
 
 	bbmv.assignProto(require('bbmv/directives/index'))
-		.assignProto(require('bbmv/pipe-methods/if'))
-		.assignProto(require('bbmv/pipe-methods/model-methods'));
+		.assignProto(require('bbmv/methods/if'))
+		.assignProto(require('bbmv/methods/model-methods'));
 });

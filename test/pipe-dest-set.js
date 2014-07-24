@@ -1,5 +1,5 @@
-define(['jquery', 'should', 'bbmv/pipe/dest-set', 'bbmv/pipe/aux/parse-dest-str', 'q', 'lodash'],
-function ($     ,  should ,  pipeDestSet        ,  parseDestStr                 ,  q ,  _      ) {
+define(['jquery', 'should', 'bbmv/pipe/dest-set', 'bbmv/aux/parse-dest-str', 'q', 'lodash'],
+function ($     ,  should ,  pipeDestSet        ,  parseDestStr            ,  q ,  _      ) {
 
 	describe('bbmv pipe-dest-set', function () {
 
@@ -67,7 +67,7 @@ function ($     ,  should ,  pipeDestSet        ,  parseDestStr                 
 				parseDestStr: parseDestStr,
 
 				// formatting methods are looked for on the bbmv object.
-				context: bbmvStub
+				bbmvInstance: bbmvStub
 			};
 
 			pipeDestSet.call(pipeStub, this.$el, 'someFormat | html', 'some-value');

@@ -6,10 +6,22 @@ define(function (require, exports, module) {
 	var jqValue = require('jquery-value'),
 		_       = require('lodash');
 
-	var aux = require('bbmv/aux/index');
+	var aux     = require('bbmv/aux/index'),
+		pipeAux = require('bbmv/pipe/aux');
 
-	function destSetSingle(pipe, $el, dest, value) {
-
+	/**
+	 * [destSetSingle description]
+	 * @param  {[type]} bbmvInstance
+	 *         The instance of bbmv to which this pipe is
+	 *         attached.
+	 * @param  {[type]} $el
+	 *         Destination element on which set the value
+	 * @param  {[type]} dest         [description]
+	 * @param  {[type]} value        [description]
+	 * @return {[type]}              [description]
+	 */
+	function destSetSingle(bbmvInstance, $el, dest, value) {
+		// bb
 		// if $el is active, do not set it.
 		if ($el.is(':focus')) { return; }
 
@@ -19,59 +31,34 @@ define(function (require, exports, module) {
 		//   - format
 		//   - selector (to be ignored)
 
-		// reference to bbmv
-		var context = pipe.context;
-
 		//////////////////////
 		// value formatting //
 		//////////////////////
-		// format
-		var format = dest.format;
-		if (format) {
-			// get format "out"
-			var formatter = context[format.method];
-			formatter = _.isFunction(formatter) ? formatter : formatter.out;
-
-			if (!formatter) {
-				throw new Error('[bbmv pipe|destGet] ' + format.method + ' could not be found.');
-			}
-
-			// clone args so that they remain unmodified
-			var formatArgs = _.clone(format.args);
-			formatArgs.push(value);
-
-			value = formatter.apply(context, formatArgs);
-		}
-
+		value = dest.format ?
+			pipeAux.format(bbmvInstance, $el, 'out', dest.format, value) :
+			value;
 
 		///////////////////////
 		// element retrieval //
 		///////////////////////
 		// if therer is a selector defined,
 		// call the find method on the dest object.
-		if (dest.selector) {
-			$el = $el.find(dest.selector);
-		}
+		$el = dest.selector ?
+			$el.find(dest.selector) :
+			$el;
 
 		//////////////////////
 		// method execution //
 		//////////////////////
 		// clone the args array, so that the original one remains untouched
 		// AND add the value to the arguments array
-		var destArgs = _.clone(dest.args);
-		destArgs.push(value);
+		var methodArgs = _.clone(dest.args);
+		methodArgs.push(value);
 
-		// get the method
+		// execute the method
 		var methodName = dest.method;
 
-		if ($el[methodName]) {
-			return $el[methodName].apply($el, destArgs);
-		} else {
-			// add the $el to the args
-			destArgs.unshift($el);
-
-			return context[methodName].apply(context, destArgs);
-		}
+		return pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
 	}
 
 
@@ -89,7 +76,7 @@ define(function (require, exports, module) {
 
 		_.each(dests, function (dest) {
 
-			return destSetSingle(this, $el, dest, value);
+			return destSetSingle(this.bbmvInstance, $el, dest, value);
 
 		}, this);
 	};

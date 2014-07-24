@@ -1,5 +1,5 @@
-define(['jquery', 'should', 'bbmv/pipe/dest-get', 'bbmv/pipe/aux/parse-dest-str', 'q', 'lodash'],
-function ($     ,  should ,  pipeDestGet        ,  parseDestStr                 ,  q ,  _      ) {
+define(['jquery', 'should', 'bbmv/pipe/dest-get', 'bbmv/aux/parse-dest-str', 'q', 'lodash'],
+function ($     ,  should ,  pipeDestGet        ,  parseDestStr            ,  q ,  _      ) {
 
 	describe('bbmv pipe-dest-get', function () {
 

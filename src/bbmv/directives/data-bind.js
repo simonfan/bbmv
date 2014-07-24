@@ -22,7 +22,7 @@ define(function defBindDirectives(require, exports, module) {
 		//	console.log(map);
 
 		var pipe = this.pipe($el);
-		pipe.map(map, 'from');
+		pipe.map(map, { direction: 'from' });
 
 		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
@@ -47,7 +47,7 @@ define(function defBindDirectives(require, exports, module) {
 
 
 		var pipe = this.pipe($el);
-		pipe.map(map, 'to');
+		pipe.map(map, { direction: 'to' });
 
 	//	console.log('bindOut');
 	//	console.log($el[0]);
@@ -78,7 +78,7 @@ define(function defBindDirectives(require, exports, module) {
 			}
 
 			var pipe = this.pipe($el);
-			pipe.map(map, 'both');
+			pipe.map(map, { direction: 'both' });
 		},
 	};
 

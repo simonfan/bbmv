@@ -1,5 +1,5 @@
-define(['jquery', 'should', 'bbmv/pipe/aux/parse-dest-str'],
-function ($     ,  should ,  pipeParseDestStr             ) {
+define(['jquery', 'should', 'bbmv/aux/parse-dest-str'],
+function ($     ,  should ,  pipeParseDestStr        ) {
 
 	describe('bbmv pipe-parse-dest-str', function () {
 

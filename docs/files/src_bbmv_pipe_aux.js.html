@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/pipe/dest-get.js - bbmv</title>
+    <title>src/bbmv/pipe/aux.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,72 +82,66 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/pipe/dest-get.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/pipe/aux.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(function (require, exports, module) {
-	&#x27;use strict&#x27;;
+define(function defPipeAux(require, exports, module) {
 
-
-	// make jquery.value available for reading usage.
-	var jqValue = require(&#x27;jquery-value&#x27;),
-		_       = require(&#x27;lodash&#x27;);
-
-	var aux     = require(&#x27;bbmv/aux/index&#x27;),
-		pipeAux = require(&#x27;bbmv/pipe/aux&#x27;);
+	var _ = require(&#x27;lodash&#x27;);
 
 	/**
-	 * Get from the jquery object
+	 * Shared formatting logic for dest-get and dest-set.
 	 *
-	 * @param  {[type]} $el [description]
-	 * @param  {[type]} dest        [description]
-	 * @return {[type]}             [description]
+	 * @param  {[type]} bbmvInstance [description]
+	 * @param  {[type]} $el          [description]
+	 * @param  {[type]} direction    [description]
+	 * @param  {[type]} format       [description]
+	 * @param  {[type]} value        [description]
+	 * @return {[type]}              [description]
 	 */
-	module.exports = function destGet($el, destStr) {
+	exports.format = function format(bbmvInstance, $el, direction, format, value) {
 
-		// reference to the bbmv
-		var bbmvInstance = this.bbmvInstance;
 
-		// parse out dest string using the method
-		// in order to get the in-cache version
-		// GET ONLY THE FIRST :)
-		var dest = this.parseDestStr(destStr)[0];
+		// get format &quot;in&quot;
+		var formatter = bbmvInstance[format.method];
+		formatter = _.isFunction(formatter) ? formatter : formatter[direction];
 
-		// dest:
-		//   - method
-		//   - args
-		//   - format
-		//   - selector (to be ignored)
+		// clone args so that the original ones remain unchanged
+		var formatterArgs = _.clone(format.args);
+		formatterArgs.push(value);
 
-		///////////////////////
-		// element retrieval //
-		///////////////////////
-		// if selector is defined,
-		// ge tthe right $el
-		$el = dest.selector ?
-			$el.find(dest.selector) :
-			$el;
+		if (!formatter) { throw new Error(&#x27;[bbmv|destGet/destSet] &#x27; + format.method + &#x27; could not be found.&#x27;); }
 
-		//////////////////////
-		// method retrieval //
-		// and execution    //
-		//////////////////////
-		// get the method
-		var methodName = dest.method,
-			methodArgs = _.clone(dest.args),
-			value      = pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
+		return formatter.apply(bbmvInstance, formatterArgs);
 
-		////////////////
-		// formatting //
-		////////////////
-		// check if a format was defined
-		value = dest.format ?
-			pipeAux.format(bbmvInstance, $el, &#x27;in&#x27;, dest.format, value) :
-			value;
-
-		return value;
 	};
+
+	/**
+	 * Very specific execution method.
+	 * Does method execution logic,
+	 * is shared by both dest-get and dest-set.
+	 *
+	 * @param  {[type]} bbmvInstance [description]
+	 * @param  {[type]} $el          [description]
+	 * @param  {[type]} methodName   [description]
+	 * @param  {[type]} methodArgs   [description]
+	 * @return {[type]}              [description]
+	 */
+	exports.executeMethod = function executeMethod(bbmvInstance, $el, methodName, methodArgs) {
+
+		// get the method
+		if ($el[methodName]) {
+			return $el[methodName].apply($el, methodArgs);
+		} else {
+			// add the $el to the args
+			methodArgs.unshift($el);
+
+			return bbmvInstance[methodName].apply(bbmvInstance, methodArgs);
+		}
+
+	};
+
 });
 
     </pre>

@@ -46,6 +46,20 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/bbmv/methods/if.js": {
+            "name": "src/bbmv/methods/if.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/pipe/aux.js": {
+            "name": "src/bbmv/pipe/aux.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/bbmv/pipe/dest-get.js": {
             "name": "src/bbmv/pipe/dest-get.js",
             "modules": {},
@@ -55,13 +69,6 @@
         },
         "src/bbmv/pipe/dest-set.js": {
             "name": "src/bbmv/pipe/dest-set.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
-        "src/bbmv/pipe-methods/if.js": {
-            "name": "src/bbmv/pipe-methods/if.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -358,8 +365,87 @@
             "class": ""
         },
         {
+            "file": "src/bbmv/methods/if.js",
+            "line": 46,
+            "description": "Takes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe/aux.js",
+            "line": 5,
+            "description": "Shared formatting logic for dest-get and dest-set.",
+            "params": [
+                {
+                    "name": "bbmvInstance",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "direction",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "format",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "value",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/pipe/aux.js",
+            "line": 32,
+            "description": "Very specific execution method.\nDoes method execution logic,\nis shared by both dest-get and dest-set.",
+            "params": [
+                {
+                    "name": "bbmvInstance",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "methodName",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "methodArgs",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
             "file": "src/bbmv/pipe/dest-get.js",
-            "line": 11,
+            "line": 12,
             "description": "Get from the jquery object",
             "params": [
                 {
@@ -381,12 +467,17 @@
         },
         {
             "file": "src/bbmv/pipe/dest-set.js",
-            "line": 79,
-            "description": "Set to the jquery object",
+            "line": 12,
+            "description": "[destSetSingle description]",
             "params": [
                 {
+                    "name": "bbmvInstance",
+                    "description": "The instance of bbmv to which this pipe is\n        attached.",
+                    "type": "[type]"
+                },
+                {
                     "name": "$el",
-                    "description": "[description]",
+                    "description": "Destination element on which set the value",
                     "type": "[type]"
                 },
                 {
@@ -407,9 +498,26 @@
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe-methods/if.js",
-            "line": 46,
-            "description": "Takes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
+            "file": "src/bbmv/pipe/dest-set.js",
+            "line": 66,
+            "description": "Set to the jquery object",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "dest",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "value",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
             "return": {
                 "description": "[description]",
                 "type": "[type]"
@@ -577,16 +685,28 @@
             "line": " src/bbmv/directives/index.js:13"
         },
         {
+            "message": "Missing item type\nTakes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
+            "line": " src/bbmv/methods/if.js:46"
+        },
+        {
+            "message": "Missing item type\nShared formatting logic for dest-get and dest-set.",
+            "line": " src/bbmv/pipe/aux.js:5"
+        },
+        {
+            "message": "Missing item type\nVery specific execution method.\nDoes method execution logic,\nis shared by both dest-get and dest-set.",
+            "line": " src/bbmv/pipe/aux.js:32"
+        },
+        {
             "message": "Missing item type\nGet from the jquery object",
-            "line": " src/bbmv/pipe/dest-get.js:11"
+            "line": " src/bbmv/pipe/dest-get.js:12"
+        },
+        {
+            "message": "Missing item type\n[destSetSingle description]",
+            "line": " src/bbmv/pipe/dest-set.js:12"
         },
         {
             "message": "Missing item type\nSet to the jquery object",
-            "line": " src/bbmv/pipe/dest-set.js:79"
-        },
-        {
-            "message": "Missing item type\nTakes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
-            "line": " src/bbmv/pipe-methods/if.js:46"
+            "line": " src/bbmv/pipe/dest-set.js:66"
         },
         {
             "message": "Missing item type\nFinds all bound elements within the pipe.",

@@ -160,7 +160,65 @@ define('bbmv/aux/index',['require','exports','module','lodash','bbmv/aux/general
 
 });
 
-define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash','bbmv/aux/index'],function (require, exports, module) {
+define('bbmv/pipe/aux',['require','exports','module','lodash'],function defPipeAux(require, exports, module) {
+
+	var _ = require('lodash');
+
+	/**
+	 * Shared formatting logic for dest-get and dest-set.
+	 *
+	 * @param  {[type]} bbmvInstance [description]
+	 * @param  {[type]} $el          [description]
+	 * @param  {[type]} direction    [description]
+	 * @param  {[type]} format       [description]
+	 * @param  {[type]} value        [description]
+	 * @return {[type]}              [description]
+	 */
+	exports.format = function format(bbmvInstance, $el, direction, format, value) {
+
+
+		// get format "in"
+		var formatter = bbmvInstance[format.method];
+		formatter = _.isFunction(formatter) ? formatter : formatter[direction];
+
+		// clone args so that the original ones remain unchanged
+		var formatterArgs = _.clone(format.args);
+		formatterArgs.push(value);
+
+		if (!formatter) { throw new Error('[bbmv|destGet/destSet] ' + format.method + ' could not be found.'); }
+
+		return formatter.apply(bbmvInstance, formatterArgs);
+
+	};
+
+	/**
+	 * Very specific execution method.
+	 * Does method execution logic,
+	 * is shared by both dest-get and dest-set.
+	 *
+	 * @param  {[type]} bbmvInstance [description]
+	 * @param  {[type]} $el          [description]
+	 * @param  {[type]} methodName   [description]
+	 * @param  {[type]} methodArgs   [description]
+	 * @return {[type]}              [description]
+	 */
+	exports.executeMethod = function executeMethod(bbmvInstance, $el, methodName, methodArgs) {
+
+		// get the method
+		if ($el[methodName]) {
+			return $el[methodName].apply($el, methodArgs);
+		} else {
+			// add the $el to the args
+			methodArgs.unshift($el);
+
+			return bbmvInstance[methodName].apply(bbmvInstance, methodArgs);
+		}
+
+	};
+
+});
+
+define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash','bbmv/aux/index','bbmv/pipe/aux'],function (require, exports, module) {
 	
 
 
@@ -168,7 +226,8 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 	var jqValue = require('jquery-value'),
 		_       = require('lodash');
 
-	var aux = require('bbmv/aux/index');
+	var aux     = require('bbmv/aux/index'),
+		pipeAux = require('bbmv/pipe/aux');
 
 	/**
 	 * Get from the jquery object
@@ -180,19 +239,12 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 	module.exports = function destGet($el, destStr) {
 
 		// reference to the bbmv
-		var context = this.context;
+		var bbmvInstance = this.bbmvInstance;
 
 		// parse out dest string using the method
 		// in order to get the in-cache version
 		// GET ONLY THE FIRST :)
 		var dest = this.parseDestStr(destStr)[0];
-
-		///////////////////////
-		// element retrieval //
-		///////////////////////
-		// if selector is defined,
-		// ge tthe right $el
-		$el = dest.selector ? $el.find(dest.selector) : $el;
 
 		// dest:
 		//   - method
@@ -200,57 +252,37 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 		//   - format
 		//   - selector (to be ignored)
 
+		///////////////////////
+		// element retrieval //
+		///////////////////////
+		// if selector is defined,
+		// ge tthe right $el
+		$el = dest.selector ?
+			$el.find(dest.selector) :
+			$el;
+
 		//////////////////////
-		// method execution //
+		// method retrieval //
+		// and execution    //
 		//////////////////////
 		// get the method
 		var methodName = dest.method,
-			res;
-
-		// if there is a jquery method with the given name,
-		// use it. Otherwise, try to find the method on the context object.
-		if (_.isFunction($el[methodName])) {
-			// get method on the $el.
-			// and execute it passing the args
-			res = $el[methodName].apply($el, dest.args);
-
-		} else {
-			// get the method on the context object
-			// passing the args
-			// add $el to args
-			var args = _.clone(dest.args);
-			args.unshift($el);
-
-			res = context[methodName].apply(context, args);
-		}
+			methodArgs = _.clone(dest.args),
+			value      = pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
 
 		////////////////
 		// formatting //
 		////////////////
 		// check if a format was defined
-		var format = dest.format;
-		if (format) {
+		value = dest.format ?
+			pipeAux.format(bbmvInstance, $el, 'in', dest.format, value) :
+			value;
 
-			// get format "in"
-			var formatter = context[format.method];
-			formatter = _.isFunction(formatter) ? formatter : formatter['in'];
-
-			if (!formatter) {
-				throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.');
-			}
-
-			// clone args so that the original ones remain unchanged
-			var formatterArgs = _.clone(format.args);
-			formatterArgs.push(res);
-
-			res = formatter.apply(context, formatterArgs);
-		}
-
-		return res;
+		return value;
 	};
 });
 
-define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash','bbmv/aux/index'],function (require, exports, module) {
+define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash','bbmv/aux/index','bbmv/pipe/aux'],function (require, exports, module) {
 	
 
 
@@ -258,10 +290,22 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 	var jqValue = require('jquery-value'),
 		_       = require('lodash');
 
-	var aux = require('bbmv/aux/index');
+	var aux     = require('bbmv/aux/index'),
+		pipeAux = require('bbmv/pipe/aux');
 
-	function destSetSingle(pipe, $el, dest, value) {
-
+	/**
+	 * [destSetSingle description]
+	 * @param  {[type]} bbmvInstance
+	 *         The instance of bbmv to which this pipe is
+	 *         attached.
+	 * @param  {[type]} $el
+	 *         Destination element on which set the value
+	 * @param  {[type]} dest         [description]
+	 * @param  {[type]} value        [description]
+	 * @return {[type]}              [description]
+	 */
+	function destSetSingle(bbmvInstance, $el, dest, value) {
+		// bb
 		// if $el is active, do not set it.
 		if ($el.is(':focus')) { return; }
 
@@ -271,59 +315,34 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 		//   - format
 		//   - selector (to be ignored)
 
-		// reference to bbmv
-		var context = pipe.context;
-
 		//////////////////////
 		// value formatting //
 		//////////////////////
-		// format
-		var format = dest.format;
-		if (format) {
-			// get format "out"
-			var formatter = context[format.method];
-			formatter = _.isFunction(formatter) ? formatter : formatter.out;
-
-			if (!formatter) {
-				throw new Error('[bbmv pipe|destGet] ' + format.method + ' could not be found.');
-			}
-
-			// clone args so that they remain unmodified
-			var formatArgs = _.clone(format.args);
-			formatArgs.push(value);
-
-			value = formatter.apply(context, formatArgs);
-		}
-
+		value = dest.format ?
+			pipeAux.format(bbmvInstance, $el, 'out', dest.format, value) :
+			value;
 
 		///////////////////////
 		// element retrieval //
 		///////////////////////
 		// if therer is a selector defined,
 		// call the find method on the dest object.
-		if (dest.selector) {
-			$el = $el.find(dest.selector);
-		}
+		$el = dest.selector ?
+			$el.find(dest.selector) :
+			$el;
 
 		//////////////////////
 		// method execution //
 		//////////////////////
 		// clone the args array, so that the original one remains untouched
 		// AND add the value to the arguments array
-		var destArgs = _.clone(dest.args);
-		destArgs.push(value);
+		var methodArgs = _.clone(dest.args);
+		methodArgs.push(value);
 
-		// get the method
+		// execute the method
 		var methodName = dest.method;
 
-		if ($el[methodName]) {
-			return $el[methodName].apply($el, destArgs);
-		} else {
-			// add the $el to the args
-			destArgs.unshift($el);
-
-			return context[methodName].apply(context, destArgs);
-		}
+		return pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
 	}
 
 
@@ -341,7 +360,7 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 
 		_.each(dests, function (dest) {
 
-			return destSetSingle(this, $el, dest, value);
+			return destSetSingle(this.bbmvInstance, $el, dest, value);
 
 		}, this);
 	};
@@ -376,7 +395,7 @@ define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/aux
 
 			options = options || {};
 
-			_.each(['namespace', 'context'], function (opt) {
+			_.each(['namespace', 'bbmvInstance'], function (opt) {
 
 				this[opt] = options[opt] || this[opt];
 
@@ -464,7 +483,7 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 		//	console.log(map);
 
 		var pipe = this.pipe($el);
-		pipe.map(map, 'from');
+		pipe.map(map, { direction: 'from' });
 
 		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
 
@@ -489,7 +508,7 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 
 
 		var pipe = this.pipe($el);
-		pipe.map(map, 'to');
+		pipe.map(map, { direction: 'to' });
 
 	//	console.log('bindOut');
 	//	console.log($el[0]);
@@ -520,7 +539,7 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 			}
 
 			var pipe = this.pipe($el);
-			pipe.map(map, 'both');
+			pipe.map(map, { direction: 'both' });
 		},
 	};
 
@@ -697,7 +716,7 @@ define('bbmv/directives/index',['require','exports','module','lodash','jquery','
 	_.assign(directives, require('bbmv/directives/event'));
 });
 
-define('bbmv/pipe-methods/if',['require','exports','module','lodash'],function (require, exports, module) {
+define('bbmv/methods/if',['require','exports','module','lodash'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
@@ -788,7 +807,7 @@ define('bbmv/pipe-methods/if',['require','exports','module','lodash'],function (
 	};
 });
 
-define('bbmv/pipe-methods/model-methods',['require','exports','module'],function defPipeMethodsModelMethods(require, exports, module) {
+define('bbmv/methods/model-methods',['require','exports','module'],function defPipeMethodsModelMethods(require, exports, module) {
 
 	
 
@@ -808,7 +827,7 @@ define('bbmv/pipe-methods/model-methods',['require','exports','module'],function
  * @module bbmv
  */
 
-define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives/index','bbmv/pipe-methods/if','bbmv/pipe-methods/model-methods'],function (require, exports, module) {
+define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives/index','bbmv/methods/if','bbmv/methods/model-methods'],function (require, exports, module) {
 	
 
 
@@ -913,13 +932,19 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 				// get pipe from cache
 				pipe = this.pipes[pipeid];
 
+				// if map is set,
+				// set it.
+				if (map) {
+
+				}
+
 			} else {
 				// generate a unique id
 				pipeid = _.uniqueId(this.pipeIdAttr);
 
 				// set namespace onto options
 				options = options || {};
-				options.context = this;
+				options.bbmvInstance = this;
 
 				// create pipe
 				pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
@@ -933,7 +958,7 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 	});
 
 	bbmv.assignProto(require('bbmv/directives/index'))
-		.assignProto(require('bbmv/pipe-methods/if'))
-		.assignProto(require('bbmv/pipe-methods/model-methods'));
+		.assignProto(require('bbmv/methods/if'))
+		.assignProto(require('bbmv/methods/model-methods'));
 });
 

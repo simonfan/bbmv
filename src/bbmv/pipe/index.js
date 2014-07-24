@@ -27,7 +27,7 @@ define(function defPipe(require, exports, module) {
 
 			options = options || {};
 
-			_.each(['namespace', 'context'], function (opt) {
+			_.each(['namespace', 'bbmvInstance'], function (opt) {
 
 				this[opt] = options[opt] || this[opt];
 
