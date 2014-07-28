@@ -102,7 +102,7 @@ module.exports = function (grunt) {
 					// (excluding your bower dependencies)
 					exclude: ["bbdv", "jquery-value", "lowercase-backbone", "pipe"],
 
-					optimize: 'uglify2',
+					optimize: 'none',
 
 					pragmas: {
 						exclude: true,
@@ -110,7 +110,7 @@ module.exports = function (grunt) {
 				}
 			},
 
-			dev: {
+			built: {
 				options: {
 					// base url where to look for module files
 					// and relative to which the module paths will be defined
@@ -119,7 +119,7 @@ module.exports = function (grunt) {
 					// module name
 					name: 'bbmv',
 					// output here
-					out: './built/bbmv.dev.js',
+					out: './built/bbmv.built.js',
 					// config file
 					mainConfigFile: 'amdconfig.js',
 
@@ -133,7 +133,7 @@ module.exports = function (grunt) {
 					// excludeShallow
 					excludeShallow: [],
 
-					optimize: 'none',
+					optimize: 'uglify2',
 
 					pragmas: {
 						exclude: true,

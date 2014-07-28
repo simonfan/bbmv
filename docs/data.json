@@ -254,7 +254,7 @@
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
-            "line": 85,
+            "line": 82,
             "description": "Set directive.",
             "params": [
                 {
@@ -556,7 +556,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 64,
+            "line": 66,
             "description": "Pump data.",
             "params": [
                 {
@@ -574,7 +574,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 80,
+            "line": 82,
             "description": "Drains data from a single element",
             "params": [
                 {
@@ -592,7 +592,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 92,
+            "line": 94,
             "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
             "params": [
                 {
@@ -662,7 +662,7 @@
         },
         {
             "message": "Missing item type\nSet directive.",
-            "line": " src/bbmv/directives/data-bind.js:85"
+            "line": " src/bbmv/directives/data-bind.js:82"
         },
         {
             "message": "Missing item type\nParses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
@@ -718,15 +718,15 @@
         },
         {
             "message": "Missing item type\nPump data.",
-            "line": " src/bbmv.js:64"
+            "line": " src/bbmv.js:66"
         },
         {
             "message": "Missing item type\nDrains data from a single element",
-            "line": " src/bbmv.js:80"
+            "line": " src/bbmv.js:82"
         },
         {
             "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "line": " src/bbmv.js:92"
+            "line": " src/bbmv.js:94"
         }
     ]
 }

@@ -61,6 +61,8 @@ define(function (require, exports, module) {
 
 		namespace: 'bind',
 
+		bindingEventAttribute: 'binding-event',
+
 		/**
 		 * Pump data.
 		 *

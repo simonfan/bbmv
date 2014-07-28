@@ -112,7 +112,7 @@ define(function defBindDirectives(require, exports, module) {
 		var pipe = this.pipe($el);
 		pipe.map(map, { direction: &#x27;from&#x27; });
 
-		var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
 
 		if (evt) {
@@ -149,25 +149,22 @@ define(function defBindDirectives(require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports[&#x27;dual&#x27;] = exports[&#x27;&#x27;] = {
-		exclude: [&#x27;on&#x27;],
-		fn: function bindDual($el, map) {
+	exports[&#x27;dual&#x27;] = exports[&#x27;&#x27;] = function bindDual($el, map) {
 
-		//	console.log(&#x27;bindDual&#x27;);
-		//	console.log($el[0]);
-		//	console.log(map);
+	//	console.log(&#x27;bindDual&#x27;);
+	//	console.log($el[0]);
+	//	console.log(map);
 
-			var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
-			if (evt) {
-				$el.on(evt, function () {
-					pipe.drain({ force: true });
-				});
-			}
+		if (evt) {
+			$el.on(evt, function () {
+				pipe.drain({ force: true });
+			});
+		}
 
-			var pipe = this.pipe($el);
-			pipe.map(map, { direction: &#x27;both&#x27; });
-		},
+		var pipe = this.pipe($el);
+		pipe.map(map, { direction: &#x27;both&#x27; });
 	};
 
 	/**
@@ -179,7 +176,7 @@ define(function defBindDirectives(require, exports, module) {
 	 */
 	exports[&#x27;set&#x27;] = function bindSet($el, map) {
 
-		var evt = $el.data(this.namespace + &#x27;-on&#x27;) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
+		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop(&#x27;tagName&#x27;)];
 
 		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
 	};

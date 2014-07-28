@@ -485,7 +485,7 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 		var pipe = this.pipe($el);
 		pipe.map(map, { direction: 'from' });
 
-		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt = $el.data('binding-event') || this.defaultDOMEvents[$el.prop('tagName')];
 
 
 		if (evt) {
@@ -522,25 +522,22 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['dual'] = exports[''] = {
-		exclude: ['on'],
-		fn: function bindDual($el, map) {
+	exports['dual'] = exports[''] = function bindDual($el, map) {
 
-		//	console.log('bindDual');
-		//	console.log($el[0]);
-		//	console.log(map);
+	//	console.log('bindDual');
+	//	console.log($el[0]);
+	//	console.log(map);
 
-			var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt = $el.data('binding-event') || this.defaultDOMEvents[$el.prop('tagName')];
 
-			if (evt) {
-				$el.on(evt, function () {
-					pipe.drain({ force: true });
-				});
-			}
+		if (evt) {
+			$el.on(evt, function () {
+				pipe.drain({ force: true });
+			});
+		}
 
-			var pipe = this.pipe($el);
-			pipe.map(map, { direction: 'both' });
-		},
+		var pipe = this.pipe($el);
+		pipe.map(map, { direction: 'both' });
 	};
 
 	/**
@@ -552,7 +549,7 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 	 */
 	exports['set'] = function bindSet($el, map) {
 
-		var evt = $el.data(this.namespace + '-on') || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt = $el.data('binding-event') || this.defaultDOMEvents[$el.prop('tagName')];
 
 		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
 	};
@@ -663,7 +660,7 @@ define('bbmv/directives/event',['require','exports','module','lodash'],function 
 	 * @param  {[type]} evtStr_evtMap [description]
 	 * @return {[type]}               [description]
 	 */
-	exports['event'] = function bindEvent($el, evtStr_evtMap) {
+	exports['on'] = function bindEvent($el, evtStr_evtMap) {
 
 		// keep reference to the view.
 		var view = this;
