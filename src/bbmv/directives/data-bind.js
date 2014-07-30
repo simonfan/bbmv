@@ -94,5 +94,21 @@ define(function defBindDirectives(require, exports, module) {
 	};
 
 
+	exports.pipe = function bindPipe($el, map) {
+
+		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+
+
+		var model = this.model;
+
+		$el.on(evt, function () {
+
+			_.each(map, function (to, from) {
+				model.set(to, model.get(from));
+			});
+		});
+	};
+
+
 
 });

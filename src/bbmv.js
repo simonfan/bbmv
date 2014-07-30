@@ -11,6 +11,7 @@
 define(function (require, exports, module) {
 	'use strict';
 
+	require('jquery-selector-data-prefix');
 
 	var _        = require('lodash'),
 		$        = require('jquery'),
@@ -28,6 +29,12 @@ define(function (require, exports, module) {
 	var bbmv = module.exports = bbdv.extend({
 
 		initialize: function initializeBbmv(options) {
+			options = options || {};
+
+			// pick some options
+			_.each(['namespace', 'binding', 'event', 'bindingEventAttribute'], function (opt) {
+				this[opt] = options[opt] || this[opt];
+			}, this);
 
 			this.namespace = options.namespace || this.namespace;
 
@@ -56,12 +63,60 @@ define(function (require, exports, module) {
 
 		},
 
+		/**
+		 * Event to listen on the model.
+		 * @type {String}
+		 */
 		event: 'change',
 
 
-		namespace: 'bind',
+		/**
+		 * Binding namespace.
+		 * Used to build custom selectors for custom bindings.
+		 */
+	//	binding: 'data',
 
+		/**
+		 * Data atttribute for the binding event name.
+		 * @type {String}
+		 */
 		bindingEventAttribute: 'binding-event',
+
+
+		// OVERRIDES //
+
+		/**
+		 * Directive namespace
+		 * used for bbdv.
+		 * @type {String}
+		 */
+		namespace: 'bind',
+		/**
+		 * Builds the selector to get the elements to be
+		 * in the directive view.
+		 *
+		 * If the binding attribute is set, use it to build
+		 * a custom selector.
+		 * Otherwise. use the data-prefix selector.
+		 *
+		 * @param  {[type]} namespace [description]
+		 * @return {[type]}           [description]
+		 */
+		selector: function bbmvBoundSelector(namespace) {
+
+			if (this.binding) {
+				// use binding selector
+				return '[data-binding="' + this.binding + '"]';
+			} else {
+				// use data prefix selector
+				// (default)
+				return ':data-prefix(' + namespace + ')';
+			}
+
+		},
+
+		// OVERRIDES //
+
 
 		/**
 		 * Pump data.

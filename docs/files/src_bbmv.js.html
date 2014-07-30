@@ -99,6 +99,7 @@
 define(function (require, exports, module) {
 	&#x27;use strict&#x27;;
 
+	require(&#x27;jquery-selector-data-prefix&#x27;);
 
 	var _        = require(&#x27;lodash&#x27;),
 		$        = require(&#x27;jquery&#x27;),
@@ -116,6 +117,12 @@ define(function (require, exports, module) {
 	var bbmv = module.exports = bbdv.extend({
 
 		initialize: function initializeBbmv(options) {
+			options = options || {};
+
+			// pick some options
+			_.each([&#x27;namespace&#x27;, &#x27;binding&#x27;, &#x27;event&#x27;, &#x27;bindingEventAttribute&#x27;], function (opt) {
+				this[opt] = options[opt] || this[opt];
+			}, this);
 
 			this.namespace = options.namespace || this.namespace;
 
@@ -144,12 +151,60 @@ define(function (require, exports, module) {
 
 		},
 
+		/**
+		 * Event to listen on the model.
+		 * @type {String}
+		 */
 		event: &#x27;change&#x27;,
 
 
-		namespace: &#x27;bind&#x27;,
+		/**
+		 * Binding namespace.
+		 * Used to build custom selectors for custom bindings.
+		 */
+	//	binding: &#x27;data&#x27;,
 
+		/**
+		 * Data atttribute for the binding event name.
+		 * @type {String}
+		 */
 		bindingEventAttribute: &#x27;binding-event&#x27;,
+
+
+		// OVERRIDES //
+
+		/**
+		 * Directive namespace
+		 * used for bbdv.
+		 * @type {String}
+		 */
+		namespace: &#x27;bind&#x27;,
+		/**
+		 * Builds the selector to get the elements to be
+		 * in the directive view.
+		 *
+		 * If the binding attribute is set, use it to build
+		 * a custom selector.
+		 * Otherwise. use the data-prefix selector.
+		 *
+		 * @param  {[type]} namespace [description]
+		 * @return {[type]}           [description]
+		 */
+		selector: function bbmvBoundSelector(namespace) {
+
+			if (this.binding) {
+				// use binding selector
+				return &#x27;[data-binding=&quot;&#x27; + this.binding + &#x27;&quot;]&#x27;;
+			} else {
+				// use data prefix selector
+				// (default)
+				return &#x27;:data-prefix(&#x27; + namespace + &#x27;)&#x27;;
+			}
+
+		},
+
+		// OVERRIDES //
+
 
 		/**
 		 * Pump data.

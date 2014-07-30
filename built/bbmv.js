@@ -133,7 +133,7 @@ define('bbmv/aux/parse-dest-str',['require','exports','module','lodash'],functio
 	};
 });
 
-define('bbmv/aux/index',['require','exports','module','lodash','bbmv/aux/general','bbmv/aux/parse-dest-str','jquery-selector-data-prefix'],function (require, exports, module) {
+define('bbmv/aux/index',['require','exports','module','lodash','bbmv/aux/general','bbmv/aux/parse-dest-str'],function (require, exports, module) {
 	
 
 	var _ = require('lodash');
@@ -141,23 +141,6 @@ define('bbmv/aux/index',['require','exports','module','lodash','bbmv/aux/general
 	_.assign(exports, require('bbmv/aux/general'));
 
 	exports.parseDestStr = require('bbmv/aux/parse-dest-str');
-
-	// :data-prefix(prefix) selector
-	require('jquery-selector-data-prefix');
-	/**
-	 * Finds all bound elements within the pipe.
-	 *
-	 * @param  {[type]} $el    [description]
-	 * @param  {[type]} namespace [description]
-	 * @return {[type]}        [description]
-	 */
-	exports.findBoundElements = function findBoundElements($el, namespace) {
-		// $el.add() creates a NEW SELECTION :)
-		// it does not add to the existing jq object.
-		var $boundDescendantElements = $el.find(':data-prefix(' + namespace + ')');
-		return $el.add($boundDescendantElements);
-	};
-
 });
 
 define('bbmv/pipe/aux',['require','exports','module','lodash'],function defPipeAux(require, exports, module) {
@@ -555,6 +538,22 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 	};
 
 
+	exports.pipe = function bindPipe($el, map) {
+
+		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+
+
+		var model = this.model;
+
+		$el.on(evt, function () {
+
+			_.each(map, function (to, from) {
+				model.set(to, model.get(from));
+			});
+		});
+	};
+
+
 
 });
 
@@ -824,9 +823,10 @@ define('bbmv/methods/model-methods',['require','exports','module'],function defP
  * @module bbmv
  */
 
-define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives/index','bbmv/methods/if','bbmv/methods/model-methods'],function (require, exports, module) {
+define('bbmv',['require','exports','module','jquery-selector-data-prefix','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives/index','bbmv/methods/if','bbmv/methods/model-methods'],function (require, exports, module) {
 	
 
+	require('jquery-selector-data-prefix');
 
 	var _        = require('lodash'),
 		$        = require('jquery'),
@@ -844,6 +844,12 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 	var bbmv = module.exports = bbdv.extend({
 
 		initialize: function initializeBbmv(options) {
+			options = options || {};
+
+			// pick some options
+			_.each(['namespace', 'binding', 'event', 'bindingEventAttribute'], function (opt) {
+				this[opt] = options[opt] || this[opt];
+			}, this);
 
 			this.namespace = options.namespace || this.namespace;
 
@@ -872,12 +878,60 @@ define('bbmv',['require','exports','module','lodash','jquery','bbdv','lowercase-
 
 		},
 
+		/**
+		 * Event to listen on the model.
+		 * @type {String}
+		 */
 		event: 'change',
 
 
-		namespace: 'bind',
+		/**
+		 * Binding namespace.
+		 * Used to build custom selectors for custom bindings.
+		 */
+	//	binding: 'data',
 
+		/**
+		 * Data atttribute for the binding event name.
+		 * @type {String}
+		 */
 		bindingEventAttribute: 'binding-event',
+
+
+		// OVERRIDES //
+
+		/**
+		 * Directive namespace
+		 * used for bbdv.
+		 * @type {String}
+		 */
+		namespace: 'bind',
+		/**
+		 * Builds the selector to get the elements to be
+		 * in the directive view.
+		 *
+		 * If the binding attribute is set, use it to build
+		 * a custom selector.
+		 * Otherwise. use the data-prefix selector.
+		 *
+		 * @param  {[type]} namespace [description]
+		 * @return {[type]}           [description]
+		 */
+		selector: function bbmvBoundSelector(namespace) {
+
+			if (this.binding) {
+				// use binding selector
+				return '[data-binding="' + this.binding + '"]';
+			} else {
+				// use data prefix selector
+				// (default)
+				return ':data-prefix(' + namespace + ')';
+			}
+
+		},
+
+		// OVERRIDES //
+
 
 		/**
 		 * Pump data.

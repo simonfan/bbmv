@@ -11,13 +11,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/aux/index.js": {
-            "name": "src/bbmv/aux/index.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/bbmv/aux/parse-dest-str.js": {
             "name": "src/bbmv/aux/parse-dest-str.js",
             "modules": {},
@@ -122,28 +115,6 @@
             "file": "src/bbmv/aux/general.js",
             "line": 28,
             "description": "Returns the string with the first letter to uppercase.",
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/aux/index.js",
-            "line": 12,
-            "description": "Finds all bound elements within the pipe.",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "namespace",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
             "class": ""
         },
         {
@@ -548,7 +519,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 34,
+            "line": 41,
             "description": "The attribute used to store the pipe id\nonto the $dest elements.",
             "type": "{[type]}",
             "class": "",
@@ -557,6 +528,55 @@
         {
             "file": "src/bbmv.js",
             "line": 66,
+            "description": "Event to listen on the model.",
+            "type": "{String}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 73,
+            "description": "Binding namespace.\nUsed to build custom selectors for custom bindings.",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 79,
+            "description": "Data atttribute for the binding event name.",
+            "type": "{String}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 88,
+            "description": "Directive namespace\nused for bbdv.",
+            "type": "{String}",
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 94,
+            "description": "Builds the selector to get the elements to be\nin the directive view.\n\nIf the binding attribute is set, use it to build\na custom selector.\nOtherwise. use the data-prefix selector.",
+            "params": [
+                {
+                    "name": "namespace",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 121,
             "description": "Pump data.",
             "params": [
                 {
@@ -574,7 +594,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 82,
+            "line": 137,
             "description": "Drains data from a single element",
             "params": [
                 {
@@ -592,7 +612,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 94,
+            "line": 149,
             "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
             "params": [
                 {
@@ -631,10 +651,6 @@
         {
             "message": "Missing item type\nReturns the string with the first letter to uppercase.",
             "line": " src/bbmv/aux/general.js:28"
-        },
-        {
-            "message": "Missing item type\nFinds all bound elements within the pipe.",
-            "line": " src/bbmv/aux/index.js:12"
         },
         {
             "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
@@ -714,19 +730,39 @@
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",
-            "line": " src/bbmv.js:34"
+            "line": " src/bbmv.js:41"
         },
         {
-            "message": "Missing item type\nPump data.",
+            "message": "Missing item type\nEvent to listen on the model.",
             "line": " src/bbmv.js:66"
         },
         {
+            "message": "Missing item type\nBinding namespace.\nUsed to build custom selectors for custom bindings.",
+            "line": " src/bbmv.js:73"
+        },
+        {
+            "message": "Missing item type\nData atttribute for the binding event name.",
+            "line": " src/bbmv.js:79"
+        },
+        {
+            "message": "Missing item type\nDirective namespace\nused for bbdv.",
+            "line": " src/bbmv.js:88"
+        },
+        {
+            "message": "Missing item type\nBuilds the selector to get the elements to be\nin the directive view.\n\nIf the binding attribute is set, use it to build\na custom selector.\nOtherwise. use the data-prefix selector.",
+            "line": " src/bbmv.js:94"
+        },
+        {
+            "message": "Missing item type\nPump data.",
+            "line": " src/bbmv.js:121"
+        },
+        {
             "message": "Missing item type\nDrains data from a single element",
-            "line": " src/bbmv.js:82"
+            "line": " src/bbmv.js:137"
         },
         {
             "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "line": " src/bbmv.js:94"
+            "line": " src/bbmv.js:149"
         }
     ]
 }

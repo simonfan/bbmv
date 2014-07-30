@@ -29,13 +29,13 @@
 
 	<a href="../index.html">Menu</a>
 
-
 	<div id="demo">
 
 		<div>
 			<div data-bind-editor="html" style="height: 30px; border-bottom: 1px dashed gray;">
 
 				<input
+					data-bind
 					data-bind-size="value"
 					data-binding-event="keyup"
 
@@ -44,29 +44,34 @@
 
 				<div
 					style="height: 40px; width: 300px; background-color: red; float: left;"
+
+					data-binding="data"
 					data-bind-out-size="hideIf:small; html"
 				></div>
 
 				<button
+					data-binding="data"
 					data-bind-out-reset-action="data:size"
 					data-size="small"
 
-					data-bind-set-size="small"
+					data-bind-in-size="data:size"
 					data-binding-event="click"
 				>RESET <span></span></button>
 
 				<input
 					data-bind-reset-action="value"
+					data-binding="data"
 					data-binding-event="keyup"
 
 					placeholder="reset action"
 				>
 
 
-				<input data-bind-money="value" data-binding-event="keyup" placeholder="BRL" size="4">
+				<input data-bind-ns="value" data-bind-money="value" data-binding-event="keyup" placeholder="BRL" size="4">
 				<input data-bind-money="usd | value" data-binding-event="keyup" placeholder="USD" size="4">
 				<input data-bind-money="cny | value" data-binding-event="keyup" placeholder="CNY" size="4">
 				<input data-bind-money="eur | value" data-binding-event="keyup" placeholder="EUR" size="4">
+				<div data-bind-out-money="formatWidth | css:width" style="background-color:red; height: 40px;"></div>
 
 			</div>
 			<div data-bind-size  ="html" style="height: 30px; border-bottom: 1px dashed gray;"></div>
@@ -101,6 +106,21 @@
 
 		>
 			DATA BIND SET
+		</div>
+
+
+
+		<div>
+			<input
+				data-bind-from="value"
+				data-binding-event="change"
+
+				data-bind-pipe-from="to"
+
+				placeholder="from"
+			>
+			<input data-bind-to="value" placeholder="to">
+
 		</div>
 	</div>
 

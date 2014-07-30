@@ -52,7 +52,9 @@ define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 		eur: {
 			'in': function (amount) { return amount / this.rates.eur },
 			out : function (amount) { return amount * this.rates.eur }
-		}
+		},
+
+		formatWidth: function (v) { return v + 'px'; }
 	})
 
 	window.demo = view({
