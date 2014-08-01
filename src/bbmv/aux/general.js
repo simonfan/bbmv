@@ -4,6 +4,17 @@ define(function (require, exports, module) {
 	var _ = require('lodash');
 
 
+	/**
+	 * Copied from Epeli's underscore.string "camelize"
+	 * https://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js
+	 *
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	exports.camelCase = function camelCase(str) {
+		return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ""; });
+	};
+
 //	/^prefix([A-Z$_].*$|$)/;
 
 	/**

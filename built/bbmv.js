@@ -4,6 +4,17 @@ define('bbmv/aux/general',['require','exports','module','lodash'],function (requ
 	var _ = require('lodash');
 
 
+	/**
+	 * Copied from Epeli's underscore.string "camelize"
+	 * https://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js
+	 *
+	 * @param  {[type]} str [description]
+	 * @return {[type]}     [description]
+	 */
+	exports.camelCase = function camelCase(str) {
+		return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ""; });
+	};
+
 //	/^prefix([A-Z$_].*$|$)/;
 
 	/**
@@ -445,28 +456,6 @@ define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/aux
 
 });
 
-define('bbmv/aux',['require','exports','module','jquery-selector-data-prefix'],function (require, exports, module) {
-
-	
-
-	// :data-prefix(prefix) selector
-	require('jquery-selector-data-prefix');
-
-	/**
-	 * Finds all bound elements within the pipe.
-	 *
-	 * @param  {[type]} $el    [description]
-	 * @param  {[type]} namespace [description]
-	 * @return {[type]}        [description]
-	 */
-	exports.findBoundElements = function findBoundElements($el, namespace) {
-		// $el.add() creates a NEW SELECTION :)
-		// it does not add to the existing jq object.
-		var $boundDescendantElements = $el.find(':data-prefix(' + namespace + ')');
-		return $el.add($boundDescendantElements);
-	};
-});
-
 define('bbmv/directives/data-bind',['require','exports','module','lodash','bbmv/aux/index'],function defBindDirectives(require, exports, module) {
 
 	
@@ -864,7 +853,7 @@ define('bbmv/methods/model-methods',['require','exports','module'],function defP
  * @module bbmv
  */
 
-define('bbmv',['require','exports','module','jquery-selector-data-prefix','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux','bbmv/directives/index','bbmv/methods/if','bbmv/methods/model-methods'],function (require, exports, module) {
+define('bbmv',['require','exports','module','jquery-selector-data-prefix','lodash','jquery','bbdv','lowercase-backbone','bbmv/pipe/index','bbmv/aux/index','bbmv/directives/index','bbmv/methods/if','bbmv/methods/model-methods'],function (require, exports, module) {
 	
 
 	require('jquery-selector-data-prefix');
@@ -875,7 +864,7 @@ define('bbmv',['require','exports','module','jquery-selector-data-prefix','lodas
 		backbone = require('lowercase-backbone');
 
 	var mvPipe = require('bbmv/pipe/index'),
-		aux    = require('bbmv/aux');
+		aux    = require('bbmv/aux/index');
 
 
 	function genPipeIdAttr() {
@@ -966,7 +955,7 @@ define('bbmv',['require','exports','module','jquery-selector-data-prefix','lodas
 			} else {
 				// use data prefix selector
 				// (default)
-				return ':data-prefix(' + namespace + ')';
+				return ':data-prefix(' + aux.camelCase(namespace) + ')';
 			}
 
 		},

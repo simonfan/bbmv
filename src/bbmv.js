@@ -19,7 +19,7 @@ define(function (require, exports, module) {
 		backbone = require('lowercase-backbone');
 
 	var mvPipe = require('bbmv/pipe/index'),
-		aux    = require('bbmv/aux');
+		aux    = require('bbmv/aux/index');
 
 
 	function genPipeIdAttr() {
@@ -110,7 +110,7 @@ define(function (require, exports, module) {
 			} else {
 				// use data prefix selector
 				// (default)
-				return ':data-prefix(' + namespace + ')';
+				return ':data-prefix(' + aux.camelCase(namespace) + ')';
 			}
 
 		},

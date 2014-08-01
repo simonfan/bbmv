@@ -74,13 +74,6 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/aux.js": {
-            "name": "src/bbmv/aux.js",
-            "modules": {},
-            "classes": {},
-            "fors": {},
-            "namespaces": {}
-        },
         "src/bbmv.js": {
             "name": "src/bbmv.js",
             "modules": {
@@ -108,19 +101,36 @@
     "classitems": [
         {
             "file": "src/bbmv/aux/general.js",
-            "line": 9,
+            "line": 7,
+            "description": "Copied from Epeli's underscore.string \"camelize\"\nhttps://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/aux/general.js",
+            "line": 20,
             "description": "Creates a Regular Expression to capture property name.",
             "class": ""
         },
         {
             "file": "src/bbmv/aux/general.js",
-            "line": 21,
+            "line": 32,
             "description": "Returns the string with the first letter to lowercase.",
             "class": ""
         },
         {
             "file": "src/bbmv/aux/general.js",
-            "line": 28,
+            "line": 39,
             "description": "Returns the string with the first letter to uppercase.",
             "class": ""
         },
@@ -525,28 +535,6 @@
             "class": ""
         },
         {
-            "file": "src/bbmv/aux.js",
-            "line": 8,
-            "description": "Finds all bound elements within the pipe.",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "namespace",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
-        },
-        {
             "file": "src/bbmv.js",
             "line": 41,
             "description": "The attribute used to store the pipe id\nonto the $dest elements.",
@@ -670,16 +658,20 @@
     ],
     "warnings": [
         {
+            "message": "Missing item type\nCopied from Epeli's underscore.string \"camelize\"\nhttps://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js",
+            "line": " src/bbmv/aux/general.js:7"
+        },
+        {
             "message": "Missing item type\nCreates a Regular Expression to capture property name.",
-            "line": " src/bbmv/aux/general.js:9"
+            "line": " src/bbmv/aux/general.js:20"
         },
         {
             "message": "Missing item type\nReturns the string with the first letter to lowercase.",
-            "line": " src/bbmv/aux/general.js:21"
+            "line": " src/bbmv/aux/general.js:32"
         },
         {
             "message": "Missing item type\nReturns the string with the first letter to uppercase.",
-            "line": " src/bbmv/aux/general.js:28"
+            "line": " src/bbmv/aux/general.js:39"
         },
         {
             "message": "Missing item type\nFinds the default DOM event\nfor an $el.\nMust take an events hash as second argument.",
@@ -756,10 +748,6 @@
         {
             "message": "Missing item type\nSet to the jquery object",
             "line": " src/bbmv/pipe/dest-set.js:66"
-        },
-        {
-            "message": "Missing item type\nFinds all bound elements within the pipe.",
-            "line": " src/bbmv/aux.js:8"
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",
