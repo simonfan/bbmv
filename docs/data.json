@@ -11,6 +11,13 @@
             "fors": {},
             "namespaces": {}
         },
+        "src/bbmv/aux/index.js": {
+            "name": "src/bbmv/aux/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
         "src/bbmv/aux/parse-dest-str.js": {
             "name": "src/bbmv/aux/parse-dest-str.js",
             "modules": {},
@@ -118,6 +125,28 @@
             "class": ""
         },
         {
+            "file": "src/bbmv/aux/index.js",
+            "line": 11,
+            "description": "Finds the default DOM event\nfor an $el.\nMust take an events hash as second argument.",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "eventsHash",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
             "file": "src/bbmv/aux/parse-dest-str.js",
             "line": 6,
             "description": "Parses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
@@ -142,7 +171,7 @@
         },
         {
             "file": "src/bbmv/aux/parse-dest-str.js",
-            "line": 64,
+            "line": 65,
             "description": "Parses the destination property of the jquery-pump.",
             "params": [
                 {
@@ -159,7 +188,7 @@
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
-            "line": 9,
+            "line": 10,
             "description": "Binds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
             "params": [
                 {
@@ -181,7 +210,7 @@
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
-            "line": 37,
+            "line": 40,
             "description": "Binds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
             "params": [
                 {
@@ -203,7 +232,7 @@
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
-            "line": 57,
+            "line": 60,
             "description": "Dual way data binding.",
             "params": [
                 {
@@ -225,7 +254,7 @@
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
-            "line": 82,
+            "line": 89,
             "description": "Set directive.",
             "params": [
                 {
@@ -331,7 +360,7 @@
         },
         {
             "file": "src/bbmv/directives/index.js",
-            "line": 13,
+            "line": 17,
             "description": "The directives to be exported.",
             "class": ""
         },
@@ -653,6 +682,10 @@
             "line": " src/bbmv/aux/general.js:28"
         },
         {
+            "message": "Missing item type\nFinds the default DOM event\nfor an $el.\nMust take an events hash as second argument.",
+            "line": " src/bbmv/aux/index.js:11"
+        },
+        {
             "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
             "line": " src/bbmv/aux/parse-dest-str.js:6"
         },
@@ -662,23 +695,23 @@
         },
         {
             "message": "Missing item type\nParses the destination property of the jquery-pump.",
-            "line": " src/bbmv/aux/parse-dest-str.js:64"
+            "line": " src/bbmv/aux/parse-dest-str.js:65"
         },
         {
             "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
-            "line": " src/bbmv/directives/data-bind.js:9"
+            "line": " src/bbmv/directives/data-bind.js:10"
         },
         {
             "message": "Missing item type\nBinds the model data to the $el in\nuni-directional mode:\nfrom MODEL to DOM",
-            "line": " src/bbmv/directives/data-bind.js:37"
+            "line": " src/bbmv/directives/data-bind.js:40"
         },
         {
             "message": "Missing item type\nDual way data binding.",
-            "line": " src/bbmv/directives/data-bind.js:57"
+            "line": " src/bbmv/directives/data-bind.js:60"
         },
         {
             "message": "Missing item type\nSet directive.",
-            "line": " src/bbmv/directives/data-bind.js:82"
+            "line": " src/bbmv/directives/data-bind.js:89"
         },
         {
             "message": "Missing item type\nParses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
@@ -698,7 +731,7 @@
         },
         {
             "message": "Missing item type\nThe directives to be exported.",
-            "line": " src/bbmv/directives/index.js:13"
+            "line": " src/bbmv/directives/index.js:17"
         },
         {
             "message": "Missing item type\nTakes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",

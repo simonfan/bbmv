@@ -86,7 +86,8 @@ define('bbmv/aux/parse-dest-str',['require','exports','module','lodash'],functio
 
 
 
-	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*->)?\s*(.+)\s*/;
+	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*->)?\s*(.+)\s*/,
+		newLine         = /\n/g;
 	// \s*(?:(.+?)\s*\|)? -> optional format |
 	// \s*(?:(.+?)\s*->)? -> optional selector ->
 	// \s*(.+)\s*/     -> required methodString
@@ -103,6 +104,9 @@ define('bbmv/aux/parse-dest-str',['require','exports','module','lodash'],functio
 	 * @return {[type]}     [description]
 	 */
 	function parseDestProp(str) {
+		// remove new lines :)
+		str = str.replace(newLine, '');
+
 		var match = str.match(destPropMatcher);
 
 		// match[0] the full matched string
@@ -141,6 +145,27 @@ define('bbmv/aux/index',['require','exports','module','lodash','bbmv/aux/general
 	_.assign(exports, require('bbmv/aux/general'));
 
 	exports.parseDestStr = require('bbmv/aux/parse-dest-str');
+
+
+	/**
+	 * Finds the default DOM event
+	 * for an $el.
+	 * Must take an events hash as second argument.
+	 *
+	 * @param  {[type]} $el        [description]
+	 * @param  {[type]} eventsHash [description]
+	 * @return {[type]}            [description]
+	 */
+	exports.getDefaultDOMEvent = function getDefaultDOMEvent($el, eventsHash) {
+
+		return _.find(eventsHash, function (event, selector) {
+
+			return $el.is(selector);
+
+		});
+
+	};
+
 });
 
 define('bbmv/pipe/aux',['require','exports','module','lodash'],function defPipeAux(require, exports, module) {
@@ -442,11 +467,12 @@ define('bbmv/aux',['require','exports','module','jquery-selector-data-prefix'],f
 	};
 });
 
-define('bbmv/directives/data-bind',['require','exports','module','lodash'],function defBindDirectives(require, exports, module) {
+define('bbmv/directives/data-bind',['require','exports','module','lodash','bbmv/aux/index'],function defBindDirectives(require, exports, module) {
 
 	
 
-	var _ = require('lodash');
+	var _   = require('lodash'),
+		aux = require('bbmv/aux/index')
 
 
 
@@ -468,7 +494,9 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 		var pipe = this.pipe($el);
 		pipe.map(map, { direction: 'from' });
 
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt =
+			$el.data(this.bindingEventAttribute) ||
+			aux.getDefaultDOMEvent($el, this.defaultDOMEvents);
 
 
 		if (evt) {
@@ -487,7 +515,7 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['out'] = function bindOut($el, map) {
+	exports.out = function bindOut($el, map) {
 
 
 		var pipe = this.pipe($el);
@@ -505,13 +533,19 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['dual'] = exports[''] = function bindDual($el, map) {
+	exports.dual = exports[''] = function bindDual($el, map) {
 
 	//	console.log('bindDual');
 	//	console.log($el[0]);
 	//	console.log(map);
 
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+
+		var pipe = this.pipe($el);
+		pipe.map(map, { direction: 'both' });
+
+		var evt =
+			$el.data(this.bindingEventAttribute) ||
+			aux.getDefaultDOMEvent($el, this.defaultDOMEvents);
 
 		if (evt) {
 			$el.on(evt, function () {
@@ -519,8 +553,6 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 			});
 		}
 
-		var pipe = this.pipe($el);
-		pipe.map(map, { direction: 'both' });
 	};
 
 	/**
@@ -530,28 +562,17 @@ define('bbmv/directives/data-bind',['require','exports','module','lodash'],funct
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['set'] = function bindSet($el, map) {
+	exports.set = function bindSet($el, map) {
+		var evt =
+			$el.data(this.bindingEventAttribute) ||
+			aux.getDefaultDOMEvent($el, this.defaultDOMEvents);
 
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+		if (evt) {
+			$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
+		}
 
-		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
 	};
 
-
-	exports.pipe = function bindPipe($el, map) {
-
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
-
-
-		var model = this.model;
-
-		$el.on(evt, function () {
-
-			_.each(map, function (to, from) {
-				model.set(to, model.get(from));
-			});
-		});
-	};
 
 
 
@@ -659,7 +680,7 @@ define('bbmv/directives/event',['require','exports','module','lodash'],function 
 	 * @param  {[type]} evtStr_evtMap [description]
 	 * @return {[type]}               [description]
 	 */
-	exports['on'] = function bindEvent($el, evtStr_evtMap) {
+	exports.on = function bindEvent($el, evtStr_evtMap) {
 
 		// keep reference to the view.
 		var view = this;
@@ -696,9 +717,13 @@ define('bbmv/directives/index',['require','exports','module','lodash','jquery','
 		$        = require('jquery');
 
 	exports.defaultDOMEvents = {
-		'INPUT': 'change',
-		'BUTTON': 'click',
+
+		// selector: event
+		':text': 'keyup',
+		'input[type="checkbox"],input[type="radio"]': 'change',
+		':button': 'click',
 	};
+
 
 
 	/**
@@ -807,8 +832,24 @@ define('bbmv/methods/model-methods',['require','exports','module'],function defP
 
 	
 
-	exports.save = function save($el) {
+	exports.save = function saveModel($el) {
 		return this.model.save();
+	};
+
+	exports.fetch = function fetchModel($el) {
+		return this.model.fetch();
+	};
+
+	exports.clear = function clearModel() {
+		return this.model.clear();
+	};
+
+	exports.destroy = function destroyModel() {
+		return this.model.destroy();
+	};
+
+	exports.validate = function validateModel() {
+		return this.model.validate();
 	};
 
 });

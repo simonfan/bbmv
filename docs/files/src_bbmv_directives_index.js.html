@@ -93,9 +93,13 @@ define(function (require, exports, module) {
 		$        = require(&#x27;jquery&#x27;);
 
 	exports.defaultDOMEvents = {
-		&#x27;INPUT&#x27;: &#x27;change&#x27;,
-		&#x27;BUTTON&#x27;: &#x27;click&#x27;,
+
+		// selector: event
+		&#x27;:text&#x27;: &#x27;keyup&#x27;,
+		&#x27;input[type=&quot;checkbox&quot;],input[type=&quot;radio&quot;]&#x27;: &#x27;change&#x27;,
+		&#x27;:button&#x27;: &#x27;click&#x27;,
 	};
+
 
 
 	/**

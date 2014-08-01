@@ -65,6 +65,10 @@ function ($     ,  should ,  pipeParseDestStr        ) {
 
 			destdef.format.method.should.eql('currency');
 			destdef.format.args.should.eql(['usd', 'no-comma']);
+		});
+
+		it.skip('removes new lines before parsing dest string', function () {
+			var destdef = pipeParseDestStr("if: \nplace=>do")
 		})
 
 	});

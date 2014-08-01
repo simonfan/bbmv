@@ -2,7 +2,8 @@ define(function defBindDirectives(require, exports, module) {
 
 	'use strict';
 
-	var _ = require('lodash');
+	var _   = require('lodash'),
+		aux = require('bbmv/aux/index')
 
 
 
@@ -24,7 +25,9 @@ define(function defBindDirectives(require, exports, module) {
 		var pipe = this.pipe($el);
 		pipe.map(map, { direction: 'from' });
 
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+		var evt =
+			$el.data(this.bindingEventAttribute) ||
+			aux.getDefaultDOMEvent($el, this.defaultDOMEvents);
 
 
 		if (evt) {
@@ -43,7 +46,7 @@ define(function defBindDirectives(require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['out'] = function bindOut($el, map) {
+	exports.out = function bindOut($el, map) {
 
 
 		var pipe = this.pipe($el);
@@ -61,13 +64,19 @@ define(function defBindDirectives(require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['dual'] = exports[''] = function bindDual($el, map) {
+	exports.dual = exports[''] = function bindDual($el, map) {
 
 	//	console.log('bindDual');
 	//	console.log($el[0]);
 	//	console.log(map);
 
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+
+		var pipe = this.pipe($el);
+		pipe.map(map, { direction: 'both' });
+
+		var evt =
+			$el.data(this.bindingEventAttribute) ||
+			aux.getDefaultDOMEvent($el, this.defaultDOMEvents);
 
 		if (evt) {
 			$el.on(evt, function () {
@@ -75,8 +84,6 @@ define(function defBindDirectives(require, exports, module) {
 			});
 		}
 
-		var pipe = this.pipe($el);
-		pipe.map(map, { direction: 'both' });
 	};
 
 	/**
@@ -86,28 +93,17 @@ define(function defBindDirectives(require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
-	exports['set'] = function bindSet($el, map) {
+	exports.set = function bindSet($el, map) {
+		var evt =
+			$el.data(this.bindingEventAttribute) ||
+			aux.getDefaultDOMEvent($el, this.defaultDOMEvents);
 
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
+		if (evt) {
+			$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
+		}
 
-		$el.on(evt, _.partial(_.bind(this.model.set, this.model), map));
 	};
 
-
-	exports.pipe = function bindPipe($el, map) {
-
-		var evt = $el.data(this.bindingEventAttribute) || this.defaultDOMEvents[$el.prop('tagName')];
-
-
-		var model = this.model;
-
-		$el.on(evt, function () {
-
-			_.each(map, function (to, from) {
-				model.set(to, model.get(from));
-			});
-		});
-	};
 
 
 

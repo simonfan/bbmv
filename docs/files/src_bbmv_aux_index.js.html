@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/aux/parse-dest-str.js - bbmv</title>
+    <title>src/bbmv/aux/index.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -82,7 +82,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/aux/parse-dest-str.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/aux/index.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -91,103 +91,30 @@ define(function (require, exports, module) {
 
 	var _ = require(&#x27;lodash&#x27;);
 
-	/**
-	 * Parses a string into methodName and args.
-	 * Example string: &#x27;css:background-color&#x27;
-	 *                 &#x27;attr:href&#x27;
-	 *                 &#x27;val&#x27;
-	 *                 &#x27;someMethod:arg1, arg2, arg3;&#x27;
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
-	 */
-	var colonSplitter = /\s*:\s*/g,
-		commaSplitter = /\s*,\s*/g;
+	_.assign(exports, require(&#x27;bbmv/aux/general&#x27;));
 
-	function parseMethodString(str) {
+	exports.parseDestStr = require(&#x27;bbmv/aux/parse-dest-str&#x27;);
 
-			// method:$argsString
-		var methodAndArgsSplit = str.split(colonSplitter),
-			method             = methodAndArgsSplit[0],
-			argsString         = methodAndArgsSplit[1];
-
-			// arg1, arg2, arg3
-		var args = argsString ? argsString.split(commaSplitter) : [];
-
-		return {
-			method  : method,
-			args    : args
-		};
-	};
-	exports.methodString = parseMethodString;
 
 	/**
-	 * Returns optionally destProp string and method string
-	 * [0] full match
-	 * [1] selector
-	 * [2] method string
-	 */
-//	var destPropMatcher = /(?:(.+?)\s*-&gt;)?\s*(.+)\s*/;
-//	function parseDestProp(str) {
-//
-//		var match = str.match(destPropMatcher);
-//
-//		return {
-//			selector    : match[1],
-//			methodString: match[2]
-//		};
-//	};
-
-
-
-	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*-&gt;)?\s*(.+)\s*/,
-		newLine         = /\n/g;
-	// \s*(?:(.+?)\s*\|)? -&gt; optional format |
-	// \s*(?:(.+?)\s*-&gt;)? -&gt; optional selector -&gt;
-	// \s*(.+)\s*/     -&gt; required methodString
-	//
-
-	// &#x27;currency|.selector-&gt;attr:value&#x27;
-	// &#x27;format|.selector -&gt; method:partial1&#x27;
-	// &#x27;currency|html&#x27;
-	// &#x27;html&#x27;
-	/**
-	 * Parses the destination property of the jquery-pump.
+	 * Finds the default DOM event
+	 * for an $el.
+	 * Must take an events hash as second argument.
 	 *
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
+	 * @param  {[type]} $el        [description]
+	 * @param  {[type]} eventsHash [description]
+	 * @return {[type]}            [description]
 	 */
-	function parseDestProp(str) {
-		// remove new lines :)
-		str = str.replace(newLine, &#x27;&#x27;);
+	exports.getDefaultDOMEvent = function getDefaultDOMEvent($el, eventsHash) {
 
-		var match = str.match(destPropMatcher);
+		return _.find(eventsHash, function (event, selector) {
 
-		// match[0] the full matched string
-		// match[1] the format
-		// match[2] the selector
-		// match[3] the methodString
+			return $el.is(selector);
 
-		// parse out the methodString
-		var res = parseMethodString(match[3]);
+		});
 
-		// set format and selector onto res;
-		if (match[2]) {
-			res.selector = match[2];
-		}
-
-		if (match[1]) {
-			res.format   = parseMethodString(match[1]);
-		}
-
-		return res;
-	}
-
-
-	var semiColonSplitter = /\s*;\s*/g;
-	// &quot;method: arg1, arg2; method1: arg;&quot;
-	module.exports = function parseDestStr(destStr) {
-		return _(destStr.split(semiColonSplitter)).map(parseDestProp).compact().value();
 	};
+
 });
 
     </pre>

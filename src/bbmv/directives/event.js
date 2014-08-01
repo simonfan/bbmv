@@ -100,7 +100,7 @@ define(function defEventDirectives(require, exports, module) {
 	 * @param  {[type]} evtStr_evtMap [description]
 	 * @return {[type]}               [description]
 	 */
-	exports['on'] = function bindEvent($el, evtStr_evtMap) {
+	exports.on = function bindEvent($el, evtStr_evtMap) {
 
 		// keep reference to the view.
 		var view = this;

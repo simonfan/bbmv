@@ -51,7 +51,8 @@ define(function (require, exports, module) {
 
 
 
-	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*->)?\s*(.+)\s*/;
+	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*->)?\s*(.+)\s*/,
+		newLine         = /\n/g;
 	// \s*(?:(.+?)\s*\|)? -> optional format |
 	// \s*(?:(.+?)\s*->)? -> optional selector ->
 	// \s*(.+)\s*/     -> required methodString
@@ -68,6 +69,9 @@ define(function (require, exports, module) {
 	 * @return {[type]}     [description]
 	 */
 	function parseDestProp(str) {
+		// remove new lines :)
+		str = str.replace(newLine, '');
+
 		var match = str.match(destPropMatcher);
 
 		// match[0] the full matched string
