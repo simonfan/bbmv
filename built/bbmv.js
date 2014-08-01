@@ -817,12 +817,17 @@ define('bbmv/methods/if',['require','exports','module','lodash'],function (requi
 	};
 });
 
-define('bbmv/methods/model-methods',['require','exports','module'],function defPipeMethodsModelMethods(require, exports, module) {
+define('bbmv/methods/model-methods',['require','exports','module'],function defModelMethods(require, exports, module) {
 
 	
 
 	exports.save = function saveModel($el) {
 		return this.model.save();
+	};
+
+
+	exports.set = function setModel($el, attr, value) {
+		return this.model.set(attr, value);
 	};
 
 	exports.fetch = function fetchModel($el) {

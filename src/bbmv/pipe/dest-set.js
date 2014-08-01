@@ -31,12 +31,9 @@ define(function (require, exports, module) {
 		//   - format
 		//   - selector (to be ignored)
 
-		//////////////////////
-		// value formatting //
-		//////////////////////
-		value = dest.format ?
-			pipeAux.format(bbmvInstance, $el, 'out', dest.format, value) :
-			value;
+
+
+
 
 		///////////////////////
 		// element retrieval //
@@ -44,8 +41,33 @@ define(function (require, exports, module) {
 		// if therer is a selector defined,
 		// call the find method on the dest object.
 		$el = dest.selector ?
-			$el.find(dest.selector) :
-			$el;
+			$el.find(dest.selector) : $el;
+
+		//////////////////////
+		// value formatting //
+		//////////////////////
+		var format = dest.format;
+		if (format) {
+
+
+			// get format "in"
+			var formatter = bbmvInstance[format.method];
+			formatter = _.isFunction(formatter) ? formatter : formatter.out;
+
+			if (!formatter) { throw new Error('[bbmv|destGet/destSet] ' + format.method + ' could not be found.'); }
+
+			// clone args so that the original ones remain unchanged
+			//
+			// $el as first, value as last
+			var formatterArgs = _.clone(format.args);
+			formatterArgs.unshift($el);
+			formatterArgs.push(value);
+
+			return formatter.apply(bbmvInstance, formatterArgs);
+
+		}
+
+
 
 		//////////////////////
 		// method execution //
@@ -55,10 +77,7 @@ define(function (require, exports, module) {
 		var methodArgs = _.clone(dest.args);
 		methodArgs.push(value);
 
-		// execute the method
-		var methodName = dest.method;
-
-		return pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
+		return bbmvInstance._exec(dest.method, methodArgs, $el);
 	}
 
 
@@ -72,11 +91,13 @@ define(function (require, exports, module) {
 	 */
 	module.exports = function destSet($el, destStr, value) {
 
-		var dests = this.parseDestStr(destStr);
+		var bbmvInstance = this.bbmvInstance,
+			// use bbmvInstance's parseDestStr method.
+			dests        = bbmvInstance.parseDestStr(destStr);
 
 		_.each(dests, function (dest) {
 
-			return destSetSingle(this.bbmvInstance, $el, dest, value);
+			return destSetSingle(bbmvInstance, $el, dest, value);
 
 		}, this);
 	};

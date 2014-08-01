@@ -1,9 +1,14 @@
-define(function defPipeMethodsModelMethods(require, exports, module) {
+define(function defModelMethods(require, exports, module) {
 
 	'use strict';
 
 	exports.save = function saveModel($el) {
 		return this.model.save();
+	};
+
+
+	exports.set = function setModel($el, attr, value) {
+		return this.model.set(attr, value);
 	};
 
 	exports.fetch = function fetchModel($el) {

@@ -18,9 +18,6 @@ define(function (require, exports, module) {
 		bbdv     = require('bbdv'),
 		backbone = require('lowercase-backbone');
 
-	var mvPipe = require('bbmv/pipe/index'),
-		aux    = require('bbmv/aux/index');
-
 
 	function genPipeIdAttr() {
 		return ['bbdv', this.namespace, this.cid, 'id'].join('_');
@@ -47,6 +44,9 @@ define(function (require, exports, module) {
 			this.pipeIdAttr = genPipeIdAttr.call(this);
 
 			this.pipes = {};
+
+			// var to hold parsed dest strings
+			this._parsedDestStrs = {};
 
 			bbdv.prototype.initialize.call(this, options);
 
@@ -82,8 +82,9 @@ define(function (require, exports, module) {
 		 */
 		bindingEventAttribute: 'binding-event',
 
-
+		///////////////
 		// OVERRIDES //
+		///////////////
 
 		/**
 		 * Directive namespace
@@ -115,87 +116,16 @@ define(function (require, exports, module) {
 
 		},
 
-		// OVERRIDES //
 
-
-		/**
-		 * Pump data.
-		 *
-		 * @param  {[type]} argument [description]
-		 * @return {[type]}          [description]
-		 */
-		pump: function pump() {
-
-			_.each(this.pipes, function (pipe) {
-				pipe.pump();
-			});
-
-			return this;
-		},
-
-
-		/**
-		 * Drains data from a single element
-		 * @param  {[type]} $el [description]
-		 * @return {[type]}     [description]
-		 */
-		drain: function drain($el, attributes, options) {
-
-			this.pipe($el).drain(attributes, options);
-
-			return this;
-		},
-
-		/**
-		 * Attempts to get the pipe id from the $dest object
-		 * and then checks for a pipe in cache.
-		 *
-		 * If no pipe is found in cache, instantiate a pipe
-		 * set id onto $dest using the .data method
-		 * and save pipe to cache using that id.
-		 *
-		 * @param  {[type]} $dest   [description]
-		 * @param  {[type]} map     [description]
-		 * @param  {[type]} options [description]
-		 * @return {[type]}         [description]
-		 */
-		pipe: function definePipe($dest, map, options) {
-
-			var pipe;
-
-			// get the pipeid
-			var pipeid = $dest.data(this.pipeIdAttr);
-
-			if (pipeid && this.pipes[pipeid]) {
-				// get pipe from cache
-				pipe = this.pipes[pipeid];
-
-				// if map is set,
-				// set it.
-				if (map) {
-
-				}
-
-			} else {
-				// generate a unique id
-				pipeid = _.uniqueId(this.pipeIdAttr);
-
-				// set namespace onto options
-				options = options || {};
-				options.bbmvInstance = this;
-
-				// create pipe
-				pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
-
-				// save pipe id on el.
-				$dest.data(this.pipeIdAttr, pipeid);
-			}
-
-			return pipe;
-		},
 	});
 
 	bbmv.assignProto(require('bbmv/directives/index'))
+
+		// methods
+		.assignProto(require('bbmv/methods/aux'))
 		.assignProto(require('bbmv/methods/if'))
-		.assignProto(require('bbmv/methods/model-methods'));
+		.assignProto(require('bbmv/methods/model'))
+		.assignProto(require('bbmv/methods/jquery/native'))
+		.assignProto(require('bbmv/methods/jquery/extensions'))
+		.assignProto(require('bbmv/methods/pipe'));
 });

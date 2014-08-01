@@ -24,7 +24,7 @@ define(function (require, exports, module) {
 		// parse out dest string using the method
 		// in order to get the in-cache version
 		// GET ONLY THE FIRST :)
-		var dest = this.parseDestStr(destStr)[0];
+		var dest = bbmvInstance._parseDestStr(destStr)[0];
 
 		// dest:
 		//   - method
@@ -38,25 +38,37 @@ define(function (require, exports, module) {
 		// if selector is defined,
 		// ge tthe right $el
 		$el = dest.selector ?
-			$el.find(dest.selector) :
-			$el;
+			$el.find(dest.selector) : $el;
 
 		//////////////////////
-		// method retrieval //
-		// and execution    //
+		// method execution //
 		//////////////////////
-		// get the method
-		var methodName = dest.method,
-			methodArgs = _.clone(dest.args),
-			value      = pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
+		var value = bbmvInstance._exec(dest.method, _.clone(dest.args), $el);
 
 		////////////////
 		// formatting //
 		////////////////
 		// check if a format was defined
-		value = dest.format ?
-			pipeAux.format(bbmvInstance, $el, 'in', dest.format, value) :
-			value;
+		var format = dest.format;
+		if (format) {
+
+			// get "in" formatter
+			var formatter = bbmvInstance[format.method];
+			formatter = _.isFunction(formatter) ? formatter : formatter['in'];
+
+			if (!formatter) { throw new Error('[bbmv|destGet] ' + format.method + ' could not be found.'); }
+
+			// clone args so that the original ones remain unchanged
+			var formatterArgs = _.clone(format.args);
+
+			// $el as first,
+			// value as last
+			formatterArgs.unshift($el);
+			formatterArgs.push(value);
+
+			// run formatting.
+			value = formatter.apply(bbmvInstance, formatterArgs);
+		}
 
 		return value;
 	};

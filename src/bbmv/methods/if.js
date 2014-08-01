@@ -3,6 +3,9 @@ define(function (require, exports, module) {
 
 	var _ = require('lodash');
 
+	// load aux
+	var aux = require('bbmv/aux');
+
 	var conditions = {
 		'>'  : function gt(condition, value) { return parseFloat(value) > parseFloat(condition); },
 		'>=' : function gte(condition, value) { return parseFloat(value) >= parseFloat(condition); },
@@ -62,7 +65,7 @@ define(function (require, exports, module) {
 
 			if (split.length === 1) {
 
-				// split = [methodName]
+				// split = [methodName[:args]]
 				// directly execute, it is the default case
 				this[split[0]].call(this, $el, value);
 
