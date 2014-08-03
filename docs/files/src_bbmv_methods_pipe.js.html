@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/pipe/aux.js - bbmv</title>
+    <title>src/bbmv/methods/pipe.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,6 +40,8 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/jqValueSetters.html">jqValueSetters</a></li>
             
             </ul>
 
@@ -82,64 +84,93 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/pipe/aux.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/methods/pipe.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(function defPipeAux(require, exports, module) {
+define(function (require, exports) {
 
-	var _ = require(&#x27;lodash&#x27;);
-
-	/**
-	 * Shared formatting logic for dest-get and dest-set.
-	 *
-	 * @param  {[type]} bbmvInstance [description]
-	 * @param  {[type]} $el          [description]
-	 * @param  {[type]} direction    [description]
-	 * @param  {[type]} format       [description]
-	 * @param  {[type]} value        [description]
-	 * @return {[type]}              [description]
-	 */
-	exports.format = function format(bbmvInstance, $el, direction, format, value) {
-
-
-		// get format &quot;in&quot;
-		var formatter = bbmvInstance[format.method];
-		formatter = _.isFunction(formatter) ? formatter : formatter[direction];
-
-		// clone args so that the original ones remain unchanged
-		var formatterArgs = _.clone(format.args);
-		formatterArgs.push(value);
-
-		if (!formatter) { throw new Error(&#x27;[bbmv|destGet/destSet] &#x27; + format.method + &#x27; could not be found.&#x27;); }
-
-		return formatter.apply(bbmvInstance, formatterArgs);
-
-	};
+	// the mv pipe object builder.
+	var mvPipe = require(&#x27;bbmv/pipe/index&#x27;);
 
 	/**
-	 * Very specific execution method.
-	 * Does method execution logic,
-	 * is shared by both dest-get and dest-set.
+	 * Attempts to get the pipe id from the $dest object
+	 * and then checks for a pipe in cache.
 	 *
-	 * @param  {[type]} bbmvInstance [description]
-	 * @param  {[type]} $el          [description]
-	 * @param  {[type]} methodName   [description]
-	 * @param  {[type]} methodArgs   [description]
-	 * @return {[type]}              [description]
+	 * If no pipe is found in cache, instantiate a pipe
+	 * set id onto $dest using the .data method
+	 * and save pipe to cache using that id.
+	 *
+	 * @param  {[type]} $dest   [description]
+	 * @param  {[type]} map     [description]
+	 * @param  {[type]} options [description]
+	 * @return {[type]}         [description]
 	 */
-	exports.executeMethod = function executeMethod(bbmvInstance, $el, methodName, methodArgs) {
+	exports.pipe = function definePipe($dest, map, options) {
 
-		// get the method
-		if ($el[methodName]) {
-			return $el[methodName].apply($el, methodArgs);
+		var pipe;
+
+		// get the pipeid
+		var pipeid = $dest.data(this.pipeIdAttr);
+
+		if (pipeid &amp;&amp; this.pipes[pipeid]) {
+			// get pipe from cache
+			pipe = this.pipes[pipeid];
+
+			// if map is set,
+			// set it.
+			if (map) {
+
+			}
+
 		} else {
-			// add the $el to the args
-			methodArgs.unshift($el);
+			// generate a unique id
+			pipeid = _.uniqueId(this.pipeIdAttr);
 
-			return bbmvInstance[methodName].apply(bbmvInstance, methodArgs);
+			// set namespace onto options
+			options = options || {};
+			options.bbmvInstance = this;
+
+			// create pipe
+			pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
+
+			// save pipe id on el.
+			$dest.data(this.pipeIdAttr, pipeid);
 		}
 
+		return pipe;
+	};
+
+	// alias.
+	exports.map = exports.pipe;
+
+
+	/**
+	 * Pump data.
+	 *
+	 * @param  {[type]} argument [description]
+	 * @return {[type]}          [description]
+	 */
+	exports.pump = function pump() {
+
+		_.each(this.pipes, function (pipe) {
+			pipe.pump();
+		});
+
+		return this;
+	};
+
+
+	/**
+	 * Drains data from a single element
+	 * @param  {[type]} $el [description]
+	 * @return {[type]}     [description]
+	 */
+	exports.drain = function drain($el, attributes, options) {
+
+		this.pipe($el).drain(attributes, options);
+
+		return this;
 	};
 
 });

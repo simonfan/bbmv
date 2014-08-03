@@ -18,6 +18,7 @@ define(function (require, exports, module) {
 		bbdv     = require('bbdv'),
 		backbone = require('lowercase-backbone');
 
+	var aux = require('bbmv/aux/index');
 
 	function genPipeIdAttr() {
 		return ['bbdv', this.namespace, this.cid, 'id'].join('_');
@@ -45,9 +46,6 @@ define(function (require, exports, module) {
 
 			this.pipes = {};
 
-			// var to hold parsed dest strings
-			this._parsedDestStrs = {};
-
 			bbdv.prototype.initialize.call(this, options);
 
 			if (!this.model) { throw new Error('No model set for model view.'); }
@@ -68,13 +66,6 @@ define(function (require, exports, module) {
 		 * @type {String}
 		 */
 		event: 'change',
-
-
-		/**
-		 * Binding namespace.
-		 * Used to build custom selectors for custom bindings.
-		 */
-	//	binding: 'data',
 
 		/**
 		 * Data atttribute for the binding event name.
@@ -105,14 +96,8 @@ define(function (require, exports, module) {
 		 */
 		selector: function bbmvBoundSelector(namespace) {
 
-			if (this.binding) {
-				// use binding selector
-				return '[data-binding="' + this.binding + '"]';
-			} else {
-				// use data prefix selector
-				// (default)
-				return ':data-prefix(' + aux.camelCase(namespace) + ')';
-			}
+			// use data prefix selector
+			return ':data-prefix(' + aux.camelCase(namespace) + ')';
 
 		},
 
@@ -126,6 +111,6 @@ define(function (require, exports, module) {
 		.assignProto(require('bbmv/methods/if'))
 		.assignProto(require('bbmv/methods/model'))
 		.assignProto(require('bbmv/methods/jquery/native'))
-		.assignProto(require('bbmv/methods/jquery/extensions'))
+		.assignProto(require('bbmv/methods/jquery/extensions/value'))
 		.assignProto(require('bbmv/methods/pipe'));
 });

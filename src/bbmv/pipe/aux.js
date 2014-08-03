@@ -1,56 +1,47 @@
-define(function defPipeAux(require, exports, module) {
+define(function defPipeAux(require, exports) {
 
 	var _ = require('lodash');
 
-	/**
-	 * Shared formatting logic for dest-get and dest-set.
-	 *
-	 * @param  {[type]} bbmvInstance [description]
-	 * @param  {[type]} $el          [description]
-	 * @param  {[type]} direction    [description]
-	 * @param  {[type]} format       [description]
-	 * @param  {[type]} value        [description]
-	 * @return {[type]}              [description]
-	 */
-	exports.format = function format(bbmvInstance, $el, direction, format, value) {
+	var aux = require('bbmv/aux/index');
 
+	var cache = {};
 
-		// get format "in"
-		var formatter = bbmvInstance[format.method];
-		formatter = _.isFunction(formatter) ? formatter : formatter[direction];
+	var semicolonSplitter = /\s*;\s*/,
+		pipeSplitter      = /\s*\|\s*/,
+		newline           = /\n/g;
 
-		// clone args so that the original ones remain unchanged
-		var formatterArgs = _.clone(format.args);
-		formatterArgs.push(value);
+	// format | .selector -> method; another-format -> method
+	exports.parseDestStr = function parseDestStr(str) {
 
-		if (!formatter) { throw new Error('[bbmv|destGet/destSet] ' + format.method + ' could not be found.'); }
-
-		return formatter.apply(bbmvInstance, formatterArgs);
-
-	};
-
-	/**
-	 * Very specific execution method.
-	 * Does method execution logic,
-	 * is shared by both dest-get and dest-set.
-	 *
-	 * @param  {[type]} bbmvInstance [description]
-	 * @param  {[type]} $el          [description]
-	 * @param  {[type]} methodName   [description]
-	 * @param  {[type]} methodArgs   [description]
-	 * @return {[type]}              [description]
-	 */
-	exports.executeMethod = function executeMethod(bbmvInstance, $el, methodName, methodArgs) {
-
-		// get the method
-		if ($el[methodName]) {
-			return $el[methodName].apply($el, methodArgs);
-		} else {
-			// add the $el to the args
-			methodArgs.unshift($el);
-
-			return bbmvInstance[methodName].apply(bbmvInstance, methodArgs);
+		if (cache[str]) {
+			return cache[str];
 		}
+
+		// break the string
+		var destDefStrArr = str.replace(newline, '').split(semicolonSplitter);
+
+		// loop and build the dest definition
+		var destDefs = _.map(destDefStrArr, function (s) {
+
+			var d = {};
+
+			var formatSplit = s.split(pipeSplitter);
+
+			if (formatSplit.length === 2) {
+				// format available
+				d.format       = aux.parseInvocationString(formatSplit[0]);
+				d.methodString = formatSplit[1];
+			} else {
+				// no format
+				d.methodString = formatSplit[0];
+			}
+
+			return d;
+		});
+
+		cache[str] = destDefs;
+
+		return destDefs;
 
 	};
 

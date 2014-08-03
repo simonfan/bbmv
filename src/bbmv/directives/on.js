@@ -72,23 +72,8 @@ define(function defEventDirectives(require, exports, module) {
 		var method = parseMethodStr(methodStr);
 
 		// set listener
-		$el.on(evtName, function () {
-
-			// if method is available on the $el,
-			// use the $el method.
-			// otherwise, use the view's method
-			// passing the $el as first argument.
-
-			if ($el[method.name]) {
-				// run the method defined on $el.
-				$el[method.name].apply($el, method.args);
-
-			} else {
-				// run the method defined on the view
-				// passing the $el as the first argument
-				method.args.unshift($el);
-				view[method.name].apply(view, method.args);
-			}
+		$el.on(evtName, function (e) {
+			view.execInvocationString(methodStr, $el);
 		});
 
 	}

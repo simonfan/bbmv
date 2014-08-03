@@ -1,5 +1,5 @@
-define(['jquery', 'should', 'bbmv/pipe/dest-get', 'bbmv/aux/parse-dest-str', 'q', 'lodash'],
-function ($     ,  should ,  pipeDestGet        ,  parseDestStr            ,  q ,  _      ) {
+define(['jquery', 'should', 'bbmv', 'bbmv/pipe/dest-get', 'q', 'lodash', 'backbone'],
+function ($     ,  should ,  bbmv ,  pipeDestGet        ,  q ,  _      ,  Backbone ) {
 
 	describe('bbmv pipe-dest-get', function () {
 
@@ -13,10 +13,15 @@ function ($     ,  should ,  pipeDestGet        ,  parseDestStr            ,  q 
 			].join(' ')).appendTo($('#pipe-dest-get-set'));
 
 
+			var bbmvInstance = bbmv({
+				el: this.$el,
+				model: new Backbone.Model()
+			});
+
 			// emulate the pipe object
 			// in order to make the parseDestStr available
 			this.pipeStub = {
-				parseDestStr: parseDestStr
+				bbmvInstance: bbmvInstance
 			};
 		});
 

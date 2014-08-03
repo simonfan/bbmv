@@ -1,5 +1,5 @@
-define(['jquery', 'should', 'bbmv/pipe/index', 'backbone'],
-function ($     ,  should ,  mvPipe          ,  Backbone ) {
+define(['jquery', 'should', 'bbmv/pipe/index', 'backbone', 'bbmv'],
+function ($     ,  should ,  mvPipe          ,  Backbone ,  bbmv ) {
 
 	describe('bbmv mvPipe', function () {
 
@@ -68,6 +68,12 @@ function ($     ,  should ,  mvPipe          ,  Backbone ) {
 
 			// create pipe
 			var pipe = mvPipe(model, this.$el);
+
+			// force bbmvInstance setting
+			pipe.bbmvInstance = bbmv({
+				el: this.$el,
+				model: model
+			});
 
 			// map fruits (originally unmapped)
 			pipe.map('fruits', 'input[name="fruits"] -> value');

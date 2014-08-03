@@ -9,6 +9,10 @@ define(function (require, exports, module) {
 	var aux     = require('bbmv/aux/index'),
 		pipeAux = require('bbmv/pipe/aux');
 
+
+	var semicolonSplitter = /\s*;\s*/,
+		pipeSplitter      = /\s*\|\s*/;
+
 	/**
 	 * Get from the jquery object
 	 *
@@ -21,35 +25,17 @@ define(function (require, exports, module) {
 		// reference to the bbmv
 		var bbmvInstance = this.bbmvInstance;
 
-		// parse out dest string using the method
-		// in order to get the in-cache version
-		// GET ONLY THE FIRST :)
-		var dest = bbmvInstance._parseDestStr(destStr)[0];
+		// parse destStr
+		// destDef = [{ format: String|undefined, methodString: String}];
+		var destDef = pipeAux.parseDestStr(destStr)[0];
 
-		// dest:
-		//   - method
-		//   - args
-		//   - format
-		//   - selector (to be ignored)
-
-		///////////////////////
-		// element retrieval //
-		///////////////////////
-		// if selector is defined,
-		// ge tthe right $el
-		$el = dest.selector ?
-			$el.find(dest.selector) : $el;
-
-		//////////////////////
-		// method execution //
-		//////////////////////
-		var value = bbmvInstance._exec(dest.method, _.clone(dest.args), $el);
+		var value = bbmvInstance.execInvocationString(destDef.methodString, $el);
 
 		////////////////
 		// formatting //
 		////////////////
 		// check if a format was defined
-		var format = dest.format;
+		var format = destDef.format;
 		if (format) {
 
 			// get "in" formatter
@@ -61,9 +47,7 @@ define(function (require, exports, module) {
 			// clone args so that the original ones remain unchanged
 			var formatterArgs = _.clone(format.args);
 
-			// $el as first,
 			// value as last
-			formatterArgs.unshift($el);
 			formatterArgs.push(value);
 
 			// run formatting.

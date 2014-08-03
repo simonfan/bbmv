@@ -15,6 +15,23 @@ define(function (require, exports, module) {
 		return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : ""; });
 	};
 
+
+
+	/**
+	 * Adapted from Epeli's underscore.string "trim"
+	 * https://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js
+	 *
+	 * @param  {[type]} str        [description]
+	 * @param  {[type]} characters [description]
+	 * @return {[type]}            [description]
+	 */
+	var leftAndRightWhitespace = /^\s+|\s+$/g;
+	exports.trim = function trim(str){
+		if (str == null) return '';
+		if (String.prototype.trim) return str.trim();
+		return String(str).replace(leftAndRightWhitespace, '');
+	};
+
 //	/^prefix([A-Z$_].*$|$)/;
 
 	/**

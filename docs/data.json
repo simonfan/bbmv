@@ -18,8 +18,8 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/aux/parse-dest-str.js": {
-            "name": "src/bbmv/aux/parse-dest-str.js",
+        "src/bbmv/aux/parse.js": {
+            "name": "src/bbmv/aux/parse.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -32,17 +32,26 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/directives/event.js": {
-            "name": "src/bbmv/directives/event.js",
+        "src/bbmv/directives/index.js": {
+            "name": "src/bbmv/directives/index.js",
             "modules": {},
             "classes": {},
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/directives/index.js": {
-            "name": "src/bbmv/directives/index.js",
+        "src/bbmv/directives/on.js": {
+            "name": "src/bbmv/directives/on.js",
             "modules": {},
             "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "src/bbmv/methods/jquery/extensions/value.js": {
+            "name": "src/bbmv/methods/jquery/extensions/value.js",
+            "modules": {},
+            "classes": {
+                "jqValueSetters": 1
+            },
             "fors": {},
             "namespaces": {}
         },
@@ -53,8 +62,8 @@
             "fors": {},
             "namespaces": {}
         },
-        "src/bbmv/pipe/aux.js": {
-            "name": "src/bbmv/pipe/aux.js",
+        "src/bbmv/methods/pipe.js": {
+            "name": "src/bbmv/methods/pipe.js",
             "modules": {},
             "classes": {},
             "fors": {},
@@ -88,16 +97,33 @@
         "bbmv": {
             "name": "bbmv",
             "submodules": {},
-            "classes": {},
+            "classes": {
+                "jqValueSetters": 1
+            },
             "fors": {},
             "namespaces": {},
             "tag": "module",
-            "file": "src/bbmv.js",
-            "line": 5,
+            "file": "src/bbmv/methods/jquery/extensions/value.js",
+            "line": 68,
             "description": "The modeld is the object that links together $els and models."
         }
     },
-    "classes": {},
+    "classes": {
+        "jqValueSetters": {
+            "name": "jqValueSetters",
+            "shortname": "jqValueSetters",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "bbmv",
+            "file": "src/bbmv/methods/jquery/extensions/value.js",
+            "line": 68,
+            "description": "Holds the html tag jqValueSetters.",
+            "static": 1
+        }
+    },
     "classitems": [
         {
             "file": "src/bbmv/aux/general.js",
@@ -114,29 +140,51 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/aux/general.js",
             "line": 20,
+            "description": "Adapted from Epeli's underscore.string \"trim\"\nhttps://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js",
+            "params": [
+                {
+                    "name": "str",
+                    "description": "[description]",
+                    "type": "[type]"
+                },
+                {
+                    "name": "characters",
+                    "description": "[description]",
+                    "type": "[type]"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": "jqValueSetters"
+        },
+        {
+            "file": "src/bbmv/aux/general.js",
+            "line": 37,
             "description": "Creates a Regular Expression to capture property name.",
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/aux/general.js",
-            "line": 32,
+            "line": 49,
             "description": "Returns the string with the first letter to lowercase.",
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/aux/general.js",
-            "line": 39,
+            "line": 56,
             "description": "Returns the string with the first letter to uppercase.",
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/aux/index.js",
-            "line": 11,
+            "line": 10,
             "description": "Finds the default DOM event\nfor an $el.\nMust take an events hash as second argument.",
             "params": [
                 {
@@ -154,12 +202,19 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
-            "file": "src/bbmv/aux/parse-dest-str.js",
-            "line": 6,
-            "description": "Parses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
+            "file": "src/bbmv/aux/parse.js",
+            "line": 9,
+            "description": "Cache for parsing.",
+            "type": "{Object}",
+            "class": "jqValueSetters"
+        },
+        {
+            "file": "src/bbmv/aux/parse.js",
+            "line": 49,
+            "description": "Parses a string into methodName and args.\nExample string: 'css(background-color)'\n                'attr(href)'\n                'val'\n                'someMethod(arg1, arg2, arg3)'",
             "params": [
                 {
                     "name": "str",
@@ -171,30 +226,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/aux/parse-dest-str.js",
-            "line": 35,
-            "description": "Returns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
-            "class": ""
-        },
-        {
-            "file": "src/bbmv/aux/parse-dest-str.js",
-            "line": 65,
-            "description": "Parses the destination property of the jquery-pump.",
-            "params": [
-                {
-                    "name": "str",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
@@ -216,7 +248,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
@@ -238,7 +270,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
@@ -260,7 +292,7 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/directives/data-bind.js",
@@ -282,10 +314,16 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
-            "file": "src/bbmv/directives/event.js",
+            "file": "src/bbmv/directives/index.js",
+            "line": 17,
+            "description": "The directives to be exported.",
+            "class": "jqValueSetters"
+        },
+        {
+            "file": "src/bbmv/directives/on.js",
             "line": 13,
             "description": "Parses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
             "params": [
@@ -299,10 +337,10 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
-            "file": "src/bbmv/directives/event.js",
+            "file": "src/bbmv/directives/on.js",
             "line": 38,
             "description": "Parses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
             "params": [
@@ -316,10 +354,10 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
-            "file": "src/bbmv/directives/event.js",
+            "file": "src/bbmv/directives/on.js",
             "line": 60,
             "description": "Sets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
             "params": [
@@ -344,11 +382,11 @@
                     "type": "[type]"
                 }
             ],
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
-            "file": "src/bbmv/directives/event.js",
-            "line": 96,
+            "file": "src/bbmv/directives/on.js",
+            "line": 81,
             "description": "Event directive, binds events to actions on the view.",
             "params": [
                 {
@@ -366,17 +404,58 @@
                 "description": "[description]",
                 "type": "[type]"
             },
-            "class": ""
+            "class": "jqValueSetters"
         },
         {
-            "file": "src/bbmv/directives/index.js",
-            "line": 17,
-            "description": "The directives to be exported.",
-            "class": ""
+            "file": "src/bbmv/methods/jquery/extensions/value.js",
+            "line": 7,
+            "description": "Hash of functions that will return a value\ngiven an jquery $el.\nKeyed by tagName",
+            "itemtype": "property",
+            "name": "jqValueGetters",
+            "access": "private",
+            "tagname": "",
+            "type": "Object",
+            "class": "jqValueSetters"
+        },
+        {
+            "file": "src/bbmv/methods/jquery/extensions/value.js",
+            "line": 47,
+            "description": "Takes a selector string and returns the value of it.",
+            "itemtype": "method",
+            "name": "jqValueGet",
+            "params": [
+                {
+                    "name": "selector",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "class": "jqValueSetters"
+        },
+        {
+            "file": "src/bbmv/methods/jquery/extensions/value.js",
+            "line": 79,
+            "description": "intercept only filling for checkboxes and radios\nas the default jquery .val() method sets the checkboxes and radio input\nvalues instead of checking them (if the value is not passed in as an array)",
+            "class": "jqValueSetters"
+        },
+        {
+            "file": "src/bbmv/methods/jquery/extensions/value.js",
+            "line": 106,
+            "description": "Generates a filler function.",
+            "itemtype": "method",
+            "name": "jqValueSet",
+            "params": [
+                {
+                    "name": "$el",
+                    "description": "The element on which perform task",
+                    "type": "JQuery"
+                }
+            ],
+            "class": "jqValueSetters"
         },
         {
             "file": "src/bbmv/methods/if.js",
-            "line": 46,
+            "line": 49,
             "description": "Takes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
             "return": {
                 "description": "[description]",
@@ -385,32 +464,22 @@
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux.js",
-            "line": 5,
-            "description": "Shared formatting logic for dest-get and dest-set.",
+            "file": "src/bbmv/methods/pipe.js",
+            "line": 6,
+            "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
             "params": [
                 {
-                    "name": "bbmvInstance",
+                    "name": "$dest",
                     "description": "[description]",
                     "type": "[type]"
                 },
                 {
-                    "name": "$el",
+                    "name": "map",
                     "description": "[description]",
                     "type": "[type]"
                 },
                 {
-                    "name": "direction",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "format",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "value",
+                    "name": "options",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -422,27 +491,29 @@
             "class": ""
         },
         {
-            "file": "src/bbmv/pipe/aux.js",
-            "line": 32,
-            "description": "Very specific execution method.\nDoes method execution logic,\nis shared by both dest-get and dest-set.",
+            "file": "src/bbmv/methods/pipe.js",
+            "line": 58,
+            "description": "Pump data.",
             "params": [
                 {
-                    "name": "bbmvInstance",
+                    "name": "argument",
                     "description": "[description]",
                     "type": "[type]"
-                },
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "[type]"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/methods/pipe.js",
+            "line": 74,
+            "description": "Drains data from a single element",
+            "params": [
                 {
                     "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "methodName",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "methodArgs",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -455,7 +526,7 @@
         },
         {
             "file": "src/bbmv/pipe/dest-get.js",
-            "line": 12,
+            "line": 16,
             "description": "Get from the jquery object",
             "params": [
                 {
@@ -509,7 +580,7 @@
         },
         {
             "file": "src/bbmv/pipe/dest-set.js",
-            "line": 66,
+            "line": 63,
             "description": "Set to the jquery object",
             "params": [
                 {
@@ -536,7 +607,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 41,
+            "line": 39,
             "description": "The attribute used to store the pipe id\nonto the $dest elements.",
             "type": "{[type]}",
             "class": "",
@@ -544,7 +615,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 66,
+            "line": 64,
             "description": "Event to listen on the model.",
             "type": "{String}",
             "class": "",
@@ -552,14 +623,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 73,
-            "description": "Binding namespace.\nUsed to build custom selectors for custom bindings.",
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 79,
+            "line": 70,
             "description": "Data atttribute for the binding event name.",
             "type": "{String}",
             "class": "",
@@ -567,7 +631,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 88,
+            "line": 80,
             "description": "Directive namespace\nused for bbdv.",
             "type": "{String}",
             "class": "",
@@ -575,75 +639,11 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 94,
+            "line": 86,
             "description": "Builds the selector to get the elements to be\nin the directive view.\n\nIf the binding attribute is set, use it to build\na custom selector.\nOtherwise. use the data-prefix selector.",
             "params": [
                 {
                     "name": "namespace",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 121,
-            "description": "Pump data.",
-            "params": [
-                {
-                    "name": "argument",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 137,
-            "description": "Drains data from a single element",
-            "params": [
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "",
-            "module": "bbmv"
-        },
-        {
-            "file": "src/bbmv.js",
-            "line": 149,
-            "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "params": [
-                {
-                    "name": "$dest",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "map",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "options",
                     "description": "[description]",
                     "type": "[type]"
                 }
@@ -662,32 +662,32 @@
             "line": " src/bbmv/aux/general.js:7"
         },
         {
-            "message": "Missing item type\nCreates a Regular Expression to capture property name.",
+            "message": "Missing item type\nAdapted from Epeli's underscore.string \"trim\"\nhttps://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js",
             "line": " src/bbmv/aux/general.js:20"
         },
         {
+            "message": "Missing item type\nCreates a Regular Expression to capture property name.",
+            "line": " src/bbmv/aux/general.js:37"
+        },
+        {
             "message": "Missing item type\nReturns the string with the first letter to lowercase.",
-            "line": " src/bbmv/aux/general.js:32"
+            "line": " src/bbmv/aux/general.js:49"
         },
         {
             "message": "Missing item type\nReturns the string with the first letter to uppercase.",
-            "line": " src/bbmv/aux/general.js:39"
+            "line": " src/bbmv/aux/general.js:56"
         },
         {
             "message": "Missing item type\nFinds the default DOM event\nfor an $el.\nMust take an events hash as second argument.",
-            "line": " src/bbmv/aux/index.js:11"
+            "line": " src/bbmv/aux/index.js:10"
         },
         {
-            "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css:background-color'\n                'attr:href'\n                'val'\n                'someMethod:arg1, arg2, arg3;'",
-            "line": " src/bbmv/aux/parse-dest-str.js:6"
+            "message": "Missing item type\nCache for parsing.",
+            "line": " src/bbmv/aux/parse.js:9"
         },
         {
-            "message": "Missing item type\nReturns optionally destProp string and method string\n[0] full match\n[1] selector\n[2] method string",
-            "line": " src/bbmv/aux/parse-dest-str.js:35"
-        },
-        {
-            "message": "Missing item type\nParses the destination property of the jquery-pump.",
-            "line": " src/bbmv/aux/parse-dest-str.js:65"
+            "message": "Missing item type\nParses a string into methodName and args.\nExample string: 'css(background-color)'\n                'attr(href)'\n                'val'\n                'someMethod(arg1, arg2, arg3)'",
+            "line": " src/bbmv/aux/parse.js:49"
         },
         {
             "message": "Missing item type\nBinds the $el data to the model in\nuni-directional mode:\nfrom DOM to MODEL",
@@ -706,40 +706,48 @@
             "line": " src/bbmv/directives/data-bind.js:89"
         },
         {
-            "message": "Missing item type\nParses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
-            "line": " src/bbmv/directives/event.js:13"
-        },
-        {
-            "message": "Missing item type\nParses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
-            "line": " src/bbmv/directives/event.js:38"
-        },
-        {
-            "message": "Missing item type\nSets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
-            "line": " src/bbmv/directives/event.js:60"
-        },
-        {
-            "message": "Missing item type\nEvent directive, binds events to actions on the view.",
-            "line": " src/bbmv/directives/event.js:96"
-        },
-        {
             "message": "Missing item type\nThe directives to be exported.",
             "line": " src/bbmv/directives/index.js:17"
         },
         {
+            "message": "Missing item type\nParses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
+            "line": " src/bbmv/directives/on.js:13"
+        },
+        {
+            "message": "Missing item type\nParses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
+            "line": " src/bbmv/directives/on.js:38"
+        },
+        {
+            "message": "Missing item type\nSets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
+            "line": " src/bbmv/directives/on.js:60"
+        },
+        {
+            "message": "Missing item type\nEvent directive, binds events to actions on the view.",
+            "line": " src/bbmv/directives/on.js:81"
+        },
+        {
+            "message": "Missing item type\nintercept only filling for checkboxes and radios\nas the default jquery .val() method sets the checkboxes and radio input\nvalues instead of checking them (if the value is not passed in as an array)",
+            "line": " src/bbmv/methods/jquery/extensions/value.js:79"
+        },
+        {
             "message": "Missing item type\nTakes variable number of arguments\nEach argument before the last is a 'condition->method' pair.\nIf no '->' is found within the pair string, we assume the method is\nto be used in default cases.",
-            "line": " src/bbmv/methods/if.js:46"
+            "line": " src/bbmv/methods/if.js:49"
         },
         {
-            "message": "Missing item type\nShared formatting logic for dest-get and dest-set.",
-            "line": " src/bbmv/pipe/aux.js:5"
+            "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
+            "line": " src/bbmv/methods/pipe.js:6"
         },
         {
-            "message": "Missing item type\nVery specific execution method.\nDoes method execution logic,\nis shared by both dest-get and dest-set.",
-            "line": " src/bbmv/pipe/aux.js:32"
+            "message": "Missing item type\nPump data.",
+            "line": " src/bbmv/methods/pipe.js:58"
+        },
+        {
+            "message": "Missing item type\nDrains data from a single element",
+            "line": " src/bbmv/methods/pipe.js:74"
         },
         {
             "message": "Missing item type\nGet from the jquery object",
-            "line": " src/bbmv/pipe/dest-get.js:12"
+            "line": " src/bbmv/pipe/dest-get.js:16"
         },
         {
             "message": "Missing item type\n[destSetSingle description]",
@@ -747,43 +755,27 @@
         },
         {
             "message": "Missing item type\nSet to the jquery object",
-            "line": " src/bbmv/pipe/dest-set.js:66"
+            "line": " src/bbmv/pipe/dest-set.js:63"
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",
-            "line": " src/bbmv.js:41"
+            "line": " src/bbmv.js:39"
         },
         {
             "message": "Missing item type\nEvent to listen on the model.",
-            "line": " src/bbmv.js:66"
-        },
-        {
-            "message": "Missing item type\nBinding namespace.\nUsed to build custom selectors for custom bindings.",
-            "line": " src/bbmv.js:73"
+            "line": " src/bbmv.js:64"
         },
         {
             "message": "Missing item type\nData atttribute for the binding event name.",
-            "line": " src/bbmv.js:79"
+            "line": " src/bbmv.js:70"
         },
         {
             "message": "Missing item type\nDirective namespace\nused for bbdv.",
-            "line": " src/bbmv.js:88"
+            "line": " src/bbmv.js:80"
         },
         {
             "message": "Missing item type\nBuilds the selector to get the elements to be\nin the directive view.\n\nIf the binding attribute is set, use it to build\na custom selector.\nOtherwise. use the data-prefix selector.",
-            "line": " src/bbmv.js:94"
-        },
-        {
-            "message": "Missing item type\nPump data.",
-            "line": " src/bbmv.js:121"
-        },
-        {
-            "message": "Missing item type\nDrains data from a single element",
-            "line": " src/bbmv.js:137"
-        },
-        {
-            "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "line": " src/bbmv.js:149"
+            "line": " src/bbmv.js:86"
         }
     ]
 }

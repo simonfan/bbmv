@@ -4,7 +4,7 @@ define(function (require, exports, module) {
 	var _ = require('lodash');
 
 	// load aux
-	var aux = require('bbmv/aux');
+	var aux = require('bbmv/aux/index');
 
 	var conditions = {
 		'>'  : function gt(condition, value) { return parseFloat(value) > parseFloat(condition); },
@@ -15,6 +15,7 @@ define(function (require, exports, module) {
 		's>=': function stringGte(condition, value) { return value >= condition; },
 		's<' : function stringLt(condition, value) { return value < condition; },
 		's<=': function stringLte(condition, value) { return value <= condition; },
+		'n=' : function numberEqual(condition, value) { return parseFloat(value) == parseFloat(condition); },
 		'='  : function equal(condition, value) { return value == condition; },
 		'==' : function strictEqual(condition, value) { return value === condition; },
 		'!'  : function notEqual(condition, value) { return value != condition; },
@@ -23,7 +24,7 @@ define(function (require, exports, module) {
 		'!#' : function notExist(condition, value) { return _.isUndefined(value); }
 	};
 
-	var conditionRegExp = /^(>=|>|<=|<|s>=|s>|s<=|s<|==|=|#|!#|!=|!)?\s*(.*)\s*/;
+	var conditionRegExp = /^(>=|>|<=|<|s>=|s>|s<=|s<|n=|==|=|#|!#|!=|!)?\s*(.*)\s*/;
 
 	function evaluateCondition(condition, value) {
 
@@ -39,8 +40,7 @@ define(function (require, exports, module) {
 	// data-bind-lala="if:lalala ~> do, value ~> doOther, doDefault;"
 
 
-	var arrowSplitter = /\s*=>\s*/,
-		slashSplitter = /\s*\/\s*/;
+	var arrowSplitter = /\s*=>\s*/;
 
 
 	// data-bind-fruit="if:banana->yellow:apple->red:green"
@@ -54,30 +54,31 @@ define(function (require, exports, module) {
 	 *
 	 * @return {[type]} [description]
 	 */
-	exports['if'] = function ifdo($el, casesString, value) {
+	exports['if'] = function ifdo($el, value) {
 
-		var cases = casesString.split(slashSplitter);
+
+		// arguments = [$el, value, case, case, case, ...]
+
+		var cases = _.toArray(arguments).slice(2);
 
 		// loop cases
-		return _.find(cases, function (pairStr) {
+		_.any(cases, function (pairStr) {
 
 			var split = pairStr.split(arrowSplitter);
 
 			if (split.length === 1) {
-
-				// split = [methodName[:args]]
-				// directly execute, it is the default case
-				this[split[0]].call(this, $el, value);
+				this.execInvocationString(split[0], $el, value);
 
 				// break loop
 				return true;
 
 			} else {
-				// split = [condition, methodName]
+				// split = [condition, destString]
 				//
 				// check if condition is valid
 				if (evaluateCondition(split[0], value)) {
-					this[split[1]].call(this, $el, value);
+
+					this.execInvocationString(split[1], $el, value);
 
 					// break loop
 					return true;

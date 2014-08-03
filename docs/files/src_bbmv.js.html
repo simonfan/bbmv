@@ -41,6 +41,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/jqValueSetters.html">jqValueSetters</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -106,9 +108,7 @@ define(function (require, exports, module) {
 		bbdv     = require(&#x27;bbdv&#x27;),
 		backbone = require(&#x27;lowercase-backbone&#x27;);
 
-	var mvPipe = require(&#x27;bbmv/pipe/index&#x27;),
-		aux    = require(&#x27;bbmv/aux/index&#x27;);
-
+	var aux = require(&#x27;bbmv/aux/index&#x27;);
 
 	function genPipeIdAttr() {
 		return [&#x27;bbdv&#x27;, this.namespace, this.cid, &#x27;id&#x27;].join(&#x27;_&#x27;);
@@ -157,21 +157,15 @@ define(function (require, exports, module) {
 		 */
 		event: &#x27;change&#x27;,
 
-
-		/**
-		 * Binding namespace.
-		 * Used to build custom selectors for custom bindings.
-		 */
-	//	binding: &#x27;data&#x27;,
-
 		/**
 		 * Data atttribute for the binding event name.
 		 * @type {String}
 		 */
 		bindingEventAttribute: &#x27;binding-event&#x27;,
 
-
+		///////////////
 		// OVERRIDES //
+		///////////////
 
 		/**
 		 * Directive namespace
@@ -192,100 +186,23 @@ define(function (require, exports, module) {
 		 */
 		selector: function bbmvBoundSelector(namespace) {
 
-			if (this.binding) {
-				// use binding selector
-				return &#x27;[data-binding=&quot;&#x27; + this.binding + &#x27;&quot;]&#x27;;
-			} else {
-				// use data prefix selector
-				// (default)
-				return &#x27;:data-prefix(&#x27; + aux.camelCase(namespace) + &#x27;)&#x27;;
-			}
+			// use data prefix selector
+			return &#x27;:data-prefix(&#x27; + aux.camelCase(namespace) + &#x27;)&#x27;;
 
 		},
 
-		// OVERRIDES //
 
-
-		/**
-		 * Pump data.
-		 *
-		 * @param  {[type]} argument [description]
-		 * @return {[type]}          [description]
-		 */
-		pump: function pump() {
-
-			_.each(this.pipes, function (pipe) {
-				pipe.pump();
-			});
-
-			return this;
-		},
-
-
-		/**
-		 * Drains data from a single element
-		 * @param  {[type]} $el [description]
-		 * @return {[type]}     [description]
-		 */
-		drain: function drain($el, attributes, options) {
-
-			this.pipe($el).drain(attributes, options);
-
-			return this;
-		},
-
-		/**
-		 * Attempts to get the pipe id from the $dest object
-		 * and then checks for a pipe in cache.
-		 *
-		 * If no pipe is found in cache, instantiate a pipe
-		 * set id onto $dest using the .data method
-		 * and save pipe to cache using that id.
-		 *
-		 * @param  {[type]} $dest   [description]
-		 * @param  {[type]} map     [description]
-		 * @param  {[type]} options [description]
-		 * @return {[type]}         [description]
-		 */
-		pipe: function definePipe($dest, map, options) {
-
-			var pipe;
-
-			// get the pipeid
-			var pipeid = $dest.data(this.pipeIdAttr);
-
-			if (pipeid &amp;&amp; this.pipes[pipeid]) {
-				// get pipe from cache
-				pipe = this.pipes[pipeid];
-
-				// if map is set,
-				// set it.
-				if (map) {
-
-				}
-
-			} else {
-				// generate a unique id
-				pipeid = _.uniqueId(this.pipeIdAttr);
-
-				// set namespace onto options
-				options = options || {};
-				options.bbmvInstance = this;
-
-				// create pipe
-				pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
-
-				// save pipe id on el.
-				$dest.data(this.pipeIdAttr, pipeid);
-			}
-
-			return pipe;
-		},
 	});
 
 	bbmv.assignProto(require(&#x27;bbmv/directives/index&#x27;))
+
+		// methods
+		.assignProto(require(&#x27;bbmv/methods/aux&#x27;))
 		.assignProto(require(&#x27;bbmv/methods/if&#x27;))
-		.assignProto(require(&#x27;bbmv/methods/model-methods&#x27;));
+		.assignProto(require(&#x27;bbmv/methods/model&#x27;))
+		.assignProto(require(&#x27;bbmv/methods/jquery/native&#x27;))
+		.assignProto(require(&#x27;bbmv/methods/jquery/extensions/value&#x27;))
+		.assignProto(require(&#x27;bbmv/methods/pipe&#x27;));
 });
 
     </pre>

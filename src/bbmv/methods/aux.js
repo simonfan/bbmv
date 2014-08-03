@@ -1,32 +1,17 @@
-define(function (require, exports) {
+define(function defBbdvParsers(require, exports) {
 
 	var _ = require('lodash');
 
 	var aux = require('bbmv/aux/index');
 
 
-	exports._parseDestStr = function _parseDestStr(destStr) {
-		// attempt to get the parsed version from cache.
-		// if available in cache, return it.
-		// otherwise, parse it out and then return
+	exports.execInvocationString = function execInvocationString(invocationString /* args */) {
 
-		var parsed = this._parsedDestStrs[destStr];
+		var invocation = aux.parseInvocationString(invocationString);
 
-		if (!parsed) {
-			parsed = this._parsedDestStrs[destStr] = aux.parseDestStr(destStr);
-		}
+		// build arguments array
+		var executionArgs = _.toArray(arguments).slice(1).concat(invocation.args);
 
-		return parsed;
+		return this[invocation.method].apply(this, executionArgs);
 	};
-
-
-
-	exports._exec = function _exec(methodName, args, $el) {
-
-		args = _.clone(args);
-		args.unshift($el);
-
-		return this[method.name].apply(this, args);
-	};
-
 });

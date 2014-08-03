@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/directives/event.js - bbmv</title>
+    <title>src/bbmv/methods/jquery/extensions/value.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,6 +40,8 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/jqValueSetters.html">jqValueSetters</a></li>
             
             </ul>
 
@@ -82,140 +84,151 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/directives/event.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/methods/jquery/extensions/value.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(function defEventDirectives(require, exports, module) {
+define(function defJqMethods(require, exports, module) {
 
 	&#x27;use strict&#x27;;
 
-	var _ = require(&#x27;lodash&#x27;);
-
-
-	var arrowRegExp = /\s*=&gt;\s*/,
-		colonRegExp = /\s*:\s*/,
-		commaRegExp = /\s*,\s*/;
-
+	var $ = require(&#x27;jquery&#x27;);
 
 	/**
-	 * Parses the methos string into an object
-	 * with name and arguments array.
+	 * Hash of functions that will return a value
+	 * given an jquery $el.
+	 * Keyed by tagName
 	 *
-	 * method: arg1, arg2
-	 *
-	 * @param  {[type]} methodStr [description]
-	 * @return {[type]}           [description]
+	 * @property jqValueGetters
+	 * @private
+	 * @type Object
 	 */
-	function parseMethodStr(methodStr) {
+	var jqValueGetters = {
+		&#x27;default&#x27;: function readDefault($el) {
+			return $el.val();
+		},
 
-		// parse methodStr
-		var methodStrSplit = methodStr.split(colonRegExp),
-			methodName     = methodStrSplit[0],
-			methodArgsStr  = methodStrSplit[1];
+		&#x27;DIV&#x27;: function readDiv($el) {
+			return $el.html();
+		},
 
-		// parse argsStr
-		var methodArgs = methodArgsStr ? methodArgsStr.split(commaRegExp) : [];
+		&#x27;INPUT&#x27;: function readInput($el) {
 
-		return {
-			name: methodName,
-			args: methodArgs
-		};
-	}
+			var type = $el.prop(&#x27;type&#x27;);
 
-	/**
-	 * Parses the event string into an object
-	 * with evetn name, method and arguments for the method.
-	 *
-	 * event=&gt;method: arg1, arg2
-	 *
-	 * @param  {[type]} evtStr [description]
-	 * @return {[type]}        [description]
-	 */
-	function parseEvtStr(evtStr) {
+			if (type === &#x27;checkbox&#x27;) {
 
-		// parse evtStr
-		var evtStrSplit = evtStr.split(arrowRegExp),
-			evtName     = evtStrSplit[0],
-			methodStr   = evtStrSplit[1];
+				return $el.filter(&#x27;:checked&#x27;).map(function () {
 
-		return {
-			name      : evtName,
-			method    : parseMethodStr(methodStr)
-		};
-	}
+					return $(this).val();
 
-	/**
-	 * Sets an event listener that tries to invoke
-	 * a method either on the $el or on the bbmv view instance.
-	 *
-	 * @param {[type]} view      [description]
-	 * @param {[type]} $el       [description]
-	 * @param {[type]} evtName   [description]
-	 * @param {[type]} methodStr [description]
-	 */
-	function setEventListener(view, $el, evtName, methodStr) {
+				}).get();
 
-		// parse out the method.
-		var method = parseMethodStr(methodStr);
+			} else if (type === &#x27;radio&#x27;) {
 
-		// set listener
-		$el.on(evtName, function () {
-
-			// if method is available on the $el,
-			// use the $el method.
-			// otherwise, use the view&#x27;s method
-			// passing the $el as first argument.
-
-			if ($el[method.name]) {
-				// run the method defined on $el.
-				$el[method.name].apply($el, method.args);
+				return $el.filter(&#x27;:checked&#x27;).val();
 
 			} else {
-				// run the method defined on the view
-				// passing the $el as the first argument
-				method.args.unshift($el);
-				view[method.name].apply(view, method.args);
+				return $el.val();
 			}
-		});
-
-	}
-
-	/**
-	 * Event directive, binds events to actions on the view.
-	 *
-	 * @param  {[type]} $el           [description]
-	 * @param  {[type]} evtStr_evtMap [description]
-	 * @return {[type]}               [description]
-	 */
-	exports.on = function bindEvent($el, evtStr_evtMap) {
-
-		// keep reference to the view.
-		var view = this;
-
-		if (_.isObject(evtStr_evtMap)) {
-
-			// loop through events.
-			_.each(evtStr_evtMap, function (methodStr, evtName) {
-
-				// set event listener
-				setEventListener(this, $el, evtName, methodStr);
-
-			}, this);
-
-		} else {
-
-			// parse evtStr
-			var evtStrSplit = evtStr_evtMap.split(arrowRegExp),
-				evtName     = evtStrSplit[0],
-				methodStr   = evtStrSplit[1];
-
-			// set event listener
-			setEventListener(this, $el, evtName, methodStr);
 		}
-
 	};
 
+	/**
+	 * Takes a selector string and returns the value of it.
+	 *
+	 * @method jqValueGet
+	 * @param selector {String}
+	 */
+	function jqValueGet($el) {
+
+		// [1] retrieve get function
+		var tagName = $el.prop(&#x27;tagName&#x27;),
+			get = jqValueGetters[tagName] || jqValueGetters[&#x27;default&#x27;];
+
+		// [2] read and return.
+		return get($el);
+	};
+
+
+
+
+
+
+	/**
+	 * Holds the html tag jqValueSetters.
+	 *
+	 * @class jqValueSetters
+	 * @static
+	 */
+	var jqValueSetters = {
+		default: function ($el, value) {
+			return $el.html(value);
+		},
+		INPUT: function ($el, value) {
+			/**
+			 * intercept only filling for checkboxes and radios
+			 * as the default jquery .val() method sets the checkboxes and radio input
+			 * values instead of checking them (if the value is not passed in as an array)
+			 */
+			var type = $el.prop(&#x27;type&#x27;);
+
+			if (type === &#x27;checkbox&#x27; || type === &#x27;radio&#x27;) {
+				value = $.isArray(value) ? value : [value];
+			}
+
+			return $el.val(value);
+		},
+		SELECT: function ($el, value) {
+			return $el.val(value);
+		},
+		IMG: function ($el, value) {
+			// trigger a change event when changing the image src
+			return $el.prop(&#x27;src&#x27;, value).trigger(&#x27;change&#x27;, value);
+		},
+
+		TEXTAREA: function ($el, value) {
+			return $el.val(value);
+		},
+	};
+
+
+	/**
+	 * Generates a filler function.
+	 *
+	 * @method jqValueSet
+	 * @param $el {jQuery} The element on which perform task
+	 */
+	function jqValueSet($el, value) {
+
+		// [2] loop through the $el
+		$el.each(function (index, el) {
+
+			var $el = $(el);
+
+			// [2.1] get $el tagName
+			var tagName = $el.prop(&#x27;tagName&#x27;);
+
+
+			var set = jqValueSetters[tagName] || jqValueSetters[&#x27;default&#x27;];
+			set($el, value);
+		});
+
+		return $el;
+	};
+
+
+
+
+
+	exports.value = function jqValue($el, value) {
+
+		if (arguments.length === 1) {
+			return jqValueGet($el);
+		} else if (arguments.length === 2) {
+			return jqValueSet($el, value);
+		}
+	};
 });
 
     </pre>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/aux/parse-dest-str.js - bbmv</title>
+    <title>src/bbmv/directives/on.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -40,6 +40,8 @@
 
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/jqValueSetters.html">jqValueSetters</a></li>
             
             </ul>
 
@@ -82,112 +84,125 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/aux/parse-dest-str.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/directives/on.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
-define(function (require, exports, module) {
+define(function defEventDirectives(require, exports, module) {
+
 	&#x27;use strict&#x27;;
 
 	var _ = require(&#x27;lodash&#x27;);
 
+
+	var arrowRegExp = /\s*=&gt;\s*/,
+		colonRegExp = /\s*:\s*/,
+		commaRegExp = /\s*,\s*/;
+
+
 	/**
-	 * Parses a string into methodName and args.
-	 * Example string: &#x27;css:background-color&#x27;
-	 *                 &#x27;attr:href&#x27;
-	 *                 &#x27;val&#x27;
-	 *                 &#x27;someMethod:arg1, arg2, arg3;&#x27;
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
+	 * Parses the methos string into an object
+	 * with name and arguments array.
+	 *
+	 * method: arg1, arg2
+	 *
+	 * @param  {[type]} methodStr [description]
+	 * @return {[type]}           [description]
 	 */
-	var colonSplitter = /\s*:\s*/g,
-		commaSplitter = /\s*,\s*/g;
+	function parseMethodStr(methodStr) {
 
-	function parseMethodString(str) {
+		// parse methodStr
+		var methodStrSplit = methodStr.split(colonRegExp),
+			methodName     = methodStrSplit[0],
+			methodArgsStr  = methodStrSplit[1];
 
-			// method:$argsString
-		var methodAndArgsSplit = str.split(colonSplitter),
-			method             = methodAndArgsSplit[0],
-			argsString         = methodAndArgsSplit[1];
-
-			// arg1, arg2, arg3
-		var args = argsString ? argsString.split(commaSplitter) : [];
+		// parse argsStr
+		var methodArgs = methodArgsStr ? methodArgsStr.split(commaRegExp) : [];
 
 		return {
-			method  : method,
-			args    : args
+			name: methodName,
+			args: methodArgs
 		};
-	};
-	exports.methodString = parseMethodString;
-
-	/**
-	 * Returns optionally destProp string and method string
-	 * [0] full match
-	 * [1] selector
-	 * [2] method string
-	 */
-//	var destPropMatcher = /(?:(.+?)\s*-&gt;)?\s*(.+)\s*/;
-//	function parseDestProp(str) {
-//
-//		var match = str.match(destPropMatcher);
-//
-//		return {
-//			selector    : match[1],
-//			methodString: match[2]
-//		};
-//	};
-
-
-
-	var destPropMatcher = /\s*(?:(.+?)\s*\|)?\s*(?:(.+?)\s*-&gt;)?\s*(.+)\s*/,
-		newLine         = /\n/g;
-	// \s*(?:(.+?)\s*\|)? -&gt; optional format |
-	// \s*(?:(.+?)\s*-&gt;)? -&gt; optional selector -&gt;
-	// \s*(.+)\s*/     -&gt; required methodString
-	//
-
-	// &#x27;currency|.selector-&gt;attr:value&#x27;
-	// &#x27;format|.selector -&gt; method:partial1&#x27;
-	// &#x27;currency|html&#x27;
-	// &#x27;html&#x27;
-	/**
-	 * Parses the destination property of the jquery-pump.
-	 *
-	 * @param  {[type]} str [description]
-	 * @return {[type]}     [description]
-	 */
-	function parseDestProp(str) {
-		// remove new lines :)
-		str = str.replace(newLine, &#x27;&#x27;);
-
-		var match = str.match(destPropMatcher);
-
-		// match[0] the full matched string
-		// match[1] the format
-		// match[2] the selector
-		// match[3] the methodString
-
-		// parse out the methodString
-		var res = parseMethodString(match[3]);
-
-		// set format and selector onto res;
-		if (match[2]) {
-			res.selector = match[2];
-		}
-
-		if (match[1]) {
-			res.format   = parseMethodString(match[1]);
-		}
-
-		return res;
 	}
 
+	/**
+	 * Parses the event string into an object
+	 * with evetn name, method and arguments for the method.
+	 *
+	 * event=&gt;method: arg1, arg2
+	 *
+	 * @param  {[type]} evtStr [description]
+	 * @return {[type]}        [description]
+	 */
+	function parseEvtStr(evtStr) {
 
-	var semiColonSplitter = /\s*;\s*/g;
-	// &quot;method: arg1, arg2; method1: arg;&quot;
-	module.exports = function parseDestStr(destStr) {
-		return _(destStr.split(semiColonSplitter)).map(parseDestProp).compact().value();
+		// parse evtStr
+		var evtStrSplit = evtStr.split(arrowRegExp),
+			evtName     = evtStrSplit[0],
+			methodStr   = evtStrSplit[1];
+
+		return {
+			name      : evtName,
+			method    : parseMethodStr(methodStr)
+		};
+	}
+
+	/**
+	 * Sets an event listener that tries to invoke
+	 * a method either on the $el or on the bbmv view instance.
+	 *
+	 * @param {[type]} view      [description]
+	 * @param {[type]} $el       [description]
+	 * @param {[type]} evtName   [description]
+	 * @param {[type]} methodStr [description]
+	 */
+	function setEventListener(view, $el, evtName, methodStr) {
+
+		// parse out the method.
+		var method = parseMethodStr(methodStr);
+
+		// set listener
+		$el.on(evtName, function (e) {
+			view.execInvocationString(methodStr, $el);
+		});
+
+	}
+
+	/**
+	 * Event directive, binds events to actions on the view.
+	 *
+	 * @param  {[type]} $el           [description]
+	 * @param  {[type]} evtStr_evtMap [description]
+	 * @return {[type]}               [description]
+	 */
+	exports.on = function bindEvent($el, evtStr_evtMap) {
+
+		// keep reference to the view.
+		var view = this;
+
+		if (_.isObject(evtStr_evtMap)) {
+
+			// loop through events.
+			_.each(evtStr_evtMap, function (methodStr, evtName) {
+
+				// set event listener
+				setEventListener(this, $el, evtName, methodStr);
+
+			}, this);
+
+		} else {
+
+			// parse evtStr
+			var evtStrSplit = evtStr_evtMap.split(arrowRegExp),
+				evtName     = evtStrSplit[0],
+				methodStr   = evtStrSplit[1];
+
+			// set event listener
+			setEventListener(this, $el, evtName, methodStr);
+		}
+
 	};
+
 });
 
     </pre>

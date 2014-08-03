@@ -4,7 +4,7 @@ define(function defJqMethods(require, exports, module) {
 
 	var _ = require('lodash');
 
-	var methods = ['html', 'val', 'css'];
+	var methods = ['html', 'val', 'css', 'data'];
 
 	_.each(methods, function defJqMethod(method) {
 
@@ -15,5 +15,4 @@ define(function defJqMethods(require, exports, module) {
 			return $el[method].apply($el, args);
 		}
 	});
-
 });

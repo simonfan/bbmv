@@ -7,9 +7,9 @@ define(function (require, exports, module) {
 	exports.defaultDOMEvents = {
 
 		// selector: event
-		':text': 'keyup',
+		':text'                                     : 'keyup',
 		'input[type="checkbox"],input[type="radio"]': 'change',
-		':button': 'click',
+		':button'                                   : 'click',
 	};
 
 
@@ -22,5 +22,5 @@ define(function (require, exports, module) {
 
 	// extend directives
 	_.assign(directives, require('bbmv/directives/data-bind'));
-	_.assign(directives, require('bbmv/directives/event'));
+	_.assign(directives, require('bbmv/directives/on'));
 });

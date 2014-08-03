@@ -1,5 +1,5 @@
-define(['jquery', 'should', 'bbmv/pipe/dest-set', 'bbmv/aux/parse-dest-str', 'q', 'lodash'],
-function ($     ,  should ,  pipeDestSet        ,  parseDestStr            ,  q ,  _      ) {
+define(['jquery', 'should', 'bbmv', 'bbmv/pipe/dest-set', 'q', 'lodash', 'backbone'],
+function ($     ,  should ,  bbmv ,  pipeDestSet        ,  q ,  _      ,  Backbone ) {
 
 	describe('bbmv pipe-dest-set', function () {
 
@@ -13,10 +13,16 @@ function ($     ,  should ,  pipeDestSet        ,  parseDestStr            ,  q 
 			].join(' ')).appendTo($('#pipe-dest-get-set'));
 
 
+
+			var bbmvInstance = bbmv({
+				model: new Backbone.Model(),
+				el: this.$el
+			});
+
 			// emulate the pipe object
 			// in order to make the parseDestStr available
 			this.pipeStub = {
-				parseDestStr: parseDestStr
+				bbmvInstance: bbmvInstance
 			};
 		});
 
@@ -57,17 +63,18 @@ function ($     ,  should ,  pipeDestSet        ,  parseDestStr            ,  q 
 
 		it('with format defined', function () {
 
-			var bbmvStub = {
+			var extendedBbmv = bbmv.extend({
 				someFormat: function (value) {
 					return value + '-formatted';
 				}
-			}
+			});
 
 			var pipeStub = {
-				parseDestStr: parseDestStr,
-
 				// formatting methods are looked for on the bbmv object.
-				bbmvInstance: bbmvStub
+				bbmvInstance: extendedBbmv({
+					el: this.$el,
+					model: new Backbone.Model()
+				})
 			};
 
 			pipeDestSet.call(pipeStub, this.$el, 'someFormat | html', 'some-value');

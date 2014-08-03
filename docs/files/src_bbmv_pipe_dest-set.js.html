@@ -41,6 +41,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/jqValueSetters.html">jqValueSetters</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -108,45 +110,42 @@ define(function (require, exports, module) {
 	 * @param  {[type]} value        [description]
 	 * @return {[type]}              [description]
 	 */
-	function destSetSingle(bbmvInstance, $el, dest, value) {
+	function destSetSingle(bbmvInstance, $el, destDef, value) {
 		// bb
 		// if $el is active, do not set it.
 		if ($el.is(&#x27;:focus&#x27;)) { return; }
+
 
 		// dest:
 		//   - method
 		//   - args
 		//   - format
-		//   - selector (to be ignored)
+		//   - selector
 
 		//////////////////////
 		// value formatting //
 		//////////////////////
-		value = dest.format ?
-			pipeAux.format(bbmvInstance, $el, &#x27;out&#x27;, dest.format, value) :
-			value;
+		var format = destDef.format;
+		if (format) {
 
-		///////////////////////
-		// element retrieval //
-		///////////////////////
-		// if therer is a selector defined,
-		// call the find method on the dest object.
-		$el = dest.selector ?
-			$el.find(dest.selector) :
-			$el;
 
-		//////////////////////
-		// method execution //
-		//////////////////////
-		// clone the args array, so that the original one remains untouched
-		// AND add the value to the arguments array
-		var methodArgs = _.clone(dest.args);
-		methodArgs.push(value);
+			// get format &quot;in&quot;
+			var formatter = bbmvInstance[format.method];
+			formatter = _.isFunction(formatter) ? formatter : formatter.out;
 
-		// execute the method
-		var methodName = dest.method;
+			if (!formatter) { throw new Error(&#x27;[bbmv|destGet/destSet] &#x27; + format.method + &#x27; could not be found.&#x27;); }
 
-		return pipeAux.executeMethod(bbmvInstance, $el, methodName, methodArgs);
+			// clone args so that the original ones remain unchanged
+			//
+			// value as last!
+			var formatterArgs = _.clone(format.args);
+			formatterArgs.push(value);
+
+			value = formatter.apply(bbmvInstance, formatterArgs);
+
+		}
+
+		return bbmvInstance.execInvocationString(destDef.methodString, $el, value);
 	}
 
 
@@ -160,11 +159,15 @@ define(function (require, exports, module) {
 	 */
 	module.exports = function destSet($el, destStr, value) {
 
-		var dests = this.parseDestStr(destStr);
+		var bbmvInstance = this.bbmvInstance,
+			// parse destStr
+			// destDef = [{ format: String|undefined, methodString: String}];
+			destDefs      = pipeAux.parseDestStr(destStr);
 
-		_.each(dests, function (dest) {
 
-			return destSetSingle(this.bbmvInstance, $el, dest, value);
+		_.each(destDefs, function (destDef) {
+
+			return destSetSingle(bbmvInstance, $el, destDef, value);
 
 		}, this);
 	};

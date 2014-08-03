@@ -93,6 +93,7 @@ define(function defBindDirectives(require, exports, module) {
 	 * @param  {[type]} map [description]
 	 * @return {[type]}     [description]
 	 */
+/*
 	exports.set = function bindSet($el, map) {
 		var evt =
 			$el.data(this.bindingEventAttribute) ||
@@ -103,7 +104,7 @@ define(function defBindDirectives(require, exports, module) {
 		}
 
 	};
-
+*/
 
 
 

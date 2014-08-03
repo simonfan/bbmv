@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>src/bbmv/aux/general.js - bbmv</title>
+    <title>src/bbmv/aux/parse.js - bbmv</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -84,7 +84,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-                        <h1 class="file-heading">File: src/bbmv/aux/general.js</h1>
+                        <h1 class="file-heading">File: src/bbmv/aux/parse.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -93,62 +93,101 @@ define(function (require, exports, module) {
 
 	var _ = require(&#x27;lodash&#x27;);
 
+	// load main aux
+	var aux = require(&#x27;bbmv/aux/index&#x27;);
 
 	/**
-	 * Copied from Epeli&#x27;s underscore.string &quot;camelize&quot;
-	 * https://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js
-	 *
+	 * Cache for parsing.
+	 * @type {Object}
+	 */
+	var cache = {};
+
+
+	var newline = /\n/g;
+
+
+
+	// &#x27;currency|.selector-&gt;attr:value&#x27;
+	// &#x27;format|.selector -&gt; method:partial1&#x27;
+	// &#x27;currency|html&#x27;
+	// &#x27;html&#x27;
+	var arrow = /\s*-&gt;\s*/;
+
+	function parseMethodString(str) {
+
+		var res = {};
+
+		// attempt to split the &#x27;method&#x27; in .selector-&gt;method
+		var split = str.split(arrow);
+
+		if (split.length === 2) {
+			// there is a selector
+			// split = [selector, method]
+			res.method   = aux.trim(split[1]);
+			res.selector = aux.trim(split[0]);
+		} else {
+			// no selector
+			res.method = aux.trim(str);
+		}
+
+		return res;
+	}
+	exports.parseMethodString = parseMethodString;
+
+
+
+	/**
+	 * Parses a string into methodName and args.
+	 * Example string: &#x27;css(background-color)&#x27;
+	 *                 &#x27;attr(href)&#x27;
+	 *                 &#x27;val&#x27;
+	 *                 &#x27;someMethod(arg1, arg2, arg3)&#x27;
 	 * @param  {[type]} str [description]
 	 * @return {[type]}     [description]
 	 */
-	exports.camelCase = function camelCase(str) {
-		return str.replace(/[-_\s]+(.)?/g, function(match, c){ return c ? c.toUpperCase() : &quot;&quot;; });
-	};
+	// \s*(.*?)\s*   match anything that precedes
+	// (?:
+	//   \(            parenthesis opening
+	//   \s*(.*)       whatever is within
+	//   \)(?!\s*-&gt;)   until a closing parenthesis not followed by any arrow
+	// )
+	// $
+	var methodStrRegExp = /\s*(.*?)\s*(?:\(\s*(.*)\s*\)\s*(?!-&gt;))?$/,
+		commaSplitter   = /\s*,\s*/g;
+
+	function parseInvocationString(str) {
+		// only do parsing if result is not found in cache.
+		if (cache[str]) {
+			return cache[str];
+		}
 
 
+		// create a var to hold the method invoking definition.
+		var idef = {};
 
-	/**
-	 * Adapted from Epeli&#x27;s underscore.string &quot;trim&quot;
-	 * https://github.com/epeli/underscore.string/blob/master/lib/underscore.string.js
-	 *
-	 * @param  {[type]} str        [description]
-	 * @param  {[type]} characters [description]
-	 * @return {[type]}            [description]
-	 */
-	var leftAndRightWhitespace = /^\s+|\s+$/g;
-	exports.trim = function trim(str){
-		if (str == null) return &#x27;&#x27;;
-		if (String.prototype.trim) return str.trim();
-		return String(str).replace(leftAndRightWhitespace, &#x27;&#x27;);
-	};
+		// remove newlines from str
+		// and attempt match.
+		var match = str.replace(newline, &#x27;&#x27;).match(methodStrRegExp);
 
-//	/^prefix([A-Z$_].*$|$)/;
+		// parse out methodString
+		var methodString = match[1];
+		_.assign(idef, parseMethodString(methodString));
 
-	/**
-	 * Creates a Regular Expression to capture property name.
-	 *
-	 *
-	 */
-	exports.buildPrefixRegExp = function buildPrefixRegExp(prefixes) {
+		// parse out methodArgs
+		idef.args = match[2] ? match[2].split(commaSplitter) : [];
+		if (idef.args.length &gt; 0) {
+			// trim first and last
+			idef.args[0]                    = aux.trim(idef.args[0]);
+			idef.args[idef.args.length - 1] = aux.trim(_.last(idef.args));
+		}
 
-		prefixes = _.isArray(prefixes) ? prefixes : [prefixes];
+		// save to cache using original str value
+		cache[str] = idef;
 
-		return new RegExp(&#x27;^(?:&#x27; + prefixes.join(&#x27;|&#x27;) + &#x27;)([A-Z$_].*$)?&#x27;);
-	};
+		return idef;
+	}
+	exports.parseInvocationString = parseInvocationString;
 
-	/**
-	 * Returns the string with the first letter to lowercase.
-	 */
-	exports.lowercaseFirst = function lowercaseFirst(str) {
-		return str.charAt(0).toLowerCase() + str.slice(1);
-	};
-
-	/**
-	 * Returns the string with the first letter to uppercase.
-	 */
-	exports.uppercaseFirst = function uppercaseFirst(str) {
-		return str.charAt(0).toUpperCase() + str.slice(1);
-	};
 });
 
     </pre>

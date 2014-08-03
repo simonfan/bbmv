@@ -2,6 +2,9 @@ define(function defModelMethods(require, exports, module) {
 
 	'use strict';
 
+	////////////
+	// Native //
+	////////////
 	exports.save = function saveModel($el) {
 		return this.model.save();
 	};
@@ -27,4 +30,7 @@ define(function defModelMethods(require, exports, module) {
 		return this.model.validate();
 	};
 
+	//////////////
+	// Extended //
+	//////////////
 });

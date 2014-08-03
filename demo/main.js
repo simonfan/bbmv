@@ -6,8 +6,6 @@ define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 
 	var view = bbmv.extend({
 		hideIf: function ($el, condition, value) {
-
-
 			if (condition === value) {
 				$el.css({ opacity: 0.5 });
 			} else {

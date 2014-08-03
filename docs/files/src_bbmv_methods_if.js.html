@@ -41,6 +41,8 @@
         <div id="api-tabview-panel">
             <ul id="api-classes" class="apis classes">
             
+                <li><a href="../classes/jqValueSetters.html">jqValueSetters</a></li>
+            
             </ul>
 
             <ul id="api-modules" class="apis modules">
@@ -91,6 +93,9 @@ define(function (require, exports, module) {
 
 	var _ = require(&#x27;lodash&#x27;);
 
+	// load aux
+	var aux = require(&#x27;bbmv/aux/index&#x27;);
+
 	var conditions = {
 		&#x27;&gt;&#x27;  : function gt(condition, value) { return parseFloat(value) &gt; parseFloat(condition); },
 		&#x27;&gt;=&#x27; : function gte(condition, value) { return parseFloat(value) &gt;= parseFloat(condition); },
@@ -100,6 +105,7 @@ define(function (require, exports, module) {
 		&#x27;s&gt;=&#x27;: function stringGte(condition, value) { return value &gt;= condition; },
 		&#x27;s&lt;&#x27; : function stringLt(condition, value) { return value &lt; condition; },
 		&#x27;s&lt;=&#x27;: function stringLte(condition, value) { return value &lt;= condition; },
+		&#x27;n=&#x27; : function numberEqual(condition, value) { return parseFloat(value) == parseFloat(condition); },
 		&#x27;=&#x27;  : function equal(condition, value) { return value == condition; },
 		&#x27;==&#x27; : function strictEqual(condition, value) { return value === condition; },
 		&#x27;!&#x27;  : function notEqual(condition, value) { return value != condition; },
@@ -108,7 +114,7 @@ define(function (require, exports, module) {
 		&#x27;!#&#x27; : function notExist(condition, value) { return _.isUndefined(value); }
 	};
 
-	var conditionRegExp = /^(&gt;=|&gt;|&lt;=|&lt;|s&gt;=|s&gt;|s&lt;=|s&lt;|==|=|#|!#|!=|!)?\s*(.*)\s*/;
+	var conditionRegExp = /^(&gt;=|&gt;|&lt;=|&lt;|s&gt;=|s&gt;|s&lt;=|s&lt;|n=|==|=|#|!#|!=|!)?\s*(.*)\s*/;
 
 	function evaluateCondition(condition, value) {
 
@@ -124,8 +130,7 @@ define(function (require, exports, module) {
 	// data-bind-lala=&quot;if:lalala ~&gt; do, value ~&gt; doOther, doDefault;&quot;
 
 
-	var arrowSplitter = /\s*=&gt;\s*/,
-		slashSplitter = /\s*\/\s*/;
+	var arrowSplitter = /\s*=&gt;\s*/;
 
 
 	// data-bind-fruit=&quot;if:banana-&gt;yellow:apple-&gt;red:green&quot;
@@ -139,30 +144,31 @@ define(function (require, exports, module) {
 	 *
 	 * @return {[type]} [description]
 	 */
-	exports[&#x27;if&#x27;] = function ifdo($el, casesString, value) {
+	exports[&#x27;if&#x27;] = function ifdo($el, value) {
 
-		var cases = casesString.split(slashSplitter);
+
+		// arguments = [$el, value, case, case, case, ...]
+
+		var cases = _.toArray(arguments).slice(2);
 
 		// loop cases
-		return _.find(cases, function (pairStr) {
+		_.any(cases, function (pairStr) {
 
 			var split = pairStr.split(arrowSplitter);
 
 			if (split.length === 1) {
-
-				// split = [methodName]
-				// directly execute, it is the default case
-				this[split[0]].call(this, $el, value);
+				this.execInvocationString(split[0], $el, value);
 
 				// break loop
 				return true;
 
 			} else {
-				// split = [condition, methodName]
+				// split = [condition, destString]
 				//
 				// check if condition is valid
 				if (evaluateCondition(split[0], value)) {
-					this[split[1]].call(this, $el, value);
+
+					this.execInvocationString(split[1], $el, value);
 
 					// break loop
 					return true;
