@@ -142,9 +142,9 @@ define('bbmv/aux/parse',['require','exports','module','lodash','bbmv/aux/index']
 		// and attempt match.
 		var match = str.replace(newline, '').match(methodStrRegExp);
 
-		// parse out methodString
-		var methodString = match[1];
-		_.assign(idef, parseMethodString(methodString));
+		// parse out invocationString
+		var invocationString = match[1];
+		_.assign(idef, parseMethodString(invocationString));
 
 		// parse out methodArgs
 		idef.args = match[2] ? match[2].split(commaSplitter) : [];
@@ -311,80 +311,7 @@ define('bbmv/directives/on',['require','exports','module','lodash'],function def
 
 	var _ = require('lodash');
 
-
-	var arrowRegExp = /\s*=>\s*/,
-		colonRegExp = /\s*:\s*/,
-		commaRegExp = /\s*,\s*/;
-
-
-	/**
-	 * Parses the methos string into an object
-	 * with name and arguments array.
-	 *
-	 * method: arg1, arg2
-	 *
-	 * @param  {[type]} methodStr [description]
-	 * @return {[type]}           [description]
-	 */
-	function parseMethodStr(methodStr) {
-
-		// parse methodStr
-		var methodStrSplit = methodStr.split(colonRegExp),
-			methodName     = methodStrSplit[0],
-			methodArgsStr  = methodStrSplit[1];
-
-		// parse argsStr
-		var methodArgs = methodArgsStr ? methodArgsStr.split(commaRegExp) : [];
-
-		return {
-			name: methodName,
-			args: methodArgs
-		};
-	}
-
-	/**
-	 * Parses the event string into an object
-	 * with evetn name, method and arguments for the method.
-	 *
-	 * event=>method: arg1, arg2
-	 *
-	 * @param  {[type]} evtStr [description]
-	 * @return {[type]}        [description]
-	 */
-	function parseEvtStr(evtStr) {
-
-		// parse evtStr
-		var evtStrSplit = evtStr.split(arrowRegExp),
-			evtName     = evtStrSplit[0],
-			methodStr   = evtStrSplit[1];
-
-		return {
-			name      : evtName,
-			method    : parseMethodStr(methodStr)
-		};
-	}
-
-	/**
-	 * Sets an event listener that tries to invoke
-	 * a method either on the $el or on the bbmv view instance.
-	 *
-	 * @param {[type]} view      [description]
-	 * @param {[type]} $el       [description]
-	 * @param {[type]} evtName   [description]
-	 * @param {[type]} methodStr [description]
-	 */
-	function setEventListener(view, $el, evtName, methodStr) {
-
-		// parse out the method.
-		var method = parseMethodStr(methodStr);
-
-		// set listener
-		$el.on(evtName, function (e) {
-			view.execInvocationString(methodStr, $el);
-		});
-
-	}
-
+	var arrow = /\s*=>\s*/;
 	/**
 	 * Event directive, binds events to actions on the view.
 	 *
@@ -400,22 +327,25 @@ define('bbmv/directives/on',['require','exports','module','lodash'],function def
 		if (_.isObject(evtStr_evtMap)) {
 
 			// loop through events.
-			_.each(evtStr_evtMap, function (methodStr, evtName) {
+			_.each(evtStr_evtMap, function (invocationString, evtName) {
 
-				// set event listener
-				setEventListener(this, $el, evtName, methodStr);
+				$el.on(evtName, function () {
+					view.execInvocationString(invocationString, $el);
+				});
 
 			}, this);
 
 		} else {
 
 			// parse evtStr
-			var evtStrSplit = evtStr_evtMap.split(arrowRegExp),
+			var evtStrSplit = evtStr_evtMap.split(arrow),
 				evtName     = evtStrSplit[0],
-				methodStr   = evtStrSplit[1];
+				invocationString   = evtStrSplit[1];
 
 			// set event listener
-			setEventListener(this, $el, evtName, methodStr);
+			$el.on(evtName, function () {
+				view.execInvocationString(invocationString, $el);
+			});
 		}
 
 	};
@@ -449,19 +379,25 @@ define('bbmv/directives/index',['require','exports','module','lodash','jquery','
 	_.assign(directives, require('bbmv/directives/on'));
 });
 
-define('bbmv/methods/aux',['require','exports','module','lodash','bbmv/aux/index'],function defBbdvParsers(require, exports) {
+define('bbmv/methods/aux',['require','exports','module','lodash','jquery','bbmv/aux/index'],function defBbdvParsers(require, exports) {
 
-	var _ = require('lodash');
+	var _ = require('lodash'),
+		$ = require('jquery');
 
 	var aux = require('bbmv/aux/index');
 
 
-	exports.execInvocationString = function execInvocationString(invocationString /* args */) {
+	exports.execInvocationString = function execInvocationString(invocationString, $el /* args */) {
 
 		var invocation = aux.parseInvocationString(invocationString);
 
+		// find the right $el to apply action
+		$el = invocation.selector ? $el.find(invocation.selector) : $el;
+
 		// build arguments array
-		var executionArgs = _.toArray(arguments).slice(1).concat(invocation.args);
+		var executionArgs = _.toArray(arguments).slice(2).concat(invocation.args);
+		executionArgs.unshift($el);
+
 
 		return this[invocation.method].apply(this, executionArgs);
 	};
@@ -542,6 +478,7 @@ define('bbmv/methods/if',['require','exports','module','lodash','bbmv/aux/index'
 				return true;
 
 			} else {
+
 				// split = [condition, destString]
 				//
 				// check if condition is valid
@@ -605,17 +542,35 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 
 	var _ = require('lodash');
 
-	var methods = ['html', 'val', 'css', 'data'];
+	var arity1 = ['html', 'val'];
+	_.each(arity1, function defJqMethod(method) {
 
-	_.each(methods, function defJqMethod(method) {
-
-		exports[method] = function mapToJqMethod() {
-			var args = _.toArray(arguments),
-				$el  = args.shift();
-
-			return $el[method].apply($el, args);
+		exports[method] = function proxyJqMethod($el) {
+			if (arguments.length === 1) {
+				// get
+				return $el[method]();
+			} else if (arguments.length === 2) {
+				// set
+				return $el[method](arguments[1])
+			}
 		}
 	});
+
+	var arity2 = ['css', 'data'];
+	_.each(arity2, function defJqMethod(method) {
+		exports[method] = function proxyJqMethod($el) {
+
+			if (arguments.length === 2) {
+				// get
+				return $el[method](arguments[1]);
+			} else if (arguments.length === 3) {
+
+				// set
+				return $el[method](arguments[2], arguments[1])
+			}
+		}
+	})
+
 });
 
 define('bbmv/methods/jquery/extensions/value',['require','exports','module','jquery'],function defJqMethods(require, exports, module) {
@@ -793,10 +748,10 @@ define('bbmv/pipe/aux',['require','exports','module','lodash','bbmv/aux/index'],
 			if (formatSplit.length === 2) {
 				// format available
 				d.format       = aux.parseInvocationString(formatSplit[0]);
-				d.methodString = formatSplit[1];
+				d.invocationString = formatSplit[1];
 			} else {
 				// no format
-				d.methodString = formatSplit[0];
+				d.invocationString = formatSplit[0];
 			}
 
 			return d;
@@ -838,10 +793,10 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 		var bbmvInstance = this.bbmvInstance;
 
 		// parse destStr
-		// destDef = [{ format: String|undefined, methodString: String}];
+		// destDef = [{ format: String|undefined, invocationString: String}];
 		var destDef = pipeAux.parseDestStr(destStr)[0];
 
-		var value = bbmvInstance.execInvocationString(destDef.methodString, $el);
+		var value = bbmvInstance.execInvocationString(destDef.invocationString, $el);
 
 		////////////////
 		// formatting //
@@ -927,7 +882,7 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 
 		}
 
-		return bbmvInstance.execInvocationString(destDef.methodString, $el, value);
+		return bbmvInstance.execInvocationString(destDef.invocationString, $el, value);
 	}
 
 
@@ -943,7 +898,7 @@ define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash
 
 		var bbmvInstance = this.bbmvInstance,
 			// parse destStr
-			// destDef = [{ format: String|undefined, methodString: String}];
+			// destDef = [{ format: String|undefined, invocationString: String}];
 			destDefs      = pipeAux.parseDestStr(destStr);
 
 

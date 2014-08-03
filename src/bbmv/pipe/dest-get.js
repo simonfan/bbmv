@@ -26,10 +26,10 @@ define(function (require, exports, module) {
 		var bbmvInstance = this.bbmvInstance;
 
 		// parse destStr
-		// destDef = [{ format: String|undefined, methodString: String}];
+		// destDef = [{ format: String|undefined, invocationString: String}];
 		var destDef = pipeAux.parseDestStr(destStr)[0];
 
-		var value = bbmvInstance.execInvocationString(destDef.methodString, $el);
+		var value = bbmvInstance.execInvocationString(destDef.invocationString, $el);
 
 		////////////////
 		// formatting //

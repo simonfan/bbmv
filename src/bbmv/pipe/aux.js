@@ -30,10 +30,10 @@ define(function defPipeAux(require, exports) {
 			if (formatSplit.length === 2) {
 				// format available
 				d.format       = aux.parseInvocationString(formatSplit[0]);
-				d.methodString = formatSplit[1];
+				d.invocationString = formatSplit[1];
 			} else {
 				// no format
-				d.methodString = formatSplit[0];
+				d.invocationString = formatSplit[0];
 			}
 
 			return d;

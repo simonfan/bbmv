@@ -79,9 +79,9 @@ define(function (require, exports, module) {
 		// and attempt match.
 		var match = str.replace(newline, '').match(methodStrRegExp);
 
-		// parse out methodString
-		var methodString = match[1];
-		_.assign(idef, parseMethodString(methodString));
+		// parse out invocationString
+		var invocationString = match[1];
+		_.assign(idef, parseMethodString(invocationString));
 
 		// parse out methodArgs
 		idef.args = match[2] ? match[2].split(commaSplitter) : [];

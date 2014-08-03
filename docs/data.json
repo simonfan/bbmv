@@ -324,69 +324,7 @@
         },
         {
             "file": "src/bbmv/directives/on.js",
-            "line": 13,
-            "description": "Parses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
-            "params": [
-                {
-                    "name": "methodStr",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "jqValueSetters"
-        },
-        {
-            "file": "src/bbmv/directives/on.js",
-            "line": 38,
-            "description": "Parses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
-            "params": [
-                {
-                    "name": "evtStr",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "return": {
-                "description": "[description]",
-                "type": "[type]"
-            },
-            "class": "jqValueSetters"
-        },
-        {
-            "file": "src/bbmv/directives/on.js",
-            "line": 60,
-            "description": "Sets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
-            "params": [
-                {
-                    "name": "view",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "$el",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "evtName",
-                    "description": "[description]",
-                    "type": "[type]"
-                },
-                {
-                    "name": "methodStr",
-                    "description": "[description]",
-                    "type": "[type]"
-                }
-            ],
-            "class": "jqValueSetters"
-        },
-        {
-            "file": "src/bbmv/directives/on.js",
-            "line": 81,
+            "line": 8,
             "description": "Event directive, binds events to actions on the view.",
             "params": [
                 {
@@ -710,20 +648,8 @@
             "line": " src/bbmv/directives/index.js:17"
         },
         {
-            "message": "Missing item type\nParses the methos string into an object\nwith name and arguments array.\n\nmethod: arg1, arg2",
-            "line": " src/bbmv/directives/on.js:13"
-        },
-        {
-            "message": "Missing item type\nParses the event string into an object\nwith evetn name, method and arguments for the method.\n\nevent=>method: arg1, arg2",
-            "line": " src/bbmv/directives/on.js:38"
-        },
-        {
-            "message": "Missing item type\nSets an event listener that tries to invoke\na method either on the $el or on the bbmv view instance.",
-            "line": " src/bbmv/directives/on.js:60"
-        },
-        {
             "message": "Missing item type\nEvent directive, binds events to actions on the view.",
-            "line": " src/bbmv/directives/on.js:81"
+            "line": " src/bbmv/directives/on.js:8"
         },
         {
             "message": "Missing item type\nintercept only filling for checkboxes and radios\nas the default jquery .val() method sets the checkboxes and radio input\nvalues instead of checking them (if the value is not passed in as an array)",

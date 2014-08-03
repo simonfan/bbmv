@@ -55,7 +55,7 @@ define(function (require, exports, module) {
 
 		}
 
-		return bbmvInstance.execInvocationString(destDef.methodString, $el, value);
+		return bbmvInstance.execInvocationString(destDef.invocationString, $el, value);
 	}
 
 
@@ -71,7 +71,7 @@ define(function (require, exports, module) {
 
 		var bbmvInstance = this.bbmvInstance,
 			// parse destStr
-			// destDef = [{ format: String|undefined, methodString: String}];
+			// destDef = [{ format: String|undefined, invocationString: String}];
 			destDefs      = pipeAux.parseDestStr(destStr);
 
 

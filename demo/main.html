@@ -36,9 +36,7 @@
 				data-bind-editor="html"
 				style="height: 30px; border-bottom: 1px dashed gray;"
 
-				data-bind-out-money="if(
-					n=20 => :focus->hide
-					)
+				data-bind-out-money="if(n=20 => input:focus->hide, input->show)
 
 				"
 			>
