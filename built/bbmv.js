@@ -542,7 +542,16 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 
 	var _ = require('lodash');
 
-	var arity1 = ['html', 'val'];
+	var arity1 = [
+		'addClass', 'after', 'append',
+		'height', 'html',
+		'offset',
+		'prepend',
+		'scrollLeft', 'scrollTop',
+		'toggleClass',
+		'val',
+		'width',
+	];
 	_.each(arity1, function defJqMethod(method) {
 
 		exports[method] = function proxyJqMethod($el) {
@@ -556,7 +565,7 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 		}
 	});
 
-	var arity2 = ['css', 'data'];
+	var arity2 = ['attr', 'css', 'data', 'prop'];
 	_.each(arity2, function defJqMethod(method) {
 		exports[method] = function proxyJqMethod($el) {
 
