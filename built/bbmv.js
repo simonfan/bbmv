@@ -471,12 +471,15 @@ define('bbmv/methods/if',['require','exports','module','lodash','bbmv/aux/index'
 
 		var cases = _.toArray(arguments).slice(1),
 			value = cases.pop();
+
+
 		// loop cases
 		_.any(cases, function (pairStr) {
 
 			var split = pairStr.split(arrowSplitter);
 
 			if (split.length === 1) {
+
 				this.execInvocationString(split[0], $el, value);
 
 				// break loop
@@ -488,7 +491,6 @@ define('bbmv/methods/if',['require','exports','module','lodash','bbmv/aux/index'
 				//
 				// check if condition is valid
 				if (evaluateCondition(split[0], value)) {
-
 					this.execInvocationString(split[1], $el, value);
 
 					// break loop
@@ -549,15 +551,19 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 
 
 
+	// animations
+	var animations = ['fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle', 'hide', 'show', 'toggle', 'remove']
+
 
 	var arity1 = [
 		'addClass', 'after', 'append',
 		'height', 'html',
 		'offset',
 		'prepend',
-		'removeClass',
+		'removeAttr', 'removeClass', 'removeData', 'removeProp',
+		'replaceAll', 'replaceWith',
 		'scrollLeft', 'scrollTop',
-		'toggleClass',
+	 	'text', 'toggleClass',
 		'val',
 		'width',
 	];
@@ -594,13 +600,22 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 
 	_.each(all, function (method) {
 
-
-
 		exports[method] = function proxyJqMethod($el) {
-			return $el[method].apply($el, _.toArray(arguments).slice(1));
-		}
-	})
 
+			var args = _.toArray(arguments).slice(1);
+
+			return $el[method].apply($el, args);
+		};
+	});
+
+	// always run these methods without arguments
+	exports.hide = function hideEl($el) {
+		return $el.hide();
+	};
+
+	exports.show = function showEl($el) {
+		return $el.show();
+	};
 });
 
 define('bbmv/methods/jquery/extensions/value',['require','exports','module','jquery'],function defJqMethods(require, exports, module) {

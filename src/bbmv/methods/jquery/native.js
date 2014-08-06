@@ -6,15 +6,19 @@ define(function defJqMethods(require, exports, module) {
 
 
 
+	// animations
+	var animations = ['fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle', 'hide', 'show', 'toggle', 'remove']
+
 
 	var arity1 = [
 		'addClass', 'after', 'append',
 		'height', 'html',
 		'offset',
 		'prepend',
-		'removeClass',
+		'removeAttr', 'removeClass', 'removeData', 'removeProp',
+		'replaceAll', 'replaceWith',
 		'scrollLeft', 'scrollTop',
-		'toggleClass',
+	 	'text', 'toggleClass',
 		'val',
 		'width',
 	];
@@ -51,11 +55,20 @@ define(function defJqMethods(require, exports, module) {
 
 	_.each(all, function (method) {
 
-
-
 		exports[method] = function proxyJqMethod($el) {
-			return $el[method].apply($el, _.toArray(arguments).slice(1));
-		}
-	})
 
+			var args = _.toArray(arguments).slice(1);
+
+			return $el[method].apply($el, args);
+		};
+	});
+
+	// always run these methods without arguments
+	exports.hide = function hideEl($el) {
+		return $el.hide();
+	};
+
+	exports.show = function showEl($el) {
+		return $el.show();
+	};
 });

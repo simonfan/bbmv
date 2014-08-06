@@ -61,12 +61,15 @@ define(function (require, exports, module) {
 
 		var cases = _.toArray(arguments).slice(1),
 			value = cases.pop();
+
+
 		// loop cases
 		_.any(cases, function (pairStr) {
 
 			var split = pairStr.split(arrowSplitter);
 
 			if (split.length === 1) {
+
 				this.execInvocationString(split[0], $el, value);
 
 				// break loop
@@ -78,7 +81,6 @@ define(function (require, exports, module) {
 				//
 				// check if condition is valid
 				if (evaluateCondition(split[0], value)) {
-
 					this.execInvocationString(split[1], $el, value);
 
 					// break loop

@@ -32,6 +32,10 @@
 		.invalid > input {
 			background-color: red;
 		}
+
+		#blue-flag {
+			background-color: blue; width: 100px; height:100px;
+		}
 	</style>
 </head>
 
@@ -51,8 +55,12 @@
 			>
 
 			<div data-bind-out-validation-message="html"></div>
+
 		</div>
 
+			<div id="blue-flag"
+				data-bind-out-invalid-attribute="if(none=>show(300), hide(200))"
+			></div>
 
 		<div>
 			<div

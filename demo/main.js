@@ -64,17 +64,17 @@ define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 		},
 
 
-		hide: function ($el, value) {
-			$el.css({ opacity: value * 0.01 });
-		},
+//		hide: function ($el, value) {
+//			$el.css({ opacity: value * 0.01 });
+//		},
 
 		half: function ($el, value) {
 			$el.css({ opacity: 0.5 });
 		},
 
-		show: function ($el, value) {
-			$el.css({ opacity: 1 });
-		},
+//		show: function ($el, value) {
+//			$el.css({ opacity: 1 });
+//		},
 
 		rates: {
 			usd: 0.45,
