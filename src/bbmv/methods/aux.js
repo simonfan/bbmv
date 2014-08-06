@@ -14,10 +14,15 @@ define(function defBbdvParsers(require, exports) {
 		$el = invocation.selector ? $el.find(invocation.selector) : $el;
 
 		// build arguments array
-		var executionArgs = _.toArray(arguments).slice(2).concat(invocation.args);
+		var executionArgs = invocation.args.concat(_.toArray(arguments).slice(2));
 		executionArgs.unshift($el);
 
+		// get fn
+		var fn = this[invocation.method];
+		if (!_.isFunction(fn)) {
+			throw new Error(invocation.method + ' is not a function.');
+		}
 
-		return this[invocation.method].apply(this, executionArgs);
+		return fn.apply(this, executionArgs);
 	};
 });

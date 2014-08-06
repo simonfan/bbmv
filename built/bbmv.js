@@ -395,11 +395,16 @@ define('bbmv/methods/aux',['require','exports','module','lodash','jquery','bbmv/
 		$el = invocation.selector ? $el.find(invocation.selector) : $el;
 
 		// build arguments array
-		var executionArgs = _.toArray(arguments).slice(2).concat(invocation.args);
+		var executionArgs = invocation.args.concat(_.toArray(arguments).slice(2));
 		executionArgs.unshift($el);
 
+		// get fn
+		var fn = this[invocation.method];
+		if (!_.isFunction(fn)) {
+			throw new Error(invocation.method + ' is not a function.');
+		}
 
-		return this[invocation.method].apply(this, executionArgs);
+		return fn.apply(this, executionArgs);
 	};
 });
 
@@ -459,13 +464,13 @@ define('bbmv/methods/if',['require','exports','module','lodash','bbmv/aux/index'
 	 *
 	 * @return {[type]} [description]
 	 */
-	exports['if'] = function ifdo($el, value) {
+	exports['if'] = function ifdo($el) {
 
 
-		// arguments = [$el, value, case, case, case, ...]
+		// arguments = [$el, case, ..., case, value]
 
-		var cases = _.toArray(arguments).slice(2);
-
+		var cases = _.toArray(arguments).slice(1),
+			value = cases.pop();
 		// loop cases
 		_.any(cases, function (pairStr) {
 
@@ -542,41 +547,57 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 
 	var _ = require('lodash');
 
+
+
+
 	var arity1 = [
 		'addClass', 'after', 'append',
 		'height', 'html',
 		'offset',
 		'prepend',
+		'removeClass',
 		'scrollLeft', 'scrollTop',
 		'toggleClass',
 		'val',
 		'width',
 	];
-	_.each(arity1, function defJqMethod(method) {
+	// _.each(arity1, function defJqMethod(method) {
 
-		exports[method] = function proxyJqMethod($el) {
-			if (arguments.length === 1) {
-				// get
-				return $el[method]();
-			} else if (arguments.length === 2) {
-				// set
-				return $el[method](arguments[1])
-			}
-		}
-	});
+	// 	exports[method] = function proxyJqMethod($el) {
+	// 		if (arguments.length === 1) {
+	// 			// get
+	// 			return $el[method]();
+	// 		} else if (arguments.length > 2) {
+	// 			// set
+	// 			return $el[method](arguments[1])
+	// 		}
+	// 	}
+	// });
 
 	var arity2 = ['attr', 'css', 'data', 'prop'];
-	_.each(arity2, function defJqMethod(method) {
+	// _.each(arity2, function defJqMethod(method) {
+	// 	exports[method] = function proxyJqMethod($el) {
+
+	// 		if (arguments.length === 2) {
+	// 			// get
+	// 			return $el[method](arguments[1]);
+	// 		} else if (arguments.length > 3) {
+
+	// 			// set
+	// 			return $el[method](arguments[2], arguments[1])
+	// 		}
+	// 	}
+	// });
+
+
+	var all = arity1.concat(arity2);
+
+	_.each(all, function (method) {
+
+
+
 		exports[method] = function proxyJqMethod($el) {
-
-			if (arguments.length === 2) {
-				// get
-				return $el[method](arguments[1]);
-			} else if (arguments.length === 3) {
-
-				// set
-				return $el[method](arguments[2], arguments[1])
-			}
+			return $el[method].apply($el, _.toArray(arguments).slice(1));
 		}
 	})
 

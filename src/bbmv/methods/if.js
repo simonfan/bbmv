@@ -54,13 +54,13 @@ define(function (require, exports, module) {
 	 *
 	 * @return {[type]} [description]
 	 */
-	exports['if'] = function ifdo($el, value) {
+	exports['if'] = function ifdo($el) {
 
 
-		// arguments = [$el, value, case, case, case, ...]
+		// arguments = [$el, case, ..., case, value]
 
-		var cases = _.toArray(arguments).slice(2);
-
+		var cases = _.toArray(arguments).slice(1),
+			value = cases.pop();
 		// loop cases
 		_.any(cases, function (pairStr) {
 

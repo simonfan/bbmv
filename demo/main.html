@@ -23,6 +23,16 @@
 
 	</script>
 
+	<style type="text/css">
+
+		input {
+			transition: background-color 0.5s ease;
+		}
+
+		.invalid > input {
+			background-color: red;
+		}
+	</style>
 </head>
 
 <body>
@@ -30,6 +40,19 @@
 	<a href="../index.html">Menu</a>
 
 	<div id="demo">
+
+		<div id="validation-demo" data-bind-out-invalid-attribute="if(none=>removeClass(invalid), addClass(invalid))">
+			<input
+
+				placeholder="only string chars"
+
+				data-bind-name="val"
+
+			>
+
+			<div data-bind-out-validation-message="html"></div>
+		</div>
+
 
 		<div>
 			<div
@@ -112,20 +135,6 @@
 			DATA BIND SET
 		</div>
 
-
-
-		<div>
-			<input
-				data-bind-from="value"
-				data-binding-event="change"
-
-				data-bind-pipe-from="to"
-
-				placeholder="from"
-			>
-			<input data-bind-to="value" placeholder="to">
-
-		</div>
 	</div>
 
 </body>
