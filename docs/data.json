@@ -577,7 +577,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 39,
+            "line": 42,
             "description": "The attribute used to store the pipe id\nonto the $dest elements.",
             "type": "{[type]}",
             "class": "",
@@ -585,7 +585,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 64,
+            "line": 67,
             "description": "Event to listen on the model.",
             "type": "{String}",
             "class": "",
@@ -593,7 +593,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 70,
+            "line": 73,
             "description": "Data atttribute for the binding event name.",
             "type": "{String}",
             "class": "",
@@ -601,7 +601,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 80,
+            "line": 83,
             "description": "Directive namespace\nused for bbdv.",
             "type": "{String}",
             "class": "",
@@ -609,7 +609,7 @@
         },
         {
             "file": "src/bbmv.js",
-            "line": 86,
+            "line": 89,
             "description": "Builds the selector to get the elements to be\nin the directive view.\n\nIf the binding attribute is set, use it to build\na custom selector.\nOtherwise. use the data-prefix selector.",
             "params": [
                 {
@@ -622,6 +622,13 @@
                 "description": "[description]",
                 "type": "[type]"
             },
+            "class": "",
+            "module": "bbmv"
+        },
+        {
+            "file": "src/bbmv.js",
+            "line": 107,
+            "description": "Override the incorporate method in order to insert a call\nto '.pump' right after the incorporation.",
             "class": "",
             "module": "bbmv"
         }
@@ -721,23 +728,27 @@
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",
-            "line": " src/bbmv.js:39"
+            "line": " src/bbmv.js:42"
         },
         {
             "message": "Missing item type\nEvent to listen on the model.",
-            "line": " src/bbmv.js:64"
+            "line": " src/bbmv.js:67"
         },
         {
             "message": "Missing item type\nData atttribute for the binding event name.",
-            "line": " src/bbmv.js:70"
+            "line": " src/bbmv.js:73"
         },
         {
             "message": "Missing item type\nDirective namespace\nused for bbdv.",
-            "line": " src/bbmv.js:80"
+            "line": " src/bbmv.js:83"
         },
         {
             "message": "Missing item type\nBuilds the selector to get the elements to be\nin the directive view.\n\nIf the binding attribute is set, use it to build\na custom selector.\nOtherwise. use the data-prefix selector.",
-            "line": " src/bbmv.js:86"
+            "line": " src/bbmv.js:89"
+        },
+        {
+            "message": "Missing item type\nOverride the incorporate method in order to insert a call\nto '.pump' right after the incorporation.",
+            "line": " src/bbmv.js:107"
         }
     ]
 }

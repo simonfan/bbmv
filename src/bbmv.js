@@ -24,6 +24,9 @@ define(function (require, exports, module) {
 		return ['bbdv', this.namespace, this.cid, 'id'].join('_');
 	}
 
+	// direct reference to incorporate
+	var _incorporate = bbdv.prototype.incorporate;
+
 	var bbmv = module.exports = bbdv.extend({
 
 		initialize: function initializeBbmv(options) {
@@ -98,6 +101,22 @@ define(function (require, exports, module) {
 
 			// use data prefix selector
 			return ':data-prefix(' + aux.camelCase(namespace) + ')';
+
+		},
+
+		/**
+		 * Override the incorporate method in order to insert a call
+		 * to '.pump' right after the incorporation.
+		 */
+		incorporate: function incorporateElToModelView($el) {
+
+			// invoke original incorporate function
+			_incorporate.call(this, $el);
+
+			// invoke pump
+			this.pump();
+
+			return this;
 
 		},
 

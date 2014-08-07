@@ -114,6 +114,9 @@ define(function (require, exports, module) {
 		return [&#x27;bbdv&#x27;, this.namespace, this.cid, &#x27;id&#x27;].join(&#x27;_&#x27;);
 	}
 
+	// direct reference to incorporate
+	var _incorporate = bbdv.prototype.incorporate;
+
 	var bbmv = module.exports = bbdv.extend({
 
 		initialize: function initializeBbmv(options) {
@@ -188,6 +191,22 @@ define(function (require, exports, module) {
 
 			// use data prefix selector
 			return &#x27;:data-prefix(&#x27; + aux.camelCase(namespace) + &#x27;)&#x27;;
+
+		},
+
+		/**
+		 * Override the incorporate method in order to insert a call
+		 * to &#x27;.pump&#x27; right after the incorporation.
+		 */
+		incorporate: function incorporateElToModelView($el) {
+
+			// invoke original incorporate function
+			_incorporate.call(this, $el);
+
+			// invoke pump
+			this.pump();
+
+			return this;
 
 		},
 
