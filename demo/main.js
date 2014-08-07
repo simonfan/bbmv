@@ -1,7 +1,9 @@
 define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 
 
-	var control = window.control = new Backbone.Model(),
+	var control = window.control = new Backbone.Model({
+			newField: '<input data-bind-name="value" placeholder="name"/>'
+		}),
 		$el     = $('#demo');
 
 
@@ -63,18 +65,9 @@ define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 
 		},
 
-
-//		hide: function ($el, value) {
-//			$el.css({ opacity: value * 0.01 });
-//		},
-
 		half: function ($el, value) {
 			$el.css({ opacity: 0.5 });
 		},
-
-//		show: function ($el, value) {
-//			$el.css({ opacity: 1 });
-//		},
 
 		rates: {
 			usd: 0.45,
@@ -102,7 +95,27 @@ define(['bbmv', 'jquery', 'backbone'], function (bbmv, $, Backbone) {
 			out : function (amount) { return amount * this.rates.eur }
 		},
 
-		formatWidth: function (v) { return v + 'px'; }
+		formatWidth: function (v) { return v + 'px'; },
+
+
+
+		// dinamic field building
+		addField: function addField() {
+
+			var $field = $(this.model.get('newField'));
+
+			// append dinamic fields
+			this.$el.find('#dinamic-fields').append($field);
+
+			// incorporate field
+			this.incorporate($field);
+
+
+
+		},
+
+
+
 	})
 
 	window.demo = view({

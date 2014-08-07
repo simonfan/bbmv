@@ -7,9 +7,10 @@ define(function (require, exports, module) {
 	exports.defaultDOMEvents = {
 
 		// selector: event
-		':text'                                     : 'keyup',
+		':text,textarea'                            : 'keyup',
 		'input[type="checkbox"],input[type="radio"]': 'change',
 		':button'                                   : 'click',
+		'input[type="hidden"]'                      : 'change',
 	};
 
 

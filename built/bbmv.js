@@ -361,9 +361,10 @@ define('bbmv/directives/index',['require','exports','module','lodash','jquery','
 	exports.defaultDOMEvents = {
 
 		// selector: event
-		':text'                                     : 'keyup',
+		':text,textarea'                            : 'keyup',
 		'input[type="checkbox"],input[type="radio"]': 'change',
 		':button'                                   : 'click',
+		'input[type="hidden"]'                      : 'change',
 	};
 
 
@@ -1013,6 +1014,41 @@ define('bbmv/methods/pipe',['require','exports','module','bbmv/pipe/index'],func
 	// the mv pipe object builder.
 	var mvPipe = require('bbmv/pipe/index');
 
+
+
+	/**
+	 * Private function used to instantiate a new data pipe.
+	 *
+	 * @param  {Object (bbmv)}   bbmvInstance
+	 *     The instance of bbmv to which this pipe will be attached.
+	 *     The pipe will use multiple methods from the main object
+	 *     in order to read from and set to DOM.
+	 * @param  {Object (jquery)} $dest
+	 *     The jQuery object that should be the destination of the pipe.
+	 * @param  {Object (pojo)}   map
+	 *     A map describing the pipe sources and destinations.
+	 * @param  {Object (pojo)}   options
+	 *     Options.
+	 *
+	 * @return {Object (pipe)}                [description]
+	 */
+	function instantiatePipe(bbmvInstance, $dest, map, options) {
+
+			// generate a unique id
+			pipeid = _.uniqueId(this.pipeIdAttr);
+
+			// set namespace onto options
+			options = options || {};
+			options.bbmvInstance = this;
+
+			// create pipe
+			pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
+
+			// save pipe id on el.
+			$dest.data(this.pipeIdAttr, pipeid);
+	}
+
+
 	/**
 	 * Attempts to get the pipe id from the $dest object
 	 * and then checks for a pipe in cache.
@@ -1038,9 +1074,9 @@ define('bbmv/methods/pipe',['require','exports','module','bbmv/pipe/index'],func
 			pipe = this.pipes[pipeid];
 
 			// if map is set,
-			// set it.
+			// set it onto the pipe.
 			if (map) {
-
+				pipe.map(map, options);
 			}
 
 		} else {

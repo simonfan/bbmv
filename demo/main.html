@@ -45,6 +45,7 @@
 
 	<div id="demo">
 
+
 		<div id="validation-demo" data-bind-out-invalid-attribute="if(none=>removeClass(invalid), addClass(invalid))">
 			<input
 
@@ -142,6 +143,18 @@
 		>
 			DATA BIND SET
 		</div>
+
+
+
+		<!-- input builder -->
+		<textarea
+			data-bind-new-field="value"
+			placeholder="type your new field here"
+			rows="5"
+		>
+		</textarea>
+		<button data-bind-on-click="addField">Add field</button>
+		<div id="dinamic-fields"></div>
 
 	</div>
 

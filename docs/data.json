@@ -318,7 +318,7 @@
         },
         {
             "file": "src/bbmv/directives/index.js",
-            "line": 17,
+            "line": 18,
             "description": "The directives to be exported.",
             "class": "jqValueSetters"
         },
@@ -403,7 +403,39 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 6,
+            "line": 8,
+            "description": "Private function used to instantiate a new data pipe.",
+            "params": [
+                {
+                    "name": "bbmvInstance",
+                    "description": "The instance of bbmv to which this pipe will be attached.\n    The pipe will use multiple methods from the main object\n    in order to read from and set to DOM.",
+                    "type": "Object (bbmv)"
+                },
+                {
+                    "name": "$dest",
+                    "description": "The jQuery object that should be the destination of the pipe.",
+                    "type": "Object (jquery)"
+                },
+                {
+                    "name": "map",
+                    "description": "A map describing the pipe sources and destinations.",
+                    "type": "Object (pojo)"
+                },
+                {
+                    "name": "options",
+                    "description": "Options.",
+                    "type": "Object (pojo)"
+                }
+            ],
+            "return": {
+                "description": "[description]",
+                "type": "Object (pipe)"
+            },
+            "class": ""
+        },
+        {
+            "file": "src/bbmv/methods/pipe.js",
+            "line": 41,
             "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
             "params": [
                 {
@@ -430,7 +462,7 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 58,
+            "line": 93,
             "description": "Pump data.",
             "params": [
                 {
@@ -447,7 +479,7 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 74,
+            "line": 109,
             "description": "Drains data from a single element",
             "params": [
                 {
@@ -645,7 +677,7 @@
         },
         {
             "message": "Missing item type\nThe directives to be exported.",
-            "line": " src/bbmv/directives/index.js:17"
+            "line": " src/bbmv/directives/index.js:18"
         },
         {
             "message": "Missing item type\nEvent directive, binds events to actions on the view.",
@@ -660,16 +692,20 @@
             "line": " src/bbmv/methods/if.js:49"
         },
         {
+            "message": "Missing item type\nPrivate function used to instantiate a new data pipe.",
+            "line": " src/bbmv/methods/pipe.js:8"
+        },
+        {
             "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "line": " src/bbmv/methods/pipe.js:6"
+            "line": " src/bbmv/methods/pipe.js:41"
         },
         {
             "message": "Missing item type\nPump data.",
-            "line": " src/bbmv/methods/pipe.js:58"
+            "line": " src/bbmv/methods/pipe.js:93"
         },
         {
             "message": "Missing item type\nDrains data from a single element",
-            "line": " src/bbmv/methods/pipe.js:74"
+            "line": " src/bbmv/methods/pipe.js:109"
         },
         {
             "message": "Missing item type\nGet from the jquery object",
