@@ -403,7 +403,7 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 8,
+            "line": 11,
             "description": "Private function used to instantiate a new data pipe.",
             "params": [
                 {
@@ -435,7 +435,7 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 41,
+            "line": 44,
             "description": "Attempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
             "params": [
                 {
@@ -462,7 +462,7 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 93,
+            "line": 96,
             "description": "Pump data.",
             "params": [
                 {
@@ -479,7 +479,7 @@
         },
         {
             "file": "src/bbmv/methods/pipe.js",
-            "line": 109,
+            "line": 112,
             "description": "Drains data from a single element",
             "params": [
                 {
@@ -496,7 +496,7 @@
         },
         {
             "file": "src/bbmv/pipe/dest-get.js",
-            "line": 16,
+            "line": 15,
             "description": "Get from the jquery object",
             "params": [
                 {
@@ -518,7 +518,7 @@
         },
         {
             "file": "src/bbmv/pipe/dest-set.js",
-            "line": 12,
+            "line": 11,
             "description": "[destSetSingle description]",
             "params": [
                 {
@@ -550,7 +550,7 @@
         },
         {
             "file": "src/bbmv/pipe/dest-set.js",
-            "line": 63,
+            "line": 62,
             "description": "Set to the jquery object",
             "params": [
                 {
@@ -700,31 +700,31 @@
         },
         {
             "message": "Missing item type\nPrivate function used to instantiate a new data pipe.",
-            "line": " src/bbmv/methods/pipe.js:8"
+            "line": " src/bbmv/methods/pipe.js:11"
         },
         {
             "message": "Missing item type\nAttempts to get the pipe id from the $dest object\nand then checks for a pipe in cache.\n\nIf no pipe is found in cache, instantiate a pipe\nset id onto $dest using the .data method\nand save pipe to cache using that id.",
-            "line": " src/bbmv/methods/pipe.js:41"
+            "line": " src/bbmv/methods/pipe.js:44"
         },
         {
             "message": "Missing item type\nPump data.",
-            "line": " src/bbmv/methods/pipe.js:93"
+            "line": " src/bbmv/methods/pipe.js:96"
         },
         {
             "message": "Missing item type\nDrains data from a single element",
-            "line": " src/bbmv/methods/pipe.js:109"
+            "line": " src/bbmv/methods/pipe.js:112"
         },
         {
             "message": "Missing item type\nGet from the jquery object",
-            "line": " src/bbmv/pipe/dest-get.js:16"
+            "line": " src/bbmv/pipe/dest-get.js:15"
         },
         {
             "message": "Missing item type\n[destSetSingle description]",
-            "line": " src/bbmv/pipe/dest-set.js:12"
+            "line": " src/bbmv/pipe/dest-set.js:11"
         },
         {
             "message": "Missing item type\nSet to the jquery object",
-            "line": " src/bbmv/pipe/dest-set.js:63"
+            "line": " src/bbmv/pipe/dest-set.js:62"
         },
         {
             "message": "Missing item type\nThe attribute used to store the pipe id\nonto the $dest elements.",

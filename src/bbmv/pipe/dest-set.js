@@ -3,8 +3,7 @@ define(function (require, exports, module) {
 
 
 	// make jquery.value available for reading usage.
-	var jqValue = require('jquery-value'),
-		_       = require('lodash');
+	var _       = require('lodash');
 
 	var aux     = require('bbmv/aux/index'),
 		pipeAux = require('bbmv/pipe/aux');

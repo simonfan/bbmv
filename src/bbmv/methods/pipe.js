@@ -1,4 +1,7 @@
 define(function (require, exports) {
+	'use strict';
+
+	var _ = require('lodash');
 
 	// the mv pipe object builder.
 	var mvPipe = require('bbmv/pipe/index');
@@ -23,18 +26,18 @@ define(function (require, exports) {
 	 */
 	function instantiatePipe(bbmvInstance, $dest, map, options) {
 
-			// generate a unique id
-			pipeid = _.uniqueId(this.pipeIdAttr);
+		// generate a unique id
+		var pipeid = _.uniqueId(this.pipeIdAttr);
 
-			// set namespace onto options
-			options = options || {};
-			options.bbmvInstance = this;
+		// set namespace onto options
+		options = options || {};
+		options.bbmvInstance = this;
 
-			// create pipe
-			pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
+		// create pipe
+		var pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
 
-			// save pipe id on el.
-			$dest.data(this.pipeIdAttr, pipeid);
+		// save pipe id on el.
+		$dest.data(this.pipeIdAttr, pipeid);
 	}
 
 

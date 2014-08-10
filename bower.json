@@ -1,11 +1,10 @@
 {
   "name": "bbmv",
   "main": "built/bbmv.js",
-  "version": "0.14.17",
+  "version": "0.14.18",
   "description": "Some module...",
   "dependencies": {
-    "lowercase-backbone": "~0.2.5",
-    "jquery-value": "~0.1.1",
+    "lowercase-backbone": "0.3.7",
     "pipe": "0.10.9",
     "bbdv": "0.4.7",
     "jquery-selector-data-prefix": "~0.1.2"

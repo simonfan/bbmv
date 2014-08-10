@@ -7,7 +7,7 @@ define(function defJqMethods(require, exports, module) {
 
 
 	// animations
-	var animations = ['fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle', 'hide', 'show', 'toggle', 'remove']
+	var animations = ['fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle', 'hide', 'show', 'toggle', 'remove'];
 
 
 	var arity1 = [
@@ -18,7 +18,7 @@ define(function defJqMethods(require, exports, module) {
 		'removeAttr', 'removeClass', 'removeData', 'removeProp',
 		'replaceAll', 'replaceWith',
 		'scrollLeft', 'scrollTop',
-	 	'text', 'toggleClass',
+		'text', 'toggleClass',
 		'val',
 		'width',
 	];

@@ -1,4 +1,5 @@
 define(function defBbdvParsers(require, exports) {
+	'use strict';
 
 	var _ = require('lodash'),
 		$ = require('jquery');

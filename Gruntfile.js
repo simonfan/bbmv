@@ -100,7 +100,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["bbdv", "jquery-value", "lowercase-backbone", "pipe", "jquery-selector-data-prefix"],
+					exclude: ["bbdv", "lowercase-backbone", "pipe", "jquery-selector-data-prefix"],
 
 					optimize: 'none',
 
@@ -128,7 +128,7 @@ module.exports = function (grunt) {
 
 					// exclude these modules AND their dependencies
 					// (excluding your bower dependencies)
-					exclude: ["bbdv", "jquery-value", "lowercase-backbone", "pipe", "jquery-selector-data-prefix"],
+					exclude: ["bbdv", "lowercase-backbone", "pipe", "jquery-selector-data-prefix"],
 
 					// excludeShallow
 					excludeShallow: [],

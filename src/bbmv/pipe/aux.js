@@ -1,4 +1,5 @@
 define(function defPipeAux(require, exports) {
+	'use strict';
 
 	var _ = require('lodash');
 

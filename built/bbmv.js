@@ -381,6 +381,7 @@ define('bbmv/directives/index',['require','exports','module','lodash','jquery','
 });
 
 define('bbmv/methods/aux',['require','exports','module','lodash','jquery','bbmv/aux/index'],function defBbdvParsers(require, exports) {
+	
 
 	var _ = require('lodash'),
 		$ = require('jquery');
@@ -553,7 +554,7 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 
 
 	// animations
-	var animations = ['fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle', 'hide', 'show', 'toggle', 'remove']
+	var animations = ['fadeIn', 'fadeOut', 'fadeTo', 'fadeToggle', 'hide', 'show', 'toggle', 'remove'];
 
 
 	var arity1 = [
@@ -564,7 +565,7 @@ define('bbmv/methods/jquery/native',['require','exports','module','lodash'],func
 		'removeAttr', 'removeClass', 'removeData', 'removeProp',
 		'replaceAll', 'replaceWith',
 		'scrollLeft', 'scrollTop',
-	 	'text', 'toggleClass',
+		'text', 'toggleClass',
 		'val',
 		'width',
 	];
@@ -763,6 +764,7 @@ define('bbmv/methods/jquery/extensions/value',['require','exports','module','jqu
 });
 
 define('bbmv/pipe/aux',['require','exports','module','lodash','bbmv/aux/index'],function defPipeAux(require, exports) {
+	
 
 	var _ = require('lodash');
 
@@ -811,13 +813,12 @@ define('bbmv/pipe/aux',['require','exports','module','lodash','bbmv/aux/index'],
 
 });
 
-define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash','bbmv/aux/index','bbmv/pipe/aux'],function (require, exports, module) {
+define('bbmv/pipe/dest-get',['require','exports','module','lodash','bbmv/aux/index','bbmv/pipe/aux'],function (require, exports, module) {
 	
 
 
 	// make jquery.value available for reading usage.
-	var jqValue = require('jquery-value'),
-		_       = require('lodash');
+	var _       = require('lodash');
 
 	var aux     = require('bbmv/aux/index'),
 		pipeAux = require('bbmv/pipe/aux');
@@ -871,13 +872,12 @@ define('bbmv/pipe/dest-get',['require','exports','module','jquery-value','lodash
 	};
 });
 
-define('bbmv/pipe/dest-set',['require','exports','module','jquery-value','lodash','bbmv/aux/index','bbmv/pipe/aux'],function (require, exports, module) {
+define('bbmv/pipe/dest-set',['require','exports','module','lodash','bbmv/aux/index','bbmv/pipe/aux'],function (require, exports, module) {
 	
 
 
 	// make jquery.value available for reading usage.
-	var jqValue = require('jquery-value'),
-		_       = require('lodash');
+	var _       = require('lodash');
 
 	var aux     = require('bbmv/aux/index'),
 		pipeAux = require('bbmv/pipe/aux');
@@ -1009,7 +1009,10 @@ define('bbmv/pipe/index',['require','exports','module','pipe','lodash','bbmv/aux
 
 });
 
-define('bbmv/methods/pipe',['require','exports','module','bbmv/pipe/index'],function (require, exports) {
+define('bbmv/methods/pipe',['require','exports','module','lodash','bbmv/pipe/index'],function (require, exports) {
+	
+
+	var _ = require('lodash');
 
 	// the mv pipe object builder.
 	var mvPipe = require('bbmv/pipe/index');
@@ -1034,18 +1037,18 @@ define('bbmv/methods/pipe',['require','exports','module','bbmv/pipe/index'],func
 	 */
 	function instantiatePipe(bbmvInstance, $dest, map, options) {
 
-			// generate a unique id
-			pipeid = _.uniqueId(this.pipeIdAttr);
+		// generate a unique id
+		var pipeid = _.uniqueId(this.pipeIdAttr);
 
-			// set namespace onto options
-			options = options || {};
-			options.bbmvInstance = this;
+		// set namespace onto options
+		options = options || {};
+		options.bbmvInstance = this;
 
-			// create pipe
-			pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
+		// create pipe
+		var pipe = this.pipes[pipeid] = mvPipe(this.model, $dest, map, options);
 
-			// save pipe id on el.
-			$dest.data(this.pipeIdAttr, pipeid);
+		// save pipe id on el.
+		$dest.data(this.pipeIdAttr, pipeid);
 	}
 
 
