@@ -1201,6 +1201,13 @@ define('bbmv',['require','exports','module','jquery-selector-data-prefix','lodas
 		},
 
 		/**
+		 * Defined at bb-rendered-view API
+		 */
+		templateDataParse: function templateDataParse(options) {
+			return options.model.toJSON();
+		},
+
+		/**
 		 * Event to listen on the model.
 		 * @type {String}
 		 */

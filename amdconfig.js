@@ -29,7 +29,8 @@ require.config({
 		'jquery-value': '../bower_components/jquery-value/built/jquery-value',
 		bbdv: '../bower_components/bbdv/built/bbdv',
 		swtch: '../bower_components/swtch/built/swtch',
-		bool: '../bower_components/bool/built/bool'
+		bool: '../bower_components/bool/built/bool',
+		'bb-rendered-view': '../bower_components/bb-rendered-view/built/bb-rendered-view'
 	},
 	shim: {
 		backbone: {

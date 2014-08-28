@@ -155,6 +155,13 @@ define(function (require, exports, module) {
 		},
 
 		/**
+		 * Defined at bb-rendered-view API
+		 */
+		templateDataParse: function templateDataParse(options) {
+			return options.model.toJSON();
+		},
+
+		/**
 		 * Event to listen on the model.
 		 * @type {String}
 		 */
