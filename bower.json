@@ -1,7 +1,7 @@
 {
   "name": "bbmv",
   "main": "built/bbmv.js",
-  "version": "0.15.18",
+  "version": "0.15.19",
   "description": "Some module...",
   "dependencies": {
     "lowercase-backbone": "0.3.7",

@@ -363,6 +363,7 @@ define('bbmv/directives/index',['require','exports','module','lodash','jquery','
 		// selector: event
 		':text,textarea'                            : 'keyup',
 		'input[type="checkbox"],input[type="radio"]': 'change',
+		'select'                                    : 'change',
 		':button'                                   : 'click',
 		'input[type="hidden"]'                      : 'change',
 	};

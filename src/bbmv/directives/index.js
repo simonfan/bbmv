@@ -9,6 +9,7 @@ define(function (require, exports, module) {
 		// selector: event
 		':text,textarea'                            : 'keyup',
 		'input[type="checkbox"],input[type="radio"]': 'change',
+		'select'                                    : 'change',
 		':button'                                   : 'click',
 		'input[type="hidden"]'                      : 'change',
 	};

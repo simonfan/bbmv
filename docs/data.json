@@ -318,7 +318,7 @@
         },
         {
             "file": "src/bbmv/directives/index.js",
-            "line": 18,
+            "line": 19,
             "description": "The directives to be exported.",
             "class": "jqValueSetters"
         },
@@ -691,7 +691,7 @@
         },
         {
             "message": "Missing item type\nThe directives to be exported.",
-            "line": " src/bbmv/directives/index.js:18"
+            "line": " src/bbmv/directives/index.js:19"
         },
         {
             "message": "Missing item type\nEvent directive, binds events to actions on the view.",
